@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="MKS-SERVER:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/MKS_SERVER_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="MKS-SERVER/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="MKS-SERVER" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
