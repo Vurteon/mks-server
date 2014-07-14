@@ -3,15 +3,31 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-    <servlet>
-        <servlet-name>TestServlet</servlet-name>
-        <servlet-class>test.TestServlet</servlet-class>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>TestServlet</servlet-name>-->
+        <!--<servlet-class>test.TestServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet>-->
+        <!--<servlet-name>Servlet</servlet-name>-->
+        <!--<servlet-class>test.Servlettest2</servlet-class>-->
+    <!--</servlet>-->
 
 
-    <servlet-mapping>
-        <servlet-name>TestServlet</servlet-name>
-        <url-pattern>/test2</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>TestServlet</servlet-name>-->
+        <!--<url-pattern>/test2</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>MKS-SERVER</web-resource-name>
+            <url-pattern>/test</url-pattern>
+            <url-pattern>/test2</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
 
 </web-app>
