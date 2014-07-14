@@ -1,19 +1,98 @@
 
 #main {
-	/*background-color: red;*/
-	/*margin: 100px;*/
-	/*border-bottom-width: 100px;*/
+	/*background-color: cornflowerblue;*/
+	padding: 0px;
+	width: 100%;
+	height: 100%;
 }
 
 
+#top {
+	background-color: dodgerblue;
+	/*width: 100%;*/
+	height: 90px;
+	min-width: 1000px;
+	margin-left: -8px;
+	margin-right: -8px;
+	margin-top: -8px;
+}
+
 #middle {
-	background-color: aquamarine;
+	width: 100%;
+	min-width: 1000px;
+	height: 600px;
+	background-color: beige;
+	float: left;
+
 }
 
 
 #bottom {
 	background-color: burlywood;
 }
+
+#name {
+	float: left;
+	margin-left: 18%;
+	/*font: swash;*/
+	font-size: 40px;
+	font-style: normal;
+	margin-top: 20px;
+}
+
+
+#word {
+	float: left;
+	margin-top: 40px;
+	margin-left: 40px;
+	font-size: 20px;
+}
+
+
+#try_luck {
+	float: right;
+	margin-right: 50px;
+	margin-top: 28px;
+}
+
+
+#login_button {
+	float: right;
+	margin-right: 50px;
+	margin-top: 28px;
+}
+
+.top_button {
+	width: 80px;
+	height: 38px;
+}
+
+
+#video {
+	float: left;
+	margin-left: 100px;
+}
+
+#sign_up {
+	float: left;
+}
+
+#nick_name {
+	margin-right: 100px;
+
+}
+
+#email_input {
+	margin-top: 100px;
+}
+
+
+
+
+
+
+
+
 
 
 
