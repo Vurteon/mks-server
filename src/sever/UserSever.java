@@ -24,8 +24,8 @@ public class UserSever {
 
     }
 
-    public String login(String email, String password){
-        if(dao.checkUser(email, password)){
+    public String login(User user){
+        if(dao.checkUser(user)){
             return LOGIN_SUCCESS;
         }else{
             return LOGIN_FAIL;

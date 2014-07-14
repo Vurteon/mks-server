@@ -9,5 +9,6 @@
             String registerMessage = (String)session.getAttribute("registerMessage");
         %>
         ${registerMessage}
+
 </body>
 </html>

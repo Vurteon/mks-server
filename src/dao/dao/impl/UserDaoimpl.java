@@ -23,10 +23,10 @@ public class UserDaoimpl implements UserDao {
         findUser = new UserSql().findUser(sql,email);
         return findUser;
     }
-    public boolean checkUser(String email, String password){
+    public boolean checkUser(User user){
         boolean checkedUser = false;
         String sql = "select * from usermessage where email=? and password=?";
-        checkedUser = new UserSql().checkUser(sql, email, password);
+        checkedUser = new UserSql().checkUser(sql, user);
         return checkedUser;
     }
 }
