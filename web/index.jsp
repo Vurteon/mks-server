@@ -23,7 +23,7 @@
 		<div id="top">
 			<div id="name">
 			<%--这里以后会放上一张图片--%>
-				<a href="www.baidu.com">瞬间</a>
+				<a href="http://localhost:8080">瞬间</a>
 			</div>
 
 			<div id="word">
@@ -46,34 +46,40 @@
 		<div id="middle">
 
 
-			<div id="video">
-				<p>你能干什么？</p>
-				<video src="source/video/index.mp4" width="400px" height="300px" controls="controls"></video>
-			</div>
-
 			<div id="sign_up">
 				<div id="nick_name">
-					<input type="text">
+					<input type="text" placeholder="昵称">
 				</div>
 
 				<div id="email_input">
 
-					<input itype="email">
+					<input itype="email" placeholder="邮箱">
 				</div>
 
 
-				<input id="password" type="password">
-				<input id="password_again" type="password">
-				<button id="sign" type="button">注册</button>
+				<div id="password">
+					<input  type="password" placeholder="密码">
+				</div>
+
+
+				<div id="password_again">
+					<input type="password" placeholder="确认密码">
+				</div>
+
+				<div id="sign">
+					<button class="sign_button" type="button">注册</button>
+				</div>
+
+
 			</div>
 
 
 		</div>
 
-		<!-- 下面的官话和相关事宜 -->
-		<div id="bottom">
-
-		</div>
+		<%--<!-- 下面的官话和相关事宜 -->--%>
+		<%--<div id="bottom">--%>
+			<%--<hr width="80%" /> --%>
+		<%--</div>--%>
 
 	</div>
 

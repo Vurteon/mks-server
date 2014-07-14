@@ -9,9 +9,8 @@
 
 #top {
 	background-color: dodgerblue;
-	/*width: 100%;*/
 	height: 90px;
-	min-width: 1000px;
+	min-width: 100%
 	margin-left: -8px;
 	margin-right: -8px;
 	margin-top: -8px;
@@ -19,23 +18,30 @@
 
 #middle {
 	width: 100%;
-	min-width: 1000px;
-	height: 600px;
-	background-color: beige;
+	min-width: 100%;
+	height: 89%;
+	/*background-color: beige;*/
 	float: left;
-
 }
 
 
 #bottom {
-	background-color: burlywood;
+	float: left;
+	width: 100%;
+	height: 100px;
+	margin-bottom: 10px;
+	background-color: #1D80CF;
+}
+
+#bottom hr {
+	margin-top: 80px;
 }
 
 #name {
 	float: left;
-	margin-left: 18%;
+	margin-left: 15%;
 	/*font: swash;*/
-	font-size: 40px;
+	font-size: 50px;
 	font-style: normal;
 	margin-top: 20px;
 }
@@ -51,48 +57,94 @@
 
 #try_luck {
 	float: right;
-	margin-right: 50px;
+	margin-right: 15%;
 	margin-top: 28px;
 }
 
 
 #login_button {
 	float: right;
-	margin-right: 50px;
+	margin-right: 22px;
 	margin-top: 28px;
 }
 
 .top_button {
-	width: 80px;
-	height: 38px;
+	border: 1px solid #1D80CF;
+	width: 100px;
+	text-align: center;
+	font-size: 15px;
+	color: dodgerblue;
+	text-shadow: 0 1px 1px rgba(0,0,0,.2);
+	background: #ffffff;
+	/*background: -webkit-gradient(linear,left top,left bottom,from(#80c3f7),to(#6bbaf8));*/
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.3),0 1px 1px rgba(50,50,50,.05);
+	border-radius: 5px;
+	cursor: pointer;
+	line-height: 33px;
+	display: block;
+	padding: 0 15px;
+
+}
+
+.top_button:hover{
+	background: #1D80CF;
+	color: #ffffff;
 }
 
 
-#video {
-	float: left;
-	margin-left: 100px;
-}
+/*#video {*/
+	/*float: left;*/
+	/*margin-left: 100px;*/
+/*}*/
 
 #sign_up {
-	float: left;
+	float: right;
+	margin-right: 15%;
 }
 
 #nick_name {
-	margin-right: 100px;
-
+	margin-top: 60px;
 }
 
 #email_input {
-	margin-top: 100px;
+	margin-top: 20px;
 }
 
+#password {
+	margin-top: 20px;
+}
 
+#password_again {
+	margin-top: 20px;
+}
 
+#sign {
+	margin-top: 10px;
+}
 
+input {
+	width: 220px;
+	font-size: 15px;
+	border-radius: 5px;
+	padding: 8px;
+	line-height: 17px;
+}
 
-
-
-
-
+.sign_button {
+	border: 1px solid #1D80CF;
+	width: 220px;
+	text-align: center;
+	font-size: 15px;
+	color: #fff;
+	text-shadow: 0 1px 1px rgba(0,0,0,.2);
+	background: dodgerblue;
+	/*background: -webkit-gradient(linear,left top,left bottom,from(#80c3f7),to(#6bbaf8));*/
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.3),0 1px 1px rgba(50,50,50,.05);
+	border-radius: 5px;
+	cursor: pointer;
+	line-height: 33px;
+	display: block;
+	padding: 0 15px;
+}
 
 
