@@ -17,11 +17,13 @@ public class UserMessage {
         request.setAttribute("registerMessage", "用户已存在");
         request.getRequestDispatcher("RegisterMessage.jsp").forward(request,response);
     }
-    public static void loginFailMessage(){
-
+    public static void loginFailMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("loginMessage", "email或者密码错误");
+        request.getRequestDispatcher("LoginMessage.jsp").forward(request,response);
     }
-    public static void loginSuccessMessage(){
-
+    public static void loginSuccessMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("loginMessage", "登录成功");
+        request.getRequestDispatcher("LoginMessage.jsp").forward(request,response);
     }
     public static void registerSuccessMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("registerMessage", "注册成功");

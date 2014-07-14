@@ -5,8 +5,8 @@
     <title>用户注册</title>
 </head>
 <body>
-    <form action="RegisterMessage" method="post" >
-        用户昵称：<input type="text" name="username"/>
+    <form action="RegisterServlet" method="post" >
+        用户昵称：<input type="text" name="nickname"/>
         email：<input type="text" name="email"/>
         密码：<input type="password" name="password" />
         <input type="submit" value="注册"/>

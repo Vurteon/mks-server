@@ -63,12 +63,12 @@ public class UserSql {
         return findSuccess;
     }
 
-    public boolean checkUser(String sql, String email, String password){
+    public boolean checkUser(String sql, User user){
         boolean checkedUser = false;
         try{
             ps = con.prepareStatement(sql);
-            ps.setString(1, email);
-            ps.setString(2, password);
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
             rs = ps.executeQuery();
             while(rs.next()){
                 checkedUser = true;
