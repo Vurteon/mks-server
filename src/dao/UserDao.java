@@ -16,18 +16,15 @@ public class UserDao{
     }
 
     public static boolean registerUser(User user){             //用户注册
-        boolean registerSuccess = false;
-        registerSuccess = register(user);
+        boolean registerSuccess =  register(user);
         return registerSuccess;
     }
     public static boolean findUser(String email){               //查看用户Email是否存在
-        boolean findUser = false;
-        findUser =  checkEmail(email);
+        boolean findUser = checkEmail(email);
         return findUser;
     }
     public static boolean userLoginCheck(User user){            //用户登录信息检验
-        boolean LoginSuccess = false;
-        LoginSuccess = LoginCheck(user);
+        boolean LoginSuccess =  LoginCheck(user);
         return LoginSuccess;
     }
 }
