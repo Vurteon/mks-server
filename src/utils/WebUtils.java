@@ -1,12 +1,14 @@
 package utils;
 
-import domain.user.User;
+
+
+import entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by dahy on 2014/7/13.
+ * 获取消息表单
  */
 public class WebUtils {
     public WebUtils(){

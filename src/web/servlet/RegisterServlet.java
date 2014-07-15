@@ -2,20 +2,18 @@ package web.servlet;
 
 import domain.user.User;
 import sever.UserSever;
-
+import static domain.user.Constants.*;
+import static utils.WebUtils.*;
+import static web.messages.UserMessage.*;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static domain.user.Constants.*;
-import static utils.WebUtils.getUserRegisterForm;
-import static web.messages.UserMessage.*;
-
-
-@WebServlet("/register")
+/**
+ * Created by dahy on 2014/7/13.
+ */
 public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

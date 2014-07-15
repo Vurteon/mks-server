@@ -1,5 +1,7 @@
-package domain.user;
-
+package controllers;
+/**
+ * 消息静态变量，用于消息传递
+ */
 
 public class Constants {
     public static final String USER_EXIST = "userexist";
