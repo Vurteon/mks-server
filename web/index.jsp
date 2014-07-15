@@ -46,34 +46,10 @@
 		<!-- 这是中间内容部分 -->
 		<div id="middle">
 
-
-			<div id="sign_up">
-				<div id="nick_name">
-					<input id="nick_name_value" type="text" placeholder="昵称">
-				</div>
-
-				<div id="email_input">
-
-					<input type="email" id="email_value" placeholder="邮箱">
-				</div>
-
-
-				<div id="password">
-					<input  type="password" id="password_value" placeholder="密码">
-				</div>
-
-
-				<div id="password_again">
-					<input type="password" id="password_value_again" placeholder="确认密码">
-				</div>
-
-				<div id="sign">
-					<button class="sign_button" type="button" onclick="sign_up()">注册</button>
-				</div>
-
+			<iframe id="iframe_page" src="https://localhost:8443/html/index/register.html" width="450px" height="400px" frameborder="0"
+				scrolling="NO">
 
 			</div>
-
 
 		</div>
 

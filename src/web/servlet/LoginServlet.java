@@ -3,19 +3,21 @@ package web.servlet;
 import domain.user.User;
 import sever.UserSever;
 
-import static domain.user.Constants.*;
-import static utils.WebUtils.*;
-import static web.messages.UserMessage.*;
-
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by dahy on 2014/7/14.
- */
+import static domain.user.Constants.LOGIN_FAIL;
+import static domain.user.Constants.LOGIN_SUCCESS;
+import static utils.WebUtils.getUserLoginForm;
+import static web.messages.UserMessage.loginFailMessage;
+import static web.messages.UserMessage.loginSuccessMessage;
+
+
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

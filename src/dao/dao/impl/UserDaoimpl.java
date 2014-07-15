@@ -18,13 +18,13 @@ public class UserDaoimpl implements UserDao {
         return registerSuccess;
     }
     public boolean findUser(String email){
-        boolean findUser = false;
+        boolean findUser;
         String sql = "select * from usermessage where email=?";
         findUser = new UserSql().findUser(sql,email);
         return findUser;
     }
     public boolean checkUser(User user){
-        boolean checkedUser = false;
+        boolean checkedUser;
         String sql = "select * from usermessage where email=? and password=?";
         checkedUser = new UserSql().checkUser(sql, user);
         return checkedUser;
