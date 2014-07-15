@@ -99,7 +99,8 @@
 
 #sign_up {
 	float: right;
-	margin-right: 15%;
+	/*margin-right: 15%;*/
+	margin-right: -6px;
 }
 
 #nick_name {
@@ -146,5 +147,14 @@ input {
 	display: block;
 	padding: 0 15px;
 }
+
+#iframe_page {
+
+	float: right;
+	margin-right: 14%;
+	/*background-color: red;*/
+
+}
+
 
 

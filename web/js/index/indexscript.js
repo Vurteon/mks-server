@@ -7,7 +7,7 @@ function sign_up(){
 
     isUserNameLegal();
     isEmailIegal();
-
+    isEmailUsed("email");
 }
 
 function isUserNameLegal() {
@@ -21,11 +21,11 @@ function isUserNameLegal() {
 
     var nick = nick_Name_Pattern.test(nick_name);
 
-    if(nick == false){
-        alert("No");
-    }else{
-        alert("YES");
-    }
+//    if(nick == false){
+//        alert("No");
+//    }else{
+//        alert("YES");
+//    }
 }
 
 
@@ -37,15 +37,54 @@ function isEmailIegal() {
 
     var email = email_Pattern.test(document.getElementById("email_value").value);
 
-    if (email == false){
-        alert("Inlegal");
-    }else{
-        alert("Legal");
-    }
+//    if (email == false){
+//        alert("Inlegal");
+//    }else{
+//        alert("Legal");
+//    }
 }
 
+// 检测邮箱是否已经被注册
 function isEmailUsed(email) {
 
+    var request = new XMLHttpRequest();
+
+    request.open("POST","/isEmailUsed");
+
+    request.setRequestHeader("Content-Type","application/json;charset=utf-8");
+
+    var email = document.getElementById("email_value").value;
+
+    var message = '{"email":"' + email + '"}';
+
+   // alert(message);
+
+
+    request.onreadystatechange = function() {
+        if (request.readyState === 4 && request.status === 200){
+
+            var type = request.getResponseHeader("Content-Type");
+
+
+          //  alert("?");
+
+            // 如果返回的是json数据类型，进行相应的解析处理
+            if (type === "application/json"){
+
+                var responseMessage = request.responseText;
+
+                alert(responseMessage);
+
+
+            }
+
+
+
+
+        }
+    }
+
+    request.send(message);
 }
 
 

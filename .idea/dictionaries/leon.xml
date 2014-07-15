@@ -2,7 +2,10 @@
   <dictionary name="leon">
     <words>
       <w>darkgrey</w>
+      <w>iframe</w>
+      <w>indexscript</w>
       <w>inlegal</w>
+      <w>onreadystatechange</w>
     </words>
   </dictionary>
 </component>
