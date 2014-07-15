@@ -1,11 +1,12 @@
 package web.servlet;
 
-import domain.user.User;
-import sever.UserSever;
 
-import static domain.user.Constants.*;
+import controllers.UserSever;
+import entity.User;
+
+import static controllers.Constants.*;
 import static utils.WebUtils.*;
-import static web.messages.UserMessage.*;
+import static web.message.UserMessage.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,15 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by dahy on 2014/7/14.
+ * 用户登录servlet
  */
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        User user = getUserLoginForm(request);
-        String LoginMessage = new UserSever().login(user);
+        User user = getUserLoginForm(request);                               //获取登录信息
+
+        String LoginMessage = new UserSever().login(user);                  //获取登录结果消息
 
         if(LoginMessage.equals(LOGIN_SUCCESS)){
             loginSuccessMessage(request, response);

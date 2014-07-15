@@ -1,10 +1,11 @@
 package web.servlet;
 
-import domain.user.User;
-import sever.UserSever;
-import static domain.user.Constants.*;
+import controllers.UserSever;
+import entity.User;
+
+import static controllers.Constants.*;
 import static utils.WebUtils.*;
-import static web.messages.UserMessage.*;
+import static web.message.UserMessage.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +20,11 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        User user = getUserRegisterForm(request);
-        String registerMessage = new UserSever().register(user);
-        if(registerMessage.equals(USER_EXIST)){
+
+        User user = getUserRegisterForm(request);                             //获取注册表单数据
+        String registerMessage = new UserSever().register(user);              //注册，并获取注册返回消息
+
+        if(registerMessage.equals(USER_EXIST)){                              //转到用户注册消息页
             userExistMessage(request, response);
             return;
         }

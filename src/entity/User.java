@@ -1,7 +1,7 @@
-package domain.user;
+package entity;
 
 /**
- * Created by dahy on 2014/7/12.
+ * 用户类
  */
 public class User {
     private String nickname;
