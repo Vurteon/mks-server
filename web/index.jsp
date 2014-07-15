@@ -14,6 +14,7 @@
     <title>瞬间</title>
 
 	<link rel="stylesheet" type="text/css" href="css/index/idexpage.css">
+	<script src="js/index/indexscript.js"></script>
   </head>
   <body>
 	<div id="main">
@@ -48,26 +49,26 @@
 
 			<div id="sign_up">
 				<div id="nick_name">
-					<input type="text" placeholder="昵称">
+					<input id="nick_name_value" type="text" placeholder="昵称">
 				</div>
 
 				<div id="email_input">
 
-					<input itype="email" placeholder="邮箱">
+					<input type="email" id="email_value" placeholder="邮箱">
 				</div>
 
 
 				<div id="password">
-					<input  type="password" placeholder="密码">
+					<input  type="password" id="password_value" placeholder="密码">
 				</div>
 
 
 				<div id="password_again">
-					<input type="password" placeholder="确认密码">
+					<input type="password" id="password_value_again" placeholder="确认密码">
 				</div>
 
 				<div id="sign">
-					<button class="sign_button" type="button">注册</button>
+					<button class="sign_button" type="button" onclick="sign_up()">注册</button>
 				</div>
 
 
