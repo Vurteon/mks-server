@@ -4,33 +4,52 @@
 	<meta charset="UTF-8">
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="../../css/index/idexpage.css">
-	<script src="../../js/index/indexscript.js"></script>
+	<script src="../../js/index/index_signup.js"></script>
+	<script>
+		function sign_up() {
+			if (isUserNameLegal() == false) {
+				return false;
+			}
+			if (document.getElementById("email_isUsed_check") != null
+					|| document.getElementById("email_format_check") != null) {
+				isEmailLegal();
+				return false;
+			}
+			if (isPasswordLegal() == false) {
+				return false;
+			}
+			if (isPasswordSame() == false) {
+				return false;
+			}
+		}
+	</script>
 </head>
 <body>
 <div id="sign_up">
-	<div id="nick_name">
-		<input id="nick_name_value" type="text" placeholder="昵称">
-	</div>
 
-	<div id="email_input">
+	<form onsubmit="return sign_up()" target="_parent" method="post" action="/register">
 
-		<input type="email" id="email_value" placeholder="邮箱">
-	</div>
+		<div id="nick_name">
+			<input id="nick_name_value" type="text" placeholder="昵称" name="name" onblur="isUserNameLegal()">
+		</div>
+
+		<div id="email_input">
+			<input type="email" id="email_value" placeholder="邮箱" name="email" onblur="isEmailLegal()">
+		</div>
+
+		<div id="password">
+			<input type="password" id="password_value" placeholder="密码" name="pw" onblur="isPasswordLegal()">
+		</div>
 
 
-	<div id="password">
-		<input  type="password" id="password_value" placeholder="密码">
-	</div>
+		<div id="password_again">
+			<input type="password" id="password_value_again" placeholder="确认密码" name="ps_again" onblur="isPasswordSame()">
+		</div>
 
-
-	<div id="password_again">
-		<input type="password" id="password_value_again" placeholder="确认密码">
-	</div>
-
-	<div id="sign">
-		<button class="sign_button" type="button" onclick="sign_up()">注册</button>
-	</div>
-
+		<div id="sign">
+			<button class="sign_button" type="submit">注册</button>
+		</div>
+	</form>
 </div>
 </body>
 </html>

@@ -37,7 +37,7 @@ public class UserSql {
     }
     public static boolean register(User user){        //用户注册
         boolean registerSuccess = false;                              //注册成功或失败判断
-        String sql = "insert into usermessage(nickname,email,password)values(?,?,?)";
+        String sql = "insert into usermessage(nickname,email,password) values (?,?,?)";
         try{
             ps = con.prepareStatement(sql);
             ps.setString(1, user.getNickname());

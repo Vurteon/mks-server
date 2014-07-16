@@ -15,6 +15,9 @@ import java.io.IOException;
 public class Servlettest2 extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+		response.sendRedirect("http://www.baidu.com");
+
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

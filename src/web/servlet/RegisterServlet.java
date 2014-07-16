@@ -7,20 +7,19 @@ import static controllers.Constants.*;
 import static utils.WebUtils.*;
 import static web.message.UserMessage.*;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by dahy on 2014/7/13.
- */
+
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-
         User user = getUserRegisterForm(request);                             //获取注册表单数据
         String registerMessage = new UserSever().register(user);              //注册，并获取注册返回消息
 

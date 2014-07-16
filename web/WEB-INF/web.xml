@@ -25,9 +25,8 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>MKS-SERVER</web-resource-name>
-            <url-pattern>/test</url-pattern>
-            <url-pattern>/test2</url-pattern>
-            <!--<url-pattern>/isEmailUsed</url-pattern>-->
+            <url-pattern>/register</url-pattern>
+            <url-pattern>/isEmailUsed</url-pattern>
             <url-pattern>/html/index/register</url-pattern>
         </web-resource-collection>
         <user-data-constraint>
