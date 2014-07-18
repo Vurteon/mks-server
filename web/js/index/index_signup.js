@@ -20,7 +20,7 @@ function isUserNameLegal() {
         if (document.getElementById("nick_name_format_check") == null) {
             var element = document.createElement("p");
             element.setAttribute("id", "nick_name_format_check");
-            element.setAttribute("style", "font-size:4px;color:red;margin-top:2px");
+            element.setAttribute("style", "font-size:12px;color:red;margin-top:2px");
             var message = "用户名只能是中文、字母、数字、下划线的组合";
             document.getElementById("email_input").setAttribute("style", "margin-top:13px");
             var text = document.createTextNode(message);
@@ -61,7 +61,7 @@ function isEmailLegal() {
         if (document.getElementById("email_format_check") == null) {
             var element = document.createElement("p");
             element.setAttribute("id", "email_format_check");
-            element.setAttribute("style", "font-size:4px;color:red;margin-top:2px");
+            element.setAttribute("style", "font-size:12px;color:red;margin-top:2px");
             var message = "邮箱格式有误";
             document.getElementById("password").setAttribute("style", "margin-top:13px");
             var text = document.createTextNode(message);
@@ -141,7 +141,7 @@ function isEmailUsed(email) {
 
                     var element = document.createElement("p");
                     element.setAttribute("id", "email_isUsed_check");
-                    element.setAttribute("style", "font-size:4px;color:red;margin-top:2px");
+                    element.setAttribute("style", "font-size:12px;color:red;margin-top:2px");
                     var message = "邮箱已经被注册";
                     document.getElementById("password").setAttribute("style", "margin-top:13px");
                     var text = document.createTextNode(message);
@@ -165,7 +165,7 @@ function isPasswordLegal() {
         if (document.getElementById("password_format_check") == null) {
             var element = document.createElement("p");
             element.setAttribute("id", "password_format_check");
-            element.setAttribute("style", "font-size:4px;color:red;margin-top:2px");
+            element.setAttribute("style", "font-size:12px;color:red;margin-top:2px");
             var message = "密码长度需大于6位";
             document.getElementById("password_again").setAttribute("style", "margin-top:13px");
             var text = document.createTextNode(message);
@@ -202,7 +202,7 @@ function isPasswordSame() {
         if (document.getElementById("password_again_check") == null){
             var element = document.createElement("p");
             element.setAttribute("id", "password_again_check");
-            element.setAttribute("style", "font-size:4px;color:red;margin-top:2px");
+            element.setAttribute("style", "font-size:12px;color:red;margin-top:2px");
             var message = "两次输入密码不一致";
             document.getElementById("sign").setAttribute("style", "margin-top:5px");
             var text = document.createTextNode(message);
