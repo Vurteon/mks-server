@@ -21,7 +21,7 @@ function isUserNameLegal() {
             var element = document.createElement("p");
             element.setAttribute("id", "nick_name_format_check");
             element.setAttribute("style", "font-size:12px;color:red;margin-top:2px");
-            var message = "用户名只能是中文、字母、数字、下划线的组合";
+            var message = "用户名只能是中文、字母、数字、下划线组合";
             document.getElementById("email_input").setAttribute("style", "margin-top:13px");
             var text = document.createTextNode(message);
             element.appendChild(text);

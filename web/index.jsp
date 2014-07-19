@@ -13,10 +13,36 @@
 <head>
 	<title>瞬间</title>
 
-	<link rel="stylesheet" type="text/css" href="css/index/idexpage.css">
+	<link rel="stylesheet" type="text/css" href="css/index/idexpage.css"/>
+	<link rel="stylesheet" type="text/css" href="css/index/login.css"/>
+	<script type="text/javascript">
+
+		function login() {
+			// 显示隐藏的div
+			var div = document.getElementById("login_background");
+
+			div.setAttribute("style","display:block");
+
+			var login_page = document.getElementById("real_login");
+
+			login_page.setAttribute("style","display:block");
+		}
+	</script>
 </head>
 <body>
-<div id="main">
+<div id="login_background" style="display: none">
+</div>
+<div id="real_login" style="display:none">
+	<iframe id="login_iframe_page" src="html/index/login.html" width="400px" height="330px" scrolling="no">
+
+	</iframe>
+</div>
+
+
+
+<img class="front-image" src="source/img/exp_wc2014_gen_laurenlemon.jpg" style="position:absolute; left: 0;top: 0;right: 0;bottom: 0">
+
+<div id="main" style="position:absolute;top: 0px">
 
 
 	<!-- 顶部“瞬间”宣传语和登陆、试试手气-->
@@ -35,7 +61,7 @@
 		</div>
 
 		<div id="login_button">
-			<button class="top_button" value="登陆">登陆</button>
+			<button class="top_button" value="登陆" onclick="login()">登陆</button>
 		</div>
 
 
