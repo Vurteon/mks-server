@@ -10,20 +10,24 @@
 #top {
 	background-color: dodgerblue;
 	height: 90px;
-	min-width: 100%
 	margin-left: -8px;
-	margin-right: -8px;
+	/*margin-right: -8px;*/
 	margin-top: -8px;
 }
 
 #middle {
 	width: 100%;
-	min-width: 100%;
 	height: 89%;
 	/*background-color: beige;*/
 	float: left;
 }
 
+
+img {
+	border: 0;
+	width: 100.5%;
+	height: 100.5%;
+}
 
 #bottom {
 	float: left;
@@ -31,10 +35,6 @@
 	height: 100px;
 	margin-bottom: 10px;
 	background-color: #1D80CF;
-}
-
-#bottom hr {
-	margin-top: 80px;
 }
 
 #name {
@@ -57,14 +57,14 @@
 
 #try_luck {
 	float: right;
-	margin-right: 15%;
+	margin-right: 14.4%;
 	margin-top: 28px;
 }
 
 
 #login_button {
 	float: right;
-	margin-right: 22px;
+	margin-right: 29px;
 	margin-top: 28px;
 }
 
@@ -103,6 +103,11 @@
 	margin-right: -6px;
 }
 
+input {
+	/*background-color: transparent;*/
+}
+
+
 #nick_name {
 	margin-top: 60px;
 }
@@ -128,7 +133,6 @@ input {
 	font-size: 15px;
 	border-radius: 5px;
 	padding: 8px;
-	line-height: 17px;
 }
 
 .sign_button {
@@ -146,6 +150,7 @@ input {
 	line-height: 33px;
 	display: block;
 	padding: 0 15px;
+	border: 0;
 }
 
 #iframe_page {

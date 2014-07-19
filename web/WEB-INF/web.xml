@@ -26,8 +26,10 @@
         <web-resource-collection>
             <web-resource-name>MKS-SERVER</web-resource-name>
             <url-pattern>/register</url-pattern>
+            <url-pattern>/login</url-pattern>
             <url-pattern>/isEmailUsed</url-pattern>
             <url-pattern>/html/index/register</url-pattern>
+            <url-pattern>/html/index/login.html</url-pattern>
         </web-resource-collection>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
