@@ -21,8 +21,8 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.0.9" level="application_server_libraries" />
     <orderEntry type="library" name="mysql-connector-java-5.1" level="project" />
+    <orderEntry type="library" name="servlet-api" level="project" />
   </component>
 </module>
 

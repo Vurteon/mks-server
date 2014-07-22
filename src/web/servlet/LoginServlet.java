@@ -24,11 +24,13 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
+
         User user = getUserLoginForm(request);                               //获取登录信息
 
         String LoginMessage = new UserSever().login(user);                  //获取登录结果消息
 
         if(LoginMessage.equals(LOGIN_SUCCESS)){
+            request.getSession().setAttribute("nickname", user.getNickname());  //登录成功则将当前用户的昵称存入session域
             loginSuccessMessage(request, response);
             return;
         }
