@@ -27,4 +27,9 @@ public class UserDao{
         boolean LoginSuccess =  userSql.LoginCheck(sql, user);
         return LoginSuccess;
     }
+    public String findUserNickmae(String email){
+        String sql = "select * from usermessage where email=?";
+        String nickname = userSql.findNickname(sql, email);
+        return  nickname;
+    }
 }

@@ -33,4 +33,7 @@ public class UserSever {
             return LOGIN_FAIL;
         }
     }
+    public String findUsernickname(String email){
+        return userDao.findUserNickmae(email);
+    }
 }

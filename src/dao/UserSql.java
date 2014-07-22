@@ -67,7 +67,7 @@ public class UserSql {
         return findSuccess;
     }
 
-    public  boolean LoginCheck(String sql, User user){     //用户登录检测
+    public boolean LoginCheck(String sql, User user){     //用户登录检测
         boolean loginSuccess = false;                                //登录成功与否标志
 
         try{
@@ -82,5 +82,19 @@ public class UserSql {
             e.printStackTrace();
         }
         return loginSuccess;
+    }
+    public String findNickname(String sql, String email){         //根据email找到用户昵称
+        String nickname = null;
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1,email);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                nickname = rs.getString("nickname");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return  nickname;
     }
 }
