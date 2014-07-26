@@ -1,1 +1,162 @@
 /*中间内容区的布局*/
+
+
+
+
+#class_switcher {
+	position: fixed;
+	width: 600px;
+	height: 40px;
+	/*background-color: #FFFFFF;*/
+	background-color: #1D80CF;
+	top: 60px;
+}
+
+
+li {
+	list-style: none;
+}
+
+#class_switcher ul {
+	width: 400px;
+	margin-top: 8px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#class_switcher ul li {
+	display: inline;
+	margin-left: 20px;
+	margin-right: 10px;
+	font-size: 20px;
+	color: #FFFFFF;
+}
+
+#class_switcher ul li a{
+	color: #FFFFFF;
+}
+
+#content {
+	width: 600px;
+	margin-top: 50px;
+}
+
+/*去掉ul的内边距和li的外边距，使其保持向左和父元素对其*/
+#content ul,li {
+	margin: 0;
+	padding: 0;
+}
+
+.content_container {
+	width: 600px;
+	height: 580px;
+	background-color: #FFF;
+	border-radius: 5px;
+}
+
+
+
+.top_content_container {
+	float: left;
+	width: 600px;
+	height: 70px;
+	background-color: #FFF;
+}
+
+.head_pic_container {
+	float: left;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+
+.head_pic_container a {
+}
+
+.head_pic_container a img {
+	border-radius: 5px;
+	width: 48px;
+	height: 48px;
+}
+
+.nick_name_container {
+	float: left;
+	width: 500px;
+	margin-left: 10px;
+	margin-top: 13px;
+	font-size: 14px;
+}
+
+.time_location {
+	float: left;
+	font-size: 12px;
+	margin-left: 10px;
+	color: gray;
+}
+
+.time_location p {
+	float: left;
+	margin-right: 20px;
+}
+
+.middle_content_container {
+	width: 600px;
+	height: 525px;
+	background-color: #FFF;
+	text-align: center;
+}
+
+.middle_content_container img {
+	width: 590px;
+	height: 445px;
+
+	/*width: 600px;*/
+	/*height: 450px;*/
+}
+
+.view_others__container {
+	float: left;
+	width: 600px;
+	margin-top: 12px;
+	background-color: #FFF;
+}
+
+.view_others__container button {
+	float: left;
+	margin-left: 10px;
+	background-color: #FFFFFF;
+	border-radius: 3px;
+	box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+	border: 1px solid #D9D9D9;
+	cursor: pointer;
+	height: 32px;
+	line-height: 28px;
+	padding: 0px 10px;
+	outline: medium none;
+	min-width: 60px;
+	width: auto;
+}
+
+.view_others__container input {
+	box-sizing: border-box;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	cursor: text;
+	font-size: 12px;
+	width: 280px;
+	height: 32px;
+	margin-left: 10px;
+	padding: 6px 8px;
+}
+
+
+.view_others__container button p {
+	color: #262626;
+	display: inline;
+	font-size: 14px;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+
+

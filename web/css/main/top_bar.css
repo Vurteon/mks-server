@@ -1,1 +1,57 @@
 /*顶部菜单栏布局*/
+
+
+#top_container {
+	position: absolute;
+	min-width: 500px;
+	width: 1200px;
+	top: 0px;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: 0 auto;
+	z-index: 100;
+}
+
+#home_page {
+	float: left;
+	font-size: 33px;
+	font-weight: bold;
+}
+
+#all_search {
+	float: left;
+	margin-left: 300px;
+}
+
+#all_search input {
+	box-sizing: border-box;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	margin-top: 5px;
+	cursor: text;
+	font-size: 12px;
+	width: 400px;
+	height: 32px;
+	margin-left: 10px;
+	padding: 6px 8px;
+}
+
+#right_operate_container {
+	float: left;
+	margin-left: 130px;
+}
+
+
+#right_operate_container ul{
+	list-style-type: none;
+	text-align: center;
+}
+
+#right_operate_container ul li {
+	display: inline;
+	margin-left: 20px;
+	font-size: 15px;
+}
+
+

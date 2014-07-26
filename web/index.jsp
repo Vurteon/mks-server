@@ -39,7 +39,7 @@
 
 
 
-<img class="front-image" src="source/img/exp_wc2014_gen_laurenlemon.jpg" style="position:absolute; left: 0;top: 0;right: 0;bottom: 0">
+<img class="front-image" src="source/img/main_page_bg.jpg" style="position:absolute; left: 0;top: 0;right: 0;bottom: 0">
 
 <div id="main" style="position:absolute;top: 0px">
 
@@ -48,7 +48,7 @@
 	<div id="top">
 		<div id="name">
 			<%--这里以后会放上一张图片--%>
-			<a href="http://localhost:8080">瞬间</a>
+			<a href="http://localhost:8080" style="font-weight: bold;color: #FFFFFF">瞬间</a>
 		</div>
 
 		<div id="word">

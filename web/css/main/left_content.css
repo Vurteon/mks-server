@@ -1,1 +1,76 @@
 /*左边个人信息和热门推荐的布局*/
+
+
+#self_content {
+	border-radius: 5px;
+	background-color: #FFF;
+}
+
+.left_img {
+	border-radius: 5px;
+}
+
+#left_bg_img {
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+#pic {
+	position: absolute;
+	left: 10px;
+	top: 60px;
+	background-color: #FFFFFF;
+	padding-top: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
+	border-radius: 6px;
+}
+
+#nick_name_container {
+	margin-left: 110px;
+	padding-top: 10px;
+}
+
+#nick_name {
+	font-size: 20px;
+	color: black;
+}
+
+
+#function_area a {
+	color: black;
+}
+
+
+#function_area {
+	font-size: 20px;
+}
+
+#function_area table {
+	width: 290px;
+	margin: auto;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+#function_area table td {
+	width: 145px;
+	margin: auto;
+	text-align: center;
+	border-width: 0px;
+}
+
+#function_area hr {
+	height: 10px;
+	background-color: #1D80CF;
+	color: #FFFFFF;
+}
+
+
+
+
+
+
+
+
+
