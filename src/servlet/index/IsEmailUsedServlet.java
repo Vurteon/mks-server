@@ -1,4 +1,4 @@
-package web.servlet;
+package servlet.index;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,22 +11,12 @@ import java.util.Enumeration;
 /**
  * author: 康乐
  * time: 2014/7/15
- * function: 检测用户名是否存在，并返回
+ * change-time：2014/7/28
+ * function: 检测用户名(邮箱)是否存在，并返回json数据
  */
-@WebServlet("/isEmailUsed")
+@WebServlet(name = "isEmailUsedFilter",urlPatterns = "/isEmailUsed")
 public class IsEmailUsedServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				request.getInputStream(),"utf-8"));
-
-		StringBuilder sb = new StringBuilder();
-
-		String temp;
-		while ((temp = br.readLine()) != null) {
-			sb.append(temp);
-		}
-		br.close();
 
 
 		response.setHeader("Content-Type","application/json");

@@ -1,4 +1,4 @@
-package web.filter;
+package filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -8,10 +8,10 @@ import java.io.IOException;
 /**
  * author: 康乐
  * time: 2014/7/15
- * function: 给isEmailUsed提供utf-8编码支持
+ * function: 给需要的servlet或者jsp提供utf-8编码支持
  */
 
-@WebFilter("/isEmailUsed")
+@WebFilter(filterName = "EncodeFilter",urlPatterns = {"/register","/login","/isEmailUsed"})
 public class EncodeFilter implements Filter {
 	public void destroy() {
 	}
@@ -19,7 +19,6 @@ public class EncodeFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
 
 		HttpServletRequest httpServletRequest = (HttpServletRequest)req;
-
 
 		httpServletRequest.setCharacterEncoding("UTF-8");
 

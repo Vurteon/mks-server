@@ -2,12 +2,12 @@
 
 
 #self_content {
-	border-radius: 5px;
+	border-radius: 3px;
 	background-color: #FFF;
 }
 
 .left_img {
-	border-radius: 5px;
+	border-radius: 3px;
 }
 
 #left_bg_img {
@@ -49,8 +49,8 @@
 #function_area table {
 	width: 290px;
 	margin: auto;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
 }
 
 #function_area table td {

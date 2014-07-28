@@ -46,7 +46,7 @@ body {
 	width: 290px;
 	/*background-color: blueviolet;*/
 	height: 550px;
-	border-radius: 5px;
+	border-radius: 3px;
 }
 
 #middle_content {
@@ -54,7 +54,7 @@ body {
 	width: 600px;
 	margin-left: 10px;
 	margin-right: 10px;
-	border-radius: 5px;
+	border-radius: 3px;
 }
 
 #right_content {
@@ -62,7 +62,7 @@ body {
 	width: 290px;
 	background-color: blueviolet;
 	height: 300px;
-	border-radius: 5px;
+	border-radius: 3px;
 }
 
 a {
@@ -73,7 +73,7 @@ a {
 
 #hot_container {
 	margin-top: 20px;
-	border-radius: 5px;
+	border-radius: 3px;
 	background-color: #FFFFFF;
 }
 

@@ -3,25 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-    <!--<filter>-->
-        <!--<filter-name>EncodeFilter</filter-name>-->
-        <!--<filter-class>web.filter.EncodeFilter</filter-class>-->
-    <!--</filter>-->
-    <!--<servlet>-->
-        <!--<servlet-name>TestServlet</servlet-name>-->
-        <!--<servlet-class>test.TestServlet</servlet-class>-->
-    <!--</servlet>-->
-    <!--<servlet>-->
-        <!--<servlet-name>Servlet</servlet-name>-->
-        <!--<servlet-class>test.Servlettest2</servlet-class>-->
-    <!--</servlet>-->
 
 
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>TestServlet</servlet-name>-->
-        <!--<url-pattern>/test2</url-pattern>-->
-    <!--</servlet-mapping>-->
-
+	<!--https链接设置-->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>MKS-SERVER</web-resource-name>
@@ -36,29 +20,4 @@
         </user-data-constraint>
     </security-constraint>
 
-
-
-    <!--下面的代码是开始的url-patterns，以后统一使用注解的方式进行-->
-    <!--<servlet>-->
-            <!--<servlet-name>RegisterServlet</servlet-name>-->
-            <!--<servlet-class>web.servlet.RegisterServlet</servlet-class>-->
-    <!--</servlet>-->
-    <!--<servlet>-->
-        <!--<servlet-name>LoginServlet</servlet-name>-->
-        <!--<servlet-class>web.servlet.LoginServlet</servlet-class>-->
-    <!--</servlet>-->
-    <!--<servlet>-->
-        <!--<servlet-name>IsEmailUsedServlet</servlet-name>-->
-        <!--<servlet-class>web.servlet.IsEmailUsedServlet</servlet-class>-->
-    <!--</servlet>-->
-
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>RegisterServlet</servlet-name>-->
-        <!--<url-pattern>/RegisterServlet</url-pattern>-->
-    <!--</servlet-mapping>-->
-
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>LoginServlet</servlet-name>-->
-        <!--<url-pattern>/LoginServlet</url-pattern>-->
-    <!--</servlet-mapping>-->
 </web-app>
