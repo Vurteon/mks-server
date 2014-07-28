@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="765578597">
+    <data-source source="LOCAL" name="MySQL - moment@192.168.1.103" uuid="d8ce0a15-f881-4f14-9391-88f232e0fd9d">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://192.168.1.103:3306/moment</jdbc-url>
+      <user-name>root</user-name>
+      <user-password>df9fdf98df9adf9fdf98df9a</user-password>
+      <schema-pattern>moment.*</schema-pattern>
+      <driver-properties>
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+      </driver-properties>
+      <libraries>
+        <library>
+          <url>file://F:/class lib/mysql-connector-java-5.1.24/mysql-connector-java-5.1.24-bin.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+  </component>
+</project>
+
