@@ -1,4 +1,4 @@
-package servlet.index;
+package servlet.pc.index;
 
 
 import javax.servlet.ServletException;
@@ -12,6 +12,7 @@ import java.io.IOException;
  * author: 曾陶
  * change-author:康乐
  * change-time: 2014/7/28
+ * change-time: 2014/7/30
  * function: 检测用户登录、初始化相关数据
  */
 @WebServlet(name = "LoginServlet",urlPatterns = "/login")

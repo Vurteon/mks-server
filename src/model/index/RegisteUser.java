@@ -1,6 +1,9 @@
 package model.index;
 
-import beans.index.RegisterInfo;
+import beans.index.RegisterInfoBean;
+import dao.index.RegisteDao;
+import utils.CreateJson;
+import utils.json.JSONObject;
 
 /**
  * author: 康乐
@@ -9,27 +12,26 @@ import beans.index.RegisterInfo;
  */
 public class RegisteUser {
 
-	public static String registeUser(RegisterInfo registerInfo) {
+	public static JSONObject registeUser(RegisterInfoBean registerInfoBean) {
+		if(isUserExist(registerInfoBean.getEmail())){
+			// 构造json对象
+			String jsonString = "{'isExist':'yes'}";
+			return CreateJson.getJsonObject(jsonString);
+		}else {
+			if (RegisteDao.recordUser(registerInfoBean)){
 
-
-
-
-
-
-
-		return null;
+				String jsonString = "{'isRecorded':'yes'}";
+				return CreateJson.getJsonObject(jsonString);
+			}else {
+				String jsonString = "{'isRecorded':'no'}";
+				return CreateJson.getJsonObject(jsonString);
+			}
+		}
 	}
 
 
 	public static boolean isUserExist(String userName) {
-
-
-
-
-
-
-		return false;
+		String isExisted = RegisteDao.getUser(userName);
+		return isExisted != null;
 	}
-
-
 }

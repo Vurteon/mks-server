@@ -38,6 +38,11 @@ public class GetPostContent {
 			e.printStackTrace();
 		}
 
+		// 如果内容为空，就返回null
+		// 上面的注释简直SB！
+		if (sb == null){
+			return null;
+		}
 		return sb.toString();
 	}
 }

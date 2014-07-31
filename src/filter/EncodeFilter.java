@@ -11,7 +11,8 @@ import java.io.IOException;
  * function: 给需要的servlet或者jsp提供utf-8编码支持
  */
 
-@WebFilter(filterName = "EncodeFilter",urlPatterns = {"/register","/login","/isEmailUsed"})
+@WebFilter(filterName = "EncodeFilter",urlPatterns = {"/register","/login","/isEmailUsed"},dispatcherTypes = {DispatcherType.REQUEST,
+		DispatcherType.INCLUDE,DispatcherType.FORWARD,DispatcherType.ERROR,DispatcherType.ASYNC})
 public class EncodeFilter implements Filter {
 	public void destroy() {
 	}

@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class GetConnection {
 
-	private static String url = "jdbc:mysql://127.0.0.1:3306/moment";
+	private static String url = "jdbc:mysql://localhost:3306/moment";
 	private static String user = "root";
 	private static String password = "520520";
 
