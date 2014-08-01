@@ -19,7 +19,6 @@ public class RegisteUser {
 			return CreateJson.getJsonObject(jsonString);
 		}else {
 			if (RegisteDao.recordUser(registerInfoBean)){
-
 				String jsonString = "{'isRecorded':'yes'}";
 				return CreateJson.getJsonObject(jsonString);
 			}else {
@@ -31,7 +30,7 @@ public class RegisteUser {
 
 
 	public static boolean isUserExist(String userName) {
-		String isExisted = RegisteDao.getUser(userName);
+		String isExisted = RegisteDao.getUserEmail(userName);
 		return isExisted != null;
 	}
 }

@@ -41,7 +41,7 @@ public class IsEmailUsedServlet extends HttpServlet {
 			String email = jsonObject.getString("email");
 
 			//直接使用数据库查询服务
-			String dbEmail = RegisteDao.getUser(email);
+			String dbEmail = RegisteDao.getUserEmail(email);
 
 			if (dbEmail == null) {
 				// 不存在当前邮箱

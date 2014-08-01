@@ -6,43 +6,60 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by leon on 2014/7/28.
+ * author: 康乐
+ * time: 记不起了
+ * change-time: 2014/7/31
+ * function: 释放数据库资源，包括Connection,PreparedStatement和ResultSet
  */
 public class ReleaseSource {
 
 	public static boolean releaseSource(Connection connection) {
-		try {
-			connection.close();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+		if(connection != null){
+			try {
+				connection.close();
+				return true;
+			} catch (SQLException e) {
+				System.err.println("释放Connection资源出错");
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
 
 
 	public static boolean releaseSource(PreparedStatement preparedStatement) {
-		try {
-			preparedStatement.close();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+		if (preparedStatement != null) {
+			try {
+				preparedStatement.close();
+				return true;
+			} catch (SQLException e) {
+				System.err.println("释放PreparedStatement资源出错");
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
 
 	public static boolean releaseSource(ResultSet resultSet,PreparedStatement preparedStatement) {
-		try {
-			resultSet.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+		if (resultSet != null) {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+				System.err.println("释放ResultSet出错");
+				e.printStackTrace();
+			}finally {
+				if(preparedStatement != null){
+					releaseSource(preparedStatement);
+				}
+			}
 		}
 
-		try {
-			preparedStatement.close();
+		if (preparedStatement != null) {
+			releaseSource(preparedStatement);
 			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 		return false;
 	}

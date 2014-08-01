@@ -13,7 +13,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 /**
- * Created by leon on 2014/7/30.
+ *
+ * author: 康乐
+ * time: 2014/7/28
+ * function: 为手机客户端提供注册接口
+ *
  */
 public class PhoneIsEmailUsedServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,7 +41,7 @@ public class PhoneIsEmailUsedServlet extends HttpServlet {
 			String email = jsonObject.getString("email");
 
 			//直接使用数据库查询服务
-			String dbEmail = RegisteDao.getUser(email);
+			String dbEmail = RegisteDao.getUserEmail(email);
 
 			if (dbEmail == null) {
 				// 不存在当前邮箱
@@ -47,9 +51,6 @@ public class PhoneIsEmailUsedServlet extends HttpServlet {
 			}
 		}
 		bw.close();
-
-
-
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -28,7 +28,7 @@ public class RegisteDaoTest extends TestCase {
 
     public void testGetUser() throws Exception {
         //TODO: Test goes here...
-	    String r = RegisteDao.getUser("test");
+	    String r = RegisteDao.getUserEmail("test");
 	    System.out.println(r);
 
 

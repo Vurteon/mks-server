@@ -7,6 +7,10 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionBindingEvent;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Enumeration;
 
 
 /**
@@ -37,8 +41,25 @@ public class TomcatOnListener implements ServletContextListener{
 
 	}
 
+
+	/**
+	 * 在结束tomcat的时候，做下面的事情，网上说的是开源防止一个警告、
+	 * @param servletContextEvent 现在还没有多少用处
+	 */
+
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
+
+		Enumeration<Driver> driverEnumeration = DriverManager.getDrivers();
+		while (driverEnumeration.hasMoreElements()) {
+			Driver driver = driverEnumeration.nextElement();
+			try {
+				System.out.println("你大爷！！");
+				DriverManager.deregisterDriver(driver);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		System.out.println("See you,Tom猫");
 	}
 }

@@ -48,14 +48,14 @@
     <table name="headbgpic" schema="" catalog="moment" type="TABLE">
       <column name="ID" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="phone_bg_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="pc_selfcenter_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="pc_homepage_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="pc_main_bg_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="pc_home_bg_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
     </table>
     <table name="headpic" schema="" catalog="moment" type="TABLE">
       <column name="ID" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="phone_head_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="pc_selfcenter_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="pc_main_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="pc_homepage_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
     </table>
@@ -121,8 +121,8 @@
     </table>
     <table name="userprofile" schema="" catalog="moment" type="TABLE">
       <column name="ID" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="bg_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="hot_pic_area" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="bg_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" def="J2JnX3BpYyc="/>
+      <column name="hot_pic_area" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" def="J2hvdF9waWNfYXJlYSc="/>
       <primary-key name="PRIMARY" columns="ID"/>
     </table>
   </data-source>
