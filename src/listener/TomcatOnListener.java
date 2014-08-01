@@ -54,7 +54,6 @@ public class TomcatOnListener implements ServletContextListener{
 		while (driverEnumeration.hasMoreElements()) {
 			Driver driver = driverEnumeration.nextElement();
 			try {
-				System.out.println("你大爷！！");
 				DriverManager.deregisterDriver(driver);
 			} catch (SQLException e) {
 				e.printStackTrace();
