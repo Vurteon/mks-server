@@ -43,7 +43,7 @@ public class TomcatOnListener implements ServletContextListener{
 
 
 	/**
-	 * 在结束tomcat的时候，做下面的事情，网上说的是开源防止一个警告、
+	 * 在结束tomcat的时候，做下面的事情，网上说的是可以防止一个警告、
 	 * @param servletContextEvent 现在还没有多少用处
 	 */
 
