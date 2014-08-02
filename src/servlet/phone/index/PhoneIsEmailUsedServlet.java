@@ -5,6 +5,7 @@ import utils.GetPostContent;
 import utils.json.JSONObject;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,9 +17,11 @@ import java.io.OutputStreamWriter;
  *
  * author: 康乐
  * time: 2014/7/28
- * function: 为手机客户端提供注册接口
+ * function: 为手机客户端提供检查油箱是否已经被注册接口，基于http连接
  *
  */
+
+@WebServlet(name = "PhoneIsEmailUsedFilter",urlPatterns = "/phone_isEmailUsed")
 public class PhoneIsEmailUsedServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

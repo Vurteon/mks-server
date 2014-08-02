@@ -15,6 +15,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+/**
+ * author: 康乐
+ * time: 2014/7/28
+ * function: 提供手机客户端注册功能，基于http连接
+ */
 
 @WebServlet(name = "PhoneRegisterServlet",urlPatterns = "/phone_register")
 public class PhoneRegisterServlet extends HttpServlet {
