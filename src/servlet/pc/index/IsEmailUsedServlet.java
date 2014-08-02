@@ -18,7 +18,7 @@ import java.io.*;
  * change-time: 2014/7/30
  * function: 检测用户名(邮箱)是否存在，并返回json数据
  */
-@WebServlet(name = "isEmailUsedFilter",urlPatterns = "/isEmailUsed")
+@WebServlet(name = "IsEmailUsedServlet",urlPatterns = "/isEmailUsed")
 public class IsEmailUsedServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

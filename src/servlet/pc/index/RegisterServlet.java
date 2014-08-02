@@ -33,7 +33,7 @@ public class RegisterServlet extends HttpServlet {
 	    String name = request.getParameter("name");
 	    String email = request.getParameter("email");
 	    String password = request.getParameter("password");
-	    JSONObject jsonObject = null;
+	    JSONObject jsonObject;
 
 	    if (name != null && email != null && password != null) {
 		    registerInfoBean.setName(name);
@@ -69,7 +69,7 @@ public class RegisterServlet extends HttpServlet {
 	    httpSession.setAttribute("main_head_pic",DefaultPicSource.DEFAULT_MAIN_HEAD_PIC);
 		httpSession.setAttribute("main_head_bg_pic",DefaultPicSource.DEFAULT_MAIN_HEAD_BG_PIC);
 
-	    request.getRequestDispatcher("/main.jsp").forward(request,response);
+	    response.sendRedirect("http://localhost:8080/main.jsp");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
