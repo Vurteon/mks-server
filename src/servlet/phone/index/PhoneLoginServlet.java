@@ -7,6 +7,7 @@ import utils.GetPostContent;
 import utils.json.JSONObject;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,8 @@ import java.io.IOException;
  * time: 2014/8/1
  * function: 提供手机端用户登录的检查和session的设置，基于http连接
  */
+
+@WebServlet(name = "PhoneLoginServlet",urlPatterns = "/phone_login")
 public class PhoneLoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
