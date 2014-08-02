@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -49,7 +50,10 @@ public class PhoneLoginServlet extends HttpServlet {
 			return ;
 		} else {
 			try {
-				if(LoginUser.setSession(userAccountBean,request.getSession())) {
+				HttpSession httpSession = request.getSession(true);
+
+				if(LoginUser.setSession(userAccountBean,httpSession)) {
+					jsonObject.append("JSESSIONID",httpSession.getId());
 					response.getWriter().write(jsonObject.toString());
 				}else {
 					response.getWriter().write(new JSONObject("{'server':'error'}").toString());
