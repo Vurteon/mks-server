@@ -65,9 +65,9 @@ function isEmailUsed(email) {
 
 				var responseMessage = request.responseText;
 
-				var isUsed = responseMessage.substr(11, 2);
+				var jsonObject = JSON.parse(responseMessage);
 
-				if (isUsed == "no") {
+				if (jsonObject.isUsed == "yes") {
 
 					if (document.getElementById("email_isUsed_check") == null) {
 						//do nothing
