@@ -1,5 +1,6 @@
 package utils.db;
 
+import javax.sql.rowset.CachedRowSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,6 +61,33 @@ public class ReleaseSource {
 		if (preparedStatement != null) {
 			releaseSource(preparedStatement);
 			return true;
+		}
+		return false;
+	}
+
+
+	public static boolean releaseSource(CachedRowSet cachedRowSet,ResultSet resultSet,PreparedStatement preparedStatement) {
+		if(cachedRowSet != null) {
+			try {
+				cachedRowSet.close();
+				return releaseSource(resultSet,preparedStatement);
+			} catch (SQLException e) {
+				System.err.println("释放RawSet资源出错");
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+
+	public static boolean releaseSource (CachedRowSet cachedRowSet) {
+		if (cachedRowSet != null) {
+			try {
+				cachedRowSet.close();
+			} catch (SQLException e) {
+				System.err.println("释放RawSet资源出粗");
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
