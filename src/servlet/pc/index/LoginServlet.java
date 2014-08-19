@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			try {
 				if (LoginUser.setSession(userAccountBean, request.getSession())) {
-					response.sendRedirect("http://localhost:8080/test");
+					response.sendRedirect("http://localhost:8080/main.jsp");
 				} else {
 					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				}

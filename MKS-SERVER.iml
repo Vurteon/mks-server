@@ -29,6 +29,7 @@
     <orderEntry type="library" name="servlet-api" level="project" />
     <orderEntry type="library" name="jsp-api" level="project" />
     <orderEntry type="library" name="junit-4.11" level="project" />
+    <orderEntry type="library" name="jstl-1.2" level="project" />
   </component>
 </module>
 

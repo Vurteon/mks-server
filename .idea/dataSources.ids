@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source source="LOCAL" name="MySQL - moment@192.168.1.103" uuid="d8ce0a15-f881-4f14-9391-88f232e0fd9d">
+  <data-source source="LOCAL" name="MySQL - moment@localhost" uuid="d8ce0a15-f881-4f14-9391-88f232e0fd9d">
     <database-info product="MySQL" version="5.6.17" jdbc-version="4.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-5.1.24 ( Revision: ${bzr.revision-id} )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
@@ -43,7 +43,7 @@
     </table>
     <table name="friends" schema="" catalog="moment" type="TABLE">
       <column name="ID" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="frined" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="friend" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
     </table>
     <table name="headbgpic" schema="" catalog="moment" type="TABLE">
       <column name="ID" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>

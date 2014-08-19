@@ -77,10 +77,10 @@ public class LoginDao {
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
 
-		String sql = "SELECT bg_pic,hot_pic_area,home_page_name," +
+		String sql = "SELECT email,name bg_pic,hot_pic_area,HPN.home_page_name," +
 				"phone_bg_pic,pc_main_bg_pic,phone_head_pic,pc_main_pic " +
-				"FROM UserProfile AS UI, HomePageName AS HP,HeadBgPic AS HB," +
-				"HeadPic AS HH WHERE UI.ID = ? AND HP.ID = ? AND HB.ID = ? AND HH.ID = ?";
+				"FROM UserInfo AS UI ,UserProfile AS UP, HomePageName AS HPN,HeadBgPic AS HB," +
+				"HeadPic AS HP WHERE UI.ID = ? AND UP.ID = ? AND HPN.ID = ? AND HB.ID = ? AND HP.ID = ?";
 
 		CachedRowSet cachedRowSet = null;
 
@@ -92,6 +92,7 @@ public class LoginDao {
 			ps.setLong(2, ID);
 			ps.setLong(3, ID);
 			ps.setLong(4, ID);
+			ps.setLong(5, ID);
 
 			resultSet = ps.executeQuery();
 
