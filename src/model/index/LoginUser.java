@@ -76,6 +76,8 @@ public class LoginUser {
 					}
 				}
 
+				httpSession.setAttribute("ID",userID);
+
 				// 设置followings
 				ArrayList<Long> followingAl = new ArrayList<Long>();
 				while (followings.next()) {
