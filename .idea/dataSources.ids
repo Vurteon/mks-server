@@ -23,9 +23,9 @@
       <column name="content" sqlType="TINYTEXT" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
     </table>
-    <table name="detialwords" schema="" catalog="moment" type="TABLE">
+    <table name="detailwords" schema="" catalog="moment" type="TABLE">
       <column name="rs_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="oder_words" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="older_words" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="my_words" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="rs_id"/>
     </table>
@@ -64,18 +64,20 @@
       <column name="ID" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="ID"/>
     </table>
-    <table name="likes" schema="" catalog="moment" type="TABLE">
+    <table name="likers" schema="" catalog="moment" type="TABLE">
       <column name="rs_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="liker" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
     </table>
-    <table name="picpath" schema="" catalog="moment" type="TABLE">
+    <table name="photolocation" schema="" catalog="moment" type="TABLE">
       <column name="rs_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="phone_view_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="phone_detail_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="pc_view_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="pc_detail_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="pc_small_view_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="real_pic" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="location" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="rs_id"/>
+      <index name="unique_rs_id" unique="true" columns="rs_id"/>
+    </table>
+    <table name="photopath" schema="" catalog="moment" type="TABLE">
+      <column name="rs_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="phone_view_photo" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="phone_detail_photo" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="rs_id"/>
     </table>
     <table name="promissiontable" schema="" catalog="moment" type="TABLE">
@@ -91,17 +93,12 @@
       <column name="ID" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="rs_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="detail" sqlType="VARCHAR" precision="1" scale="0" nullable="false" jdbcType="12"/>
-      <column name="location" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
-      <column name="pic_class" sqlType="VARCHAR" precision="1" scale="0" nullable="false" jdbcType="12"/>
-      <column name="pic_at" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
-      <column name="pic_topic" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
-      <column name="comments" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
-      <column name="likes" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
-      <column name="shares" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
-      <column name="comment_number" sqlType="MEDIUMINT UNSIGNED" precision="8" scale="0" nullable="true" jdbcType="4"/>
-      <column name="like_number" sqlType="MEDIUMINT UNSIGNED" precision="8" scale="0" nullable="true" jdbcType="4"/>
-      <column name="share_number" sqlType="MEDIUMINT UNSIGNED" precision="8" scale="0" nullable="true" jdbcType="4"/>
+      <column name="photo_class" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
+      <column name="photo_at" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
+      <column name="photo_topic" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12"/>
+      <column name="comments_number" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="likes_number" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="shares_number" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="rs_id"/>
     </table>
     <table name="useremail" schema="" catalog="moment" type="TABLE">

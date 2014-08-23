@@ -18,22 +18,34 @@ public class ImageTest {
 		System.out.println("Readers: " + Arrays.asList(readFormats));
 		System.out.println("Writers: " + Arrays.asList(writeFormats));
 
-		int w = 1632;
 
-		int h = 920;
 
 		File f = new File("E:/test.jpg");
 		BufferedImage bi = ImageIO.read(f);
 
 
+		System.out.println(bi.getHeight());
+
 		// 下面的代码是可以将图片压缩并缩放到指定的大小
 
-		BufferedImage image = new BufferedImage(w, h, BufferedImage.SCALE_SMOOTH);
+
+		float ii = bi.getWidth()/800.0f;
+
+		System.out.println(ii);
+
+		float asd = (bi.getHeight() / ii);
+
+		System.out.println(asd);
+
+
+		// 下面三行代码属于CPU密集型
+		BufferedImage image = new BufferedImage(800, (int)asd, BufferedImage.SCALE_SMOOTH);
 		Graphics graphics = image.getGraphics();
-		graphics.drawImage(bi, 0, 0, w, h, null);
+		graphics.drawImage(bi, 0, 0, 800, (int)asd, null);
 
 
-		File ff = new File("E:/test2.jpg");
+		// 下面两行代码属于IO密集型
+		File ff = new File("E:/asd/test2.jpg");
 		ImageIO.write(image,"jpg",ff);
 
 

@@ -1,14 +1,32 @@
 <component name="ProjectDictionaryState">
   <dictionary name="leon">
     <words>
+      <w>cpucorethreadnumber</w>
+      <w>cpucorethreadsnumber</w>
+      <w>cpumaxthreadnumber</w>
+      <w>cpumaxthreadsnumber</w>
+      <w>cputhreadkeepalivetime</w>
+      <w>cputhreadskeepalivetime</w>
+      <w>cputhreadsqueue</w>
+      <w>cputhreadsqueuelength</w>
+      <w>cputhreadstimeunit</w>
+      <w>cputhreadtimeunit</w>
       <w>darkgrey</w>
       <w>iframe</w>
       <w>indexscript</w>
       <w>inlegal</w>
+      <w>iocorethreadsnumber</w>
+      <w>iomaxthreadsnumber</w>
+      <w>iothreadskeepalivetime</w>
+      <w>iothreadsqueue</w>
+      <w>iothreadsqueuelength</w>
+      <w>iothreadstimeunit</w>
       <w>jdbc</w>
+      <w>minification</w>
       <w>mozilla</w>
       <w>onreadystatechange</w>
       <w>registe</w>
+      <w>shunjian</w>
     </words>
   </dictionary>
 </component>

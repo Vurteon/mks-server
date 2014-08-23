@@ -1,22 +1,17 @@
 package servlet.phone;
 
-import utils.GetPostContent;
-import utils.ShowRequestInfo;
+import listener.DealPartThreadListener;
+import model.uploadpart.DealPart;
+import utils.ThreadPoolUtil;
 
-import javax.imageio.ImageIO;
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import javax.servlet.http.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 /**
  * author: 康乐
@@ -24,81 +19,42 @@ import java.util.Iterator;
  * function: 接受手机端发来的上传照片请求，并将照片存储并生成相应的记录
  */
 
-@WebServlet(urlPatterns = "/UploadPhoto")
+@WebServlet(urlPatterns = "/UploadPhoto",asyncSupported = true)
 @MultipartConfig()
 public class UploadPhotoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
-		ShowRequestInfo.showHeaderContent(request);
+//		HttpSession httpSession = request.getSession(false);
+//
+//		long ID = (Long) httpSession.getAttribute("ID");
 
-//		Collection<Part> part = request.getParts();
-//
-//		Iterator<Part> iterator = part.iterator();
-//
-//		while (iterator.hasNext()) {
-//
-//			Part part1 = iterator.next();
-//
-//			InputStream inputStream = part1.getInputStream();
-//
-//			InputStreamReader inputStreamReader = new InputStreamReader(inputStream,"utf-8");
-//
-//			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//
-//			String content = bufferedReader.readLine();
-//			System.out.println(content);
-//		}
+		Collection<Part> parts = request.getParts();
 
-		Part part = request.getPart("test");
+		AsyncContext asyncContext = request.startAsync();
 
-		part.write("E:/asd.jpg");
+		asyncContext.addListener(new DealPartThreadListener());
 
+		ThreadPoolUtil.getCpuThreadPoolExecutor().submit(new DealPart(asyncContext,parts,18320l));
 
-//		BufferedImage bi = ImageIO.read(part.getInputStream());
-//
-//		int w = 400;
-//
-//		int h = 300;
-//
-//
-//		// 下面的代码是可以将图片压缩并缩放到指定的大小
-//
-//		BufferedImage image = new BufferedImage(w, h, BufferedImage.SCALE_SMOOTH);
-//		Graphics graphics = image.getGraphics();
-//		graphics.drawImage(bi, 0, 0, w, h, null);
-//
-//
-//		File ff = new File("E:/test2.jpg");
-//		ImageIO.write(image,"jpg",ff);
+		try {
+			TimeUnit.SECONDS.sleep(1);
 
-////
+			System.out.println("cpu型任务等待队列长度：" + ThreadPoolUtil.CPUTHREADSQUEUE.size());
+			System.out.println("io型任务登对队列长度：" + ThreadPoolUtil.IOTHREADSQUEUE.size());
 
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
-//		Collection<Part> part = request.getParts();
-//		System.out.println(part.size());
-////
-////		//String content = GetPostContent.getPostContent(request);
-////		//System.out.println(content);
-//
-//		BufferedReader br;
-//
-//		StringBuilder sb = null;
-//		br = new BufferedReader(new InputStreamReader(
-//				request.getInputStream(), "utf-8"));
-//		String temp;
-//
-//
-//		while ((temp = br.readLine()) != null) {
-//			System.out.println(temp);
-//		}
-//		br.close();
-
-
-		System.out.println("连接成功！！");
+		System.out.println("servlet 线程完成。");
 	}
+
+
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 }
+
+

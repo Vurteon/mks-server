@@ -3,7 +3,9 @@ package utils;
 import utils.json.JSONObject;
 
 /**
- * Created by leon on 2014/7/29.
+ *  author: 康乐
+ *  time: 2014/8/21
+ *  function: 根据一段字符串生成一个相应的json对象
  */
 public class CreateJson {
 
@@ -12,22 +14,4 @@ public class CreateJson {
 		JSONObject jsonObject = new JSONObject(jsonString);
 		return jsonObject;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
