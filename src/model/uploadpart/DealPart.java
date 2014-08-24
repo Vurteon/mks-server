@@ -27,10 +27,14 @@ import java.util.Iterator;
  */
 public class DealPart implements Runnable{
 
+	// 压缩照片后的照片宽度
 	public static final float WIDTH = 800.0f;
 
+	// 当前用户的ID
 	private long ID;
 	private AsyncContext asyncContext = null;
+
+	// part的集合
 	private Collection<Part> parts = null;
 
 	public DealPart(AsyncContext asyncContext,Collection<Part> parts, long ID){
@@ -115,8 +119,7 @@ public class DealPart implements Runnable{
 
 			try {
 				 is = photoPart.getInputStream();
-
-				// 上传图像的内容
+				// 所上传图像的内容
 				BufferedImage bi = ImageIO.read(is);
 
 				// 将宽度设置为800
@@ -159,8 +162,6 @@ public class DealPart implements Runnable{
 
 		// 将现在的事务提交给存储线程池解决
 		ThreadPoolUtil.getIoThreadPoolExecutor().submit(new SavePart(newArrayList,oldArrayList,photoDesBean,ID,asyncContext));
-
-//		asyncContext.complete();
 	}
 
 	// 将json中的信息解析到PhotoDesBean中
