@@ -33,7 +33,6 @@ public class DealPart implements Runnable{
 	// 当前用户的ID
 	private long ID;
 	private AsyncContext asyncContext = null;
-
 	// part的集合
 	private Collection<Part> parts = null;
 
