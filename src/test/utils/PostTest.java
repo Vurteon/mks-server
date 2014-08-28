@@ -1,5 +1,6 @@
 package test.utils;
 
+import sun.net.www.http.HttpClient;
 import utils.CreateJson;
 import utils.PartFactory;
 
@@ -8,13 +9,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by leon on 2014/8/23.
  */
 public class PostTest implements Runnable {
 
-	static String testUrl = "http://localhost:8080/UploadPhoto";
+
+	public static ArrayList<String> asds = new ArrayList<String>();
+
+
+	static String testUrl = "http://192.168.1.102:8080/UploadPhoto";
 
 	static String BOUNDARY = "---------------------------7de8c1a80910";
 
@@ -22,6 +29,11 @@ public class PostTest implements Runnable {
 	public void run() {
 		URL url = null;
 		try {
+
+
+//			HttpClient
+
+
 			url = new URL(testUrl);
 
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -29,7 +41,7 @@ public class PostTest implements Runnable {
 			httpURLConnection.setDoOutput(true);
 			httpURLConnection.setDoInput(true);
 			httpURLConnection.setUseCaches(false);
-			httpURLConnection.setReadTimeout(5000);
+			httpURLConnection.setReadTimeout(100000);
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
@@ -50,32 +62,34 @@ public class PostTest implements Runnable {
 
 			System.arraycopy(image, 0, newByte, 0, ll);
 
-			byte[] asd = CreateJson.getJsonObject("{'a':'我的雪山之旅'}").toString().getBytes();
+			byte[] asd = CreateJson.getJsonObject("{'a':'aa'}").toString().getBytes();
 
-//		byte[] asd = "{'a':'b}".getBytes();
+			System.out.println("发出请求时间：" + new Date());
+
 			httpURLConnection.getOutputStream().write(PartFactory.PartBuilder("test", "test", "text/plain", asd));
 
 			httpURLConnection.getOutputStream().write(PartFactory.PartBuilder("test", "test12.jpg", "image/jpeg", newByte, true));
 
 			httpURLConnection.setReadTimeout(100000);
 
-			System.out.println(httpURLConnection.getResponseCode());
+			httpURLConnection.setConnectTimeout(10000);
+
+			StringBuilder sb = new StringBuilder();
+
+			InputStream is = httpURLConnection.getInputStream();
+
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(is));
+			String line;
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
 
 
-//			StringBuilder sb = new StringBuilder();
-//
-//			InputStream is = httpURLConnection.getInputStream();
-//
-//			BufferedReader br = new BufferedReader(
-//					new InputStreamReader(is));
-//			String line;
-//			while ((line = br.readLine()) != null) {
-//				sb.append(line);
-//			}
-//
-//			System.out.println(sb);
-//
-//			httpURLConnection.disconnect();
+			asds.add(sb.toString());
+
+			System.out.println("完成时间：" + new Date());
+			httpURLConnection.disconnect();
 
 
 		} catch (MalformedURLException e) {
