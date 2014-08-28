@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
 import java.util.Collection;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 @WebServlet(urlPatterns = "/UploadPhoto",asyncSupported = true)
 @MultipartConfig()
 public class UploadPhotoServlet extends HttpServlet {
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
@@ -29,25 +31,21 @@ public class UploadPhotoServlet extends HttpServlet {
 //
 //		long ID = (Long) httpSession.getAttribute("ID");
 
+//		System.out.println("OK!");
+
 		Collection<Part> parts = request.getParts();
 
 		AsyncContext asyncContext = request.startAsync();
 
+//		System.out.println(asyncContext.getTimeout());
+
+		asyncContext.setTimeout(100000);
+
 		asyncContext.addListener(new DealPartThreadListener());
 
-		ThreadPoolUtil.getCpuThreadPoolExecutor().submit(new DealPart(asyncContext,parts,18320l));
+		ThreadPoolUtil.getCpuThreadPoolExecutor().submit(new DealPart(asyncContext,parts, new Random().nextInt()));
 
-		try {
-			TimeUnit.SECONDS.sleep(1);
-
-			System.out.println("cpu型任务等待队列长度：" + ThreadPoolUtil.CPUTHREADSQUEUE.size());
-			System.out.println("io型任务登对队列长度：" + ThreadPoolUtil.IOTHREADSQUEUE.size());
-
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println("servlet 线程完成。");
+//		System.out.println("servlet 线程完成。");
 	}
 
 
