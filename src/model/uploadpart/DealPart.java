@@ -31,12 +31,12 @@ public class DealPart implements Runnable{
 	public static final float WIDTH = 800.0f;
 
 	// 当前用户的ID
-	private long ID;
+	private int ID;
 	private AsyncContext asyncContext = null;
 	// part的集合
 	private Collection<Part> parts = null;
 
-	public DealPart(AsyncContext asyncContext,Collection<Part> parts, long ID){
+	public DealPart(AsyncContext asyncContext,Collection<Part> parts, int ID){
 		this.parts = parts;
 		this.asyncContext = asyncContext;
 		this.ID = ID;
@@ -180,22 +180,27 @@ public class DealPart implements Runnable{
 			photoDesBean.setOlderWords(jsonObject.getString("olderWords"));
 		}
 
+		// 设置自己的描述
 		if (jsonObject.has("myWords")) {
 			photoDesBean.setMyWords(jsonObject.getString("myWords"));
 		}
 
+		// 设置位置信息
 		if (jsonObject.has("photoLocation")) {
 			photoDesBean.setPhotoLocation(jsonObject.getString("photoLocation"));
 		}
 
+		// 设置类别信息
 		if (jsonObject.has("photoClass")) {
 			photoDesBean.setPhotoClass(jsonObject.getString("photoClass"));
 		}
 
+		// 设置at信息
 		if (jsonObject.has("photoAt")) {
 			photoDesBean.setPhotoAt(jsonObject.getString("photoAt"));
 		}
 
+		// 设置话题
 		if (jsonObject.has("photoTopic")) {
 			photoDesBean.setPhotoTopic(jsonObject.getString("photoTopic"));
 		}
