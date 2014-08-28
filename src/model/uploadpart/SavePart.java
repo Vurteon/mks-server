@@ -9,6 +9,7 @@ import javax.servlet.AsyncContext;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -165,7 +166,12 @@ public class SavePart implements Runnable {
 		photoDesBean.setDetailPhotoPath(oldPhotoPath);
 
 		// 将json中相应的信息和图片的位置信息存储到CacheRowSet
-		StatusRowSetManger.insertStatus(photoDesBean);
+		// 如果出现相应的错误，则返回信息到客户端
+		try {
+			StatusRowSetManger.insertStatus(photoDesBean);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		// 存储线程任务完成
 		asyncContext.complete();

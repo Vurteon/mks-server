@@ -25,7 +25,8 @@ public class DealPartThreadListener implements AsyncListener{
 
 	@Override
 	public void onComplete(AsyncEvent asyncEvent) throws IOException {
-		System.out.println("Complete");
+		asyncEvent.getSuppliedResponse().getWriter().write("OK");
+//		System.out.println("存储线程完成----->Complete");
 	}
 
 	@Override

@@ -57,6 +57,9 @@ public class TomcatOnListener implements ServletContextListener{
 
 		try {
 			StatusRowSetManger.setStatementRowSet(CacheRowSetDao.buildNewCacheRowSet());
+
+			System.out.println(StatusRowSetManger.getStatementRowSet());
+
 		} catch (SQLException e) {
 			System.err.println("创建Cache出错，从新启动tomcat");
 			e.printStackTrace();
