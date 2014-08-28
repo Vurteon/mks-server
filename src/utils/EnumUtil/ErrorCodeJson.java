@@ -10,7 +10,7 @@ public class ErrorCodeJson {
 
 	public static final JSONObject IOERROR = CreateJson.getJsonObject("{'errorCode':" + ErrorCode.IOERROR + "}");
 
-
+	public static final JSONObject MKDIRERROR = CreateJson.getJsonObject("{'errorCode':" + ErrorCode.MKDIRERROR + "}");
 
 
 

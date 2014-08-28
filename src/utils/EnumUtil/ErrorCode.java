@@ -10,4 +10,6 @@ public class ErrorCode {
 
 	public static final int IOERROR = 1;
 
+	public static final int MKDIRERROR = 2;
+
 }
