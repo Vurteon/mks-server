@@ -1,7 +1,7 @@
 package servlet.phone.index;
 
 import dao.index.RegisteDao;
-import utils.GetPostContent;
+import utils.RequestInfoUtils;
 import utils.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -25,7 +25,7 @@ import java.io.OutputStreamWriter;
 public class PhoneIsEmailUsedServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String emailContent = GetPostContent.getPostContent(request);
+		String emailContent = RequestInfoUtils.getPostContent(request);
 
 		if (emailContent == null) {
 			// 对于这种蓄意请求直接404

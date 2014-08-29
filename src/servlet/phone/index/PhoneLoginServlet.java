@@ -3,7 +3,7 @@ package servlet.phone.index;
 import beans.index.UserAccountBean;
 import dao.exception.NoSuchIDException;
 import model.index.LoginUser;
-import utils.GetPostContent;
+import utils.RequestInfoUtils;
 import utils.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -24,7 +24,7 @@ import java.io.IOException;
 public class PhoneLoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String userAccountInfo = GetPostContent.getPostContent(request);
+		String userAccountInfo = RequestInfoUtils.getPostContent(request);
 
 		if (userAccountInfo == null) {
 			response.sendError(404);

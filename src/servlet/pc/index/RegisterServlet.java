@@ -3,7 +3,7 @@ package servlet.pc.index;
 import beans.index.RegisterInfoBean;
 import model.index.RegisteUser;
 import utils.GetPostContent;
-import utils.db.DefaultPicSource;
+import utils.db.DefaultPhotoSource;
 import utils.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
 
 /**
  * author: 康乐
@@ -62,12 +61,12 @@ public class RegisterServlet extends HttpServlet {
 	    // 由于刚注册，所以只有name是用户定义的，其余的均是默认值
 	    httpSession.setAttribute("name", registerInfoBean.getName());
 
-	    httpSession.setAttribute("bg_pic", DefaultPicSource.DEFAULT_BG_PIC);
-	    httpSession.setAttribute("hot_pic_area",DefaultPicSource.DEFAULT_HOT_PIC_AREA);
-	    httpSession.setAttribute("home_head_pic",DefaultPicSource.DEFAULT_HOME_HEAD_PIC);
-	    httpSession.setAttribute("home_head_bg_pic",DefaultPicSource.DEFAULT_HOME_HEAD_BG_PIC);
-	    httpSession.setAttribute("main_head_pic",DefaultPicSource.DEFAULT_MAIN_HEAD_PIC);
-		httpSession.setAttribute("main_head_bg_pic",DefaultPicSource.DEFAULT_MAIN_HEAD_BG_PIC);
+	    httpSession.setAttribute("bg_pic", DefaultPhotoSource.DEFAULT_BG_PIC);
+	    httpSession.setAttribute("hot_pic_area", DefaultPhotoSource.DEFAULT_HOT_PIC_AREA);
+	    httpSession.setAttribute("home_head_pic", DefaultPhotoSource.DEFAULT_HOME_HEAD_PIC);
+	    httpSession.setAttribute("home_head_bg_pic", DefaultPhotoSource.DEFAULT_HOME_HEAD_BG_PIC);
+	    httpSession.setAttribute("main_head_pic", DefaultPhotoSource.DEFAULT_MAIN_HEAD_PIC);
+		httpSession.setAttribute("main_head_bg_pic", DefaultPhotoSource.DEFAULT_MAIN_HEAD_BG_PIC);
 
 	    response.sendRedirect("http://localhost:8080/main.jsp");
     }
