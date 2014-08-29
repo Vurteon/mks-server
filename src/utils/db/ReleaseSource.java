@@ -14,6 +14,11 @@ import java.sql.SQLException;
  */
 public class ReleaseSource {
 
+	/**
+	 * 释放数据库连接Connection资源
+	 * @param connection 数据库连接对象
+	 * @return 是否成功释放资源
+	 */
 	public static boolean releaseSource(Connection connection) {
 
 		if(connection != null){
@@ -29,6 +34,11 @@ public class ReleaseSource {
 	}
 
 
+	/**
+	 * 释放数据库PreparedStatement资源
+	 * @param preparedStatement PreparedStatement对象
+	 * @return 释放释放资源成功
+	 */
 	public static boolean releaseSource(PreparedStatement preparedStatement) {
 
 		if (preparedStatement != null) {
@@ -43,6 +53,12 @@ public class ReleaseSource {
 		return false;
 	}
 
+	/**
+	 * 释放ResultSet、PreparedStatement对象
+	 * @param resultSet 需要释放资源的结果集对象
+	 * @param preparedStatement PreparedStatement对象
+	 * @return 均释放成功返回true，否则返回false
+	 */
 	public static boolean releaseSource(ResultSet resultSet,PreparedStatement preparedStatement) {
 
 		if (resultSet != null) {
@@ -66,6 +82,13 @@ public class ReleaseSource {
 	}
 
 
+	/**
+	 * 释放CachedRowSet、ResultSet、PreparedStatement对象
+	 * @param cachedRowSet CachedRowSet 对象
+	 * @param resultSet ResultSet结果集对象
+	 * @param preparedStatement  PreparedStatement对象
+	 * @return 均释放成功返回true，否则返回false
+	 */
 	public static boolean releaseSource(CachedRowSet cachedRowSet,ResultSet resultSet,PreparedStatement preparedStatement) {
 		if(cachedRowSet != null) {
 			try {
@@ -80,6 +103,11 @@ public class ReleaseSource {
 	}
 
 
+	/**
+	 * 释放CacheRowSet对象
+	 * @param cachedRowSet 需要释放的对象
+	 * @return 如果释放成功返回true，否则返回false
+	 */
 	public static boolean releaseSource (CachedRowSet cachedRowSet) {
 		if (cachedRowSet != null) {
 			try {
