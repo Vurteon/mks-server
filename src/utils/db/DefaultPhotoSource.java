@@ -8,7 +8,7 @@ package utils.db;
  */
 
 
-public class DefaultPicSource {
+public class DefaultPhotoSource {
 
 	// 默认背景图片地址
 	public static String DEFAULT_BG_PIC;

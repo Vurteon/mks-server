@@ -9,11 +9,11 @@ import java.sql.SQLException;
  * time: 2014/8/1
  * function: 提供RowSetFactory
  */
-public class GetRowSetFactory {
+public class RowSetFactory {
 
-	private static RowSetFactory rowSetFactory;
+	private static javax.sql.rowset.RowSetFactory rowSetFactory;
 
-	public static RowSetFactory getRowSetFactory() {
+	public static javax.sql.rowset.RowSetFactory getRowSetFactory() {
 
 		if (rowSetFactory == null) {
 			try {
