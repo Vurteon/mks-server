@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * time: 2014/8/1
  * function: 提供RowSetFactory
  */
-public class RowSetFactory {
+public class CachedRowSetFactory {
 
 	private static javax.sql.rowset.RowSetFactory rowSetFactory;
 

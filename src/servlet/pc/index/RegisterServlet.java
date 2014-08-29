@@ -2,7 +2,6 @@ package servlet.pc.index;
 
 import beans.index.RegisterInfoBean;
 import model.index.RegisteUser;
-import utils.GetPostContent;
 import utils.db.DefaultPhotoSource;
 import utils.json.JSONObject;
 
