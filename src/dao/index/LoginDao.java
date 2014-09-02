@@ -2,15 +2,11 @@ package dao.index;
 
 import beans.index.UserAccountBean;
 import dao.exception.NoSuchIDException;
-import sun.misc.Cache;
-import utils.db.GetConnection;
-import utils.db.GetRowSetFactory;
+import utils.db.CachedRowSetFactory;
+import utils.db.ConnectionFactory;
 import utils.db.ReleaseSource;
 
-import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
-import javax.sql.rowset.RowSetFactory;
-import javax.sql.rowset.RowSetProvider;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +28,7 @@ public class LoginDao {
 	 */
 	public static long getID(String email) throws NoSuchIDException {
 
-		Connection con = GetConnection.getMySqlConnection();
+		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
@@ -72,7 +68,7 @@ public class LoginDao {
 	public static CachedRowSet getUserSettings(long ID) {
 
 
-		Connection con = GetConnection.getMySqlConnection();
+		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
@@ -118,7 +114,7 @@ public class LoginDao {
 
 	public static CachedRowSet getFollowingPeopleID(long ID) {
 
-		Connection con = GetConnection.getMySqlConnection();
+		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
@@ -152,7 +148,7 @@ public class LoginDao {
 
 	public static CachedRowSet getFriendsID(long ID) {
 
-		Connection con = GetConnection.getMySqlConnection();
+		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
@@ -189,7 +185,7 @@ public class LoginDao {
 
 		String accountCheckSql = "SELECT email,password FROM AccountInfo WHERE email = ?";
 
-		Connection con = GetConnection.getMySqlConnection();
+		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
 
@@ -221,7 +217,7 @@ public class LoginDao {
 
 	private static CachedRowSet buildCacheRawSet(ResultSet resultSet) throws SQLException {
 		CachedRowSet cachedRowSet;
-		cachedRowSet = GetRowSetFactory.getRowSetFactory().createCachedRowSet();
+		cachedRowSet = CachedRowSetFactory.getRowSetFactory().createCachedRowSet();
 		cachedRowSet.populate(resultSet);
 		return cachedRowSet;
 	}

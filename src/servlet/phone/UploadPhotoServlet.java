@@ -1,8 +1,10 @@
 package servlet.phone;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSourceFactory;
 import listener.DealPartThreadListener;
 import model.uploadpart.DealPart;
-import utils.ThreadPoolUtil;
+import utils.EnumUtil.ErrorCodeJson;
+import utils.ThreadPoolUtils;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
@@ -12,7 +14,6 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.util.Collection;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * author: 康乐
@@ -27,31 +28,39 @@ public class UploadPhotoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
-//		HttpSession httpSession = request.getSession(false);
-//
-//		long ID = (Long) httpSession.getAttribute("ID");
+		HttpSession httpSession = request.getSession(false);
 
-//		System.out.println("OK!");
+		// 如果不存在session，返回给客户端错误代码，表示session可能
+		// 已经过期，需要重新登录
+		if (httpSession == null) {
+			response.getWriter().write(ErrorCodeJson.SESSIONERROR.toString());
+			return;
+		}
 
+		int ID = (Integer)httpSession.getAttribute("ID");
+
+		// 获得相关的上传数据
 		Collection<Part> parts = request.getParts();
 
+		// 获得异步线程执行所需要的上下文
 		AsyncContext asyncContext = request.startAsync();
 
-//		System.out.println(asyncContext.getTimeout());
+		// 设置异步线程执行最长消耗时间20秒
+		asyncContext.setTimeout(20000);
 
-		asyncContext.setTimeout(100000);
-
+		// 给此异步线程加入监听器
 		asyncContext.addListener(new DealPartThreadListener());
 
-		ThreadPoolUtil.getCpuThreadPoolExecutor().submit(new DealPart(asyncContext,parts, new Random().nextInt()));
+		// 将异步线程放入线程池中执行
+		ThreadPoolUtils.getCpuThreadPoolExecutor().submit(new DealPart(asyncContext,parts, ID));
 
-//		System.out.println("servlet 线程完成。");
 	}
 
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+		// 直接返回404错误代码
+		response.sendError(404);
 	}
 }
 

@@ -1,8 +1,8 @@
 package listener;
 
-import dao.main.CacheRowSetDao;
+import dao.main.CachedRowSetDao;
 import model.uploadpart.StatusRowSetManger;
-import utils.ThreadPoolUtil;
+import utils.ThreadPoolUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -42,23 +42,21 @@ public class TomcatOnListener implements ServletContextListener{
 
 		System.out.println("创建线程池");
 
-		ThreadPoolExecutor cpuThreadPoolExecutor = new ThreadPoolExecutor(ThreadPoolUtil.CPUCORETHREADSNUMBER,ThreadPoolUtil.CPUMAXTHREADSNUMBER,
-				ThreadPoolUtil.CPUTHREADSKEEPALIVETIME,ThreadPoolUtil.CPUTHREADSTIMEUNIT,ThreadPoolUtil.CPUTHREADSQUEUE,ThreadPoolUtil.HANDLER);
+		ThreadPoolExecutor cpuThreadPoolExecutor = new ThreadPoolExecutor(ThreadPoolUtils.CPUCORETHREADSNUMBER, ThreadPoolUtils.CPUMAXTHREADSNUMBER,
+				ThreadPoolUtils.CPUTHREADSKEEPALIVETIME, ThreadPoolUtils.CPUTHREADSTIMEUNIT, ThreadPoolUtils.CPUTHREADSQUEUE, ThreadPoolUtils.HANDLER);
 
-		ThreadPoolUtil.setCpuThreadPoolExecutor(cpuThreadPoolExecutor);
+		ThreadPoolUtils.setCpuThreadPoolExecutor(cpuThreadPoolExecutor);
 
-		ThreadPoolExecutor ioThreadPoolExecutor = new ThreadPoolExecutor(ThreadPoolUtil.IOCORETHREADSNUMBER,ThreadPoolUtil.IOMAXTHREADSNUMBER,
-				ThreadPoolUtil.IOTHREADSKEEPALIVETIME,ThreadPoolUtil.IOTHREADSTIMEUNIT,ThreadPoolUtil.IOTHREADSQUEUE,ThreadPoolUtil.HANDLER);
+		ThreadPoolExecutor ioThreadPoolExecutor = new ThreadPoolExecutor(ThreadPoolUtils.IOCORETHREADSNUMBER, ThreadPoolUtils.IOMAXTHREADSNUMBER,
+				ThreadPoolUtils.IOTHREADSKEEPALIVETIME, ThreadPoolUtils.IOTHREADSTIMEUNIT, ThreadPoolUtils.IOTHREADSQUEUE, ThreadPoolUtils.HANDLER);
 
-		ThreadPoolUtil.setIoThreadPoolExecutor(ioThreadPoolExecutor);
+		ThreadPoolUtils.setIoThreadPoolExecutor(ioThreadPoolExecutor);
 
 
 		System.out.println("创建CacheRowSet，实现内存数据库");
 
 		try {
-			StatusRowSetManger.setStatementRowSet(CacheRowSetDao.buildNewCacheRowSet());
-
-			System.out.println(StatusRowSetManger.getStatementRowSet());
+			StatusRowSetManger.setStatusRowSet(CachedRowSetDao.buildNewCacheRowSet());
 
 		} catch (SQLException e) {
 			System.err.println("创建Cache出错，从新启动tomcat");

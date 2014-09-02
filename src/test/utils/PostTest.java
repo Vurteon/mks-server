@@ -62,7 +62,7 @@ public class PostTest implements Runnable {
 
 			System.arraycopy(image, 0, newByte, 0, ll);
 
-			byte[] asd = CreateJson.getJsonObject("{'a':'aa'}").toString().getBytes();
+			byte[] asd = CreateJson.getJsonObject("{'photoLocation':'成都信息工程学院航空港校区','myWords':'test'}").toString().getBytes();
 
 			System.out.println("发出请求时间：" + new Date());
 

@@ -3,7 +3,7 @@ package model.uploadpart;
 import beans.main.PhotoDesBean;
 import utils.CreateJson;
 import utils.EnumUtil.ErrorCodeJson;
-import utils.ThreadPoolUtil;
+import utils.ThreadPoolUtils;
 import utils.json.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -23,7 +23,7 @@ import java.util.Iterator;
  * author: 康乐
  * time: 2014/8/21
  * function: 用于处理、解析parts，线程被cpuThreadPoolExecutor管理
- * @see utils.ThreadPoolUtil
+ * @see utils.ThreadPoolUtils
  */
 public class DealPart implements Runnable{
 
@@ -160,7 +160,7 @@ public class DealPart implements Runnable{
 		}
 
 		// 将现在的事务提交给存储线程池解决
-		ThreadPoolUtil.getIoThreadPoolExecutor().submit(new SavePart(newArrayList,oldArrayList,photoDesBean,ID,asyncContext));
+		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new SavePart(newArrayList,oldArrayList,photoDesBean,ID,asyncContext));
 	}
 
 	// 将json中的信息解析到PhotoDesBean中

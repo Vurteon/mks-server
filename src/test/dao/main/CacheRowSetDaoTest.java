@@ -1,11 +1,15 @@
 package dao.main;
 
+import beans.main.PhotoDesBean;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
+import model.uploadpart.StatusRowSetManger;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * CacheRowSetDao Tester.
@@ -29,7 +33,20 @@ public class CacheRowSetDaoTest extends TestCase {
 
 	public void testCacheRowSetDao() {
 		try {
-			CacheRowSetDao.buildNewCacheRowSet();
+
+			PhotoDesBean photoDesBean = new PhotoDesBean();
+
+			for (int i = 0; i < 10; i++) {
+				photoDesBean.setID(new Random().nextInt());
+
+				//photoDesBean.setPhotoLocation("asd");
+				photoDesBean.setViewPhotoPath("aaa");
+				photoDesBean.setDetailPhotoPath("aa2qwed");
+
+				StatusRowSetManger.insertStatus(photoDesBean);
+			}
+
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

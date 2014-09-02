@@ -170,6 +170,8 @@ public class SavePart implements Runnable {
 		try {
 			StatusRowSetManger.insertStatus(photoDesBean);
 		} catch (SQLException e) {
+
+			// 这里需要做些许处理
 			e.printStackTrace();
 		}
 

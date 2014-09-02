@@ -17,6 +17,7 @@ public class ErrorCode {
 	// 服务器文件系统构建文件出错
 	public static final int MKDIRERROR = 2;
 
-
+	// session过期或者不存在
+	public static final int SESSIONERROR = 3;
 
 }

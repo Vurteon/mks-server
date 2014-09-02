@@ -1,7 +1,7 @@
 package dao.index;
 
 import beans.index.RegisterInfoBean;
-import utils.db.GetConnection;
+import utils.db.ConnectionFactory;
 import utils.db.ReleaseSource;
 
 import java.sql.Connection;
@@ -25,7 +25,7 @@ public class RegisteDao {
 	 */
 	public static String getUserEmail(String userEmail) {
 
-		Connection con = GetConnection.getMySqlConnection();
+		Connection con = ConnectionFactory.getMySqlConnection();
 
 		String getUserSql = "SELECT email FROM UserEmail WHERE email = ?";
 
@@ -68,7 +68,7 @@ public class RegisteDao {
 	public static boolean recordUser(RegisterInfoBean registerInfoBean) {
 
 
-		Connection con = GetConnection.getMySqlConnection();
+		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
 

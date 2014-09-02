@@ -20,7 +20,7 @@ public class ImageTest {
 
 
 
-		File f = new File("E:/test.jpg");
+		File f = new File("E:/previous-24.png");
 		BufferedImage bi = ImageIO.read(f);
 
 
@@ -29,23 +29,23 @@ public class ImageTest {
 		// 下面的代码是可以将图片压缩并缩放到指定的大小
 
 
-		float ii = bi.getWidth()/800.0f;
+//		float ii = bi.getWidth()/10.0f;
 
-		System.out.println(ii);
+//		System.out.println(ii);
 
-		float asd = (bi.getHeight() / ii);
+//		float asd = (bi.getHeight() / ii);
 
-		System.out.println(asd);
+//		System.out.println(asd);
 
 
 		// 下面三行代码属于CPU密集型
-		BufferedImage image = new BufferedImage(800, (int)asd, BufferedImage.SCALE_SMOOTH);
+		BufferedImage image = new BufferedImage(10, 10, BufferedImage.SCALE_SMOOTH);
 		Graphics graphics = image.getGraphics();
-		graphics.drawImage(bi, 0, 0, 800, (int)asd, null);
+		graphics.drawImage(bi, 0, 0, 10, 10, null);
 
 
 		// 下面两行代码属于IO密集型
-		File ff = new File("E:/asd/test2.jpg");
+		File ff = new File("E:/test2.jpg");
 		ImageIO.write(image,"jpg",ff);
 
 

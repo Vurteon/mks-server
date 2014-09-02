@@ -24,6 +24,7 @@ import java.io.IOException;
 public class PhoneLoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		// 获得上传来的json数据
 		String userAccountInfo = RequestInfoUtils.getPostContent(request);
 
 		if (userAccountInfo == null) {
@@ -34,6 +35,7 @@ public class PhoneLoginServlet extends HttpServlet {
 		UserAccountBean userAccountBean;
 		JSONObject userAccountJson = new JSONObject(userAccountInfo);
 
+		// 判断其中是否存在合理数据
 		if (userAccountJson.has("email") && userAccountJson.has("password")) {
 			userAccountBean = new UserAccountBean();
 			userAccountBean.setEmail(userAccountJson.getString("email"));
@@ -43,16 +45,19 @@ public class PhoneLoginServlet extends HttpServlet {
 			return ;
 		}
 
+		// 检测数据是否正确
 		JSONObject jsonObject = LoginUser.isAccountPassed(userAccountBean);
 		if (jsonObject.getString("isPassed").equals("no")) {
 			response.getWriter().write(jsonObject.toString());
 			response.getWriter().close();
-			return ;
 		} else {
+
+			// 如果正确，那么就进行session的设置
 			try {
 				HttpSession httpSession = request.getSession(true);
 
 				if(LoginUser.setSession(userAccountBean,httpSession)) {
+					// 向客户端返回sessionID
 					jsonObject.append("JSESSIONID",httpSession.getId());
 					response.getWriter().write(jsonObject.toString());
 				}else {
@@ -65,6 +70,7 @@ public class PhoneLoginServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 直接返回错误代码
 		response.sendError(404);
 	}
 }
