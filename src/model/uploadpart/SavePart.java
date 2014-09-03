@@ -23,6 +23,7 @@ public class SavePart implements Runnable {
 
 	static long asd = 0;
 
+    public static final String saveHome = "/home/leon/shunjian/photo";
 
 	private long ID;
 	private ArrayList<BufferedImage> newImages;
@@ -194,7 +195,7 @@ public class SavePart implements Runnable {
 
 		int saveDirectory = (int) (ID / 1000) + 1;
 
-		String idFileParentName = "E:/shunjian_source/photo/";
+		String idFileParentName = saveHome;
 
 		File idFileParent = new File(idFileParentName, saveDirectory + "000/" + ID);
 
