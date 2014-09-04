@@ -26,7 +26,7 @@ public class LoginDao {
 	 * @param email 用户账号
 	 * @return 用户在后台所对应的的ID
 	 */
-	public static long getID(String email) throws NoSuchIDException {
+	public static int getID(String email) throws NoSuchIDException {
 
 		Connection con = ConnectionFactory.getMySqlConnection();
 
@@ -35,7 +35,7 @@ public class LoginDao {
 
 		String getIDSql = "SELECT ID FROM UserEmail WHERE email = ?";
 
-		long ID = 0;
+		int ID = 0;
 
 		try {
 			ps = con.prepareStatement(getIDSql);
@@ -45,7 +45,7 @@ public class LoginDao {
 			resultSet = ps.executeQuery();
 
 			if (resultSet.next()) {
-				ID = resultSet.getLong("ID");
+				ID = resultSet.getInt("ID");
 			} else {
 				throw new NoSuchIDException();
 			}
@@ -65,7 +65,7 @@ public class LoginDao {
 	 * @return 包含用户设置的结果集；或者是null当获取时出现异常时
 	 */
 
-	public static CachedRowSet getUserSettings(long ID) {
+	public static CachedRowSet getUserSettings(int ID) {
 
 
 		Connection con = ConnectionFactory.getMySqlConnection();
@@ -84,11 +84,11 @@ public class LoginDao {
 
 			ps = con.prepareStatement(sql);
 
-			ps.setLong(1, ID);
-			ps.setLong(2, ID);
-			ps.setLong(3, ID);
-			ps.setLong(4, ID);
-			ps.setLong(5, ID);
+			ps.setInt(1, ID);
+			ps.setInt(2, ID);
+			ps.setInt(3, ID);
+			ps.setInt(4, ID);
+			ps.setInt(5, ID);
 
 			resultSet = ps.executeQuery();
 
@@ -112,20 +112,20 @@ public class LoginDao {
 	 * @return 可能包含信息的cacheRowSet或者null，当SQL查询出现异常时
 	 */
 
-	public static CachedRowSet getFollowingPeopleID(long ID) {
+	public static CachedRowSet getFollowingPeopleID(int ID) {
 
 		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
 
-		String getFollowingSql = "SELECT following FROM following WHERE ID = ?";
+		String getFollowingSql = "SELECT following FROM Followings WHERE ID = ?";
 
 		CachedRowSet cachedRowSet = null;
 
 		try {
 			ps = con.prepareStatement(getFollowingSql);
-			ps.setLong(1, ID);
+			ps.setInt(1, ID);
 			resultSet = ps.executeQuery();
 
 			cachedRowSet = buildCacheRawSet(resultSet);
@@ -146,20 +146,20 @@ public class LoginDao {
 	 * @return 可能包含信息的cacheRowSet或者null，当SQL查询出现异常时
 	 */
 
-	public static CachedRowSet getFriendsID(long ID) {
+	public static CachedRowSet getContactersID(int ID) {
 
 		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
 
-		String getFollowingSql = "SELECT friend FROM friends WHERE ID = ?";
+		String getFollowingSql = "SELECT contacter FROM ContactPersons WHERE ID = ?";
 
 		CachedRowSet cachedRowSet = null;
 
 		try {
 			ps = con.prepareStatement(getFollowingSql);
-			ps.setLong(1, ID);
+			ps.setInt(1, ID);
 			resultSet = ps.executeQuery();
 
 			cachedRowSet = buildCacheRawSet(resultSet);
