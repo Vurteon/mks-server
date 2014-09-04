@@ -49,11 +49,11 @@ public class LoginUser {
 
 	public static boolean setSession(UserAccountBean userAccountBean, HttpSession httpSession) throws NoSuchIDException {
 
-		long userID = LoginDao.getID(userAccountBean.getEmail());
+		int userID = LoginDao.getID(userAccountBean.getEmail());
 
 		CachedRowSet settings = LoginDao.getUserSettings(userID);
 		CachedRowSet followings = LoginDao.getFollowingPeopleID(userID);
-		CachedRowSet friends = LoginDao.getFriendsID(userID);
+		CachedRowSet friends = LoginDao.getContactersID(userID);
 
 		if (settings == null || followings == null || friends == null) {
 			System.err.println("数据库查询出错");
@@ -79,20 +79,20 @@ public class LoginUser {
 				httpSession.setAttribute("ID",userID);
 
 				// 设置followings
-				ArrayList<Long> followingAl = new ArrayList<Long>();
+				ArrayList<Integer> followingAl = new ArrayList<Integer>();
 				while (followings.next()) {
-					followingAl.add(followings.getLong("following"));
+					followingAl.add(followings.getInt("following"));
 				}
 
 				httpSession.setAttribute("followings", followingAl);
 
 				// 设置friends
-				ArrayList<Long> friendAl = new ArrayList<Long>();
+				ArrayList<Integer> friendAl = new ArrayList<Integer>();
 				while (friends.next()) {
-					friendAl.add(friends.getLong("friend"));
+					friendAl.add(friends.getInt("contacter"));
 				}
 
-				httpSession.setAttribute("followings", followingAl);
+				httpSession.setAttribute("contacters", friendAl);
 
 				return true;
 			} catch (SQLException e) {
