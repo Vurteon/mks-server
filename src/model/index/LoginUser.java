@@ -12,6 +12,7 @@ import javax.sql.rowset.CachedRowSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * author: 康乐
@@ -79,7 +80,7 @@ public class LoginUser {
 				httpSession.setAttribute("ID",userID);
 
 				// 设置followings
-				ArrayList<Integer> followingAl = new ArrayList<Integer>();
+				HashSet<Integer> followingAl = new HashSet<Integer>();
 				while (followings.next()) {
 					followingAl.add(followings.getInt("following"));
 				}
@@ -87,7 +88,7 @@ public class LoginUser {
 				httpSession.setAttribute("followings", followingAl);
 
 				// 设置friends
-				ArrayList<Integer> friendAl = new ArrayList<Integer>();
+				HashSet<Integer> friendAl = new HashSet<Integer>();
 				while (friends.next()) {
 					friendAl.add(friends.getInt("contacter"));
 				}
