@@ -19,7 +19,6 @@ import java.sql.SQLException;
  */
 public class LoginDao {
 
-
 	/**
 	 * 获得用户在后台对于的标记ID
 	 *
@@ -73,10 +72,8 @@ public class LoginDao {
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
 
-		String sql = "SELECT email,name bg_pic,hot_pic_area,HPN.home_page_name," +
-				"phone_bg_pic,pc_main_bg_pic,phone_head_pic,pc_main_pic " +
-				"FROM UserInfo AS UI ,UserProfile AS UP, HomePageName AS HPN,HeadBgPic AS HB," +
-				"HeadPic AS HP WHERE UI.ID = ? AND UP.ID = ? AND HPN.ID = ? AND HB.ID = ? AND HP.ID = ?";
+		// 获取用户初始化数据
+		String sql = "SELECT email,name,brief_intro,home_location,bg_photo,main_head_photo,home_head_photo,home_name from UserProfile NATURAL JOIN UserInfo WHERE ID = ?";
 
 		CachedRowSet cachedRowSet = null;
 
@@ -85,11 +82,6 @@ public class LoginDao {
 			ps = con.prepareStatement(sql);
 
 			ps.setInt(1, ID);
-			ps.setInt(2, ID);
-			ps.setInt(3, ID);
-			ps.setInt(4, ID);
-			ps.setInt(5, ID);
-
 			resultSet = ps.executeQuery();
 
 			// 获取cacheRowSet并用ResultSet填充，下面这行代码只要发生异常，CacheRowSet一定是null
