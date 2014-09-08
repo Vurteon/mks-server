@@ -1,4 +1,4 @@
-package servlet.phone;
+package servlet.phone.main;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSourceFactory;
 import listener.DealPartThreadListener;
@@ -25,17 +25,17 @@ import java.util.Random;
 @MultipartConfig()
 public class UploadPhotoServlet extends HttpServlet {
 
+
+	/**
+	 *
+	 * @param request 请求对象
+	 * @param response 回应对象
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
 		HttpSession httpSession = request.getSession(false);
-
-		// 如果不存在session，返回给客户端错误代码，表示session可能
-		// 已经过期，需要重新登录
-		if (httpSession == null) {
-			response.getWriter().write(ErrorCodeJson.SESSIONERROR.toString());
-			return;
-		}
 
 		int ID = (Integer)httpSession.getAttribute("ID");
 
