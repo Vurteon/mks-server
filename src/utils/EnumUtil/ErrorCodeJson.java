@@ -20,4 +20,10 @@ public class ErrorCodeJson {
 	// Session过期或者不存在错误
 	public static final JSONObject SESSIONERROR = CreateJson.getJsonObject("{'errorCode':" + ErrorCode.SESSIONERROR + "}");
 
+	// 服务器sql异常
+	public static final JSONObject SQLERROR = CreateJson.getJsonObject("{'errorCode':" + ErrorCode.SQLERROR + "}");
+
+	// 客户端json格式错误
+	public static final JSONObject JSONERROR = CreateJson.getJsonObject("{'errorCode':" + ErrorCode.JSONERROR + "}");
+
 }
