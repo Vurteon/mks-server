@@ -20,4 +20,9 @@ public class ErrorCode {
 	// session过期或者不存在
 	public static final int SESSIONERROR = 3;
 
+	// 服务器sql出错
+	public static final int SQLERROR = 4;
+
+	// 客户端json不满足格式要求
+	public static final int JSONERROR = 5;
 }
