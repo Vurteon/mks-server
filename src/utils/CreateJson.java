@@ -10,8 +10,6 @@ import utils.json.JSONObject;
 public class CreateJson {
 
 	public static JSONObject getJsonObject(String jsonString) {
-
-		JSONObject jsonObject = new JSONObject(jsonString);
-		return jsonObject;
+		return new JSONObject(jsonString);
 	}
 }
