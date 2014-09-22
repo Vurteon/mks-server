@@ -1,9 +1,7 @@
-package servlet.phone.main;
+package servlet.main;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSourceFactory;
 import listener.DealPartThreadListener;
 import model.uploadpart.DealPart;
-import utils.EnumUtil.ErrorCodeJson;
 import utils.ThreadPoolUtils;
 
 import javax.servlet.AsyncContext;
@@ -13,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
 import java.util.Collection;
-import java.util.Random;
 
 /**
  * author: 康乐
@@ -21,14 +18,13 @@ import java.util.Random;
  * function: 接受手机端发来的上传照片请求，并将照片存储并生成相应的记录
  */
 
-@WebServlet(urlPatterns = "/UploadPhoto",asyncSupported = true)
+@WebServlet(urlPatterns = "/UploadPhoto", asyncSupported = true)
 @MultipartConfig()
 public class UploadPhotoServlet extends HttpServlet {
 
 
 	/**
-	 *
-	 * @param request 请求对象
+	 * @param request  请求对象
 	 * @param response 回应对象
 	 * @throws ServletException
 	 * @throws IOException
@@ -37,7 +33,7 @@ public class UploadPhotoServlet extends HttpServlet {
 
 		HttpSession httpSession = request.getSession(false);
 
-		int ID = (Integer)httpSession.getAttribute("ID");
+		int ID = (Integer) httpSession.getAttribute("ID");
 
 		// 获得相关的上传数据
 		Collection<Part> parts = request.getParts();
@@ -52,10 +48,9 @@ public class UploadPhotoServlet extends HttpServlet {
 		asyncContext.addListener(new DealPartThreadListener());
 
 		// 将异步线程放入线程池中执行
-		ThreadPoolUtils.getCpuThreadPoolExecutor().submit(new DealPart(asyncContext,parts, ID));
+		ThreadPoolUtils.getCpuThreadPoolExecutor().submit(new DealPart(asyncContext, parts, ID));
 
 	}
-
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

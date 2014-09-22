@@ -1,4 +1,4 @@
-package servlet.phone.index;
+package servlet.index;
 
 import beans.index.UserAccountBean;
 import dao.exception.NoSuchIDException;

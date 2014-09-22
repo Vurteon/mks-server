@@ -1,4 +1,4 @@
-package servlet.phone.main;
+package servlet.main;
 
 import listener.DealPartThreadListener;
 import model.main.LoadStatus;
@@ -10,7 +10,6 @@ import utils.json.JSONObject;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

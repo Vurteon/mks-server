@@ -1,4 +1,4 @@
-package servlet.pc.index;
+package servlet.index;
 
 import dao.index.RegisteDao;
 import utils.RequestInfoUtils;
@@ -9,17 +9,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /**
+ *
  * author: 康乐
- * time: 2014/7/15
- * change-time：2014/7/28
- * change-time: 2014/7/30
- * function: 检测用户名(邮箱)是否存在，并返回json数据
+ * time: 2014/7/28
+ * function: 为手机客户端提供检查油箱是否已经被注册接口，基于http连接
+ *
  */
-@WebServlet(name = "IsEmailUsedServlet",urlPatterns = "/isEmailUsed")
-public class IsEmailUsedServlet extends HttpServlet {
+
+@WebServlet(name = "PhoneIsEmailUsedFilter",urlPatterns = "/phone_isEmailUsed")
+public class PhoneIsEmailUsedServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String emailContent = RequestInfoUtils.getPostContent(request);
@@ -54,8 +57,6 @@ public class IsEmailUsedServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		// 如果是get请求，直接404
 		response.sendError(404);
 	}
 }

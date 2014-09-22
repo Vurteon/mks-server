@@ -1,4 +1,4 @@
-package servlet.phone.index;
+package servlet.index;
 
 import beans.index.RegisterInfoBean;
 import model.index.RegisteUser;
