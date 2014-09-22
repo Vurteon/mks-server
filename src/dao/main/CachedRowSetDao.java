@@ -1,16 +1,19 @@
 package dao.main;
 
 import beans.main.PhotoDesBean;
-import model.uploadpart.StatusRowSetManger;
+import model.StatusRowSetManger;
 import utils.db.*;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * author: 康乐
  * time: 2014/8/27-31
- * function: 提供对内存数据库CachedRowSet的增、删、改、查操作
+ * function: 提供对内存数据库CachedRowSet的增、删、查操作,其中增操作将会在缓存容量达到一定程度
+ * 时进行数据库的同步操作;删除操作,由于所有数据只存在一份,要么在缓存中,要么在数据库,所以删除不需要
+ * 同步.
  */
 
 public class CachedRowSetDao {
@@ -27,7 +30,7 @@ public class CachedRowSetDao {
 		CachedRowSet cachedRowSet;
 
 		// 从StatementFeed、DetailWords、PhotoLocation三个表中依据rs_id查询前1000条数据
-		String createCacheRowSet = "SELECT * FROM StatusFeeds NATURAL JOIN DetailWords NATURAL JOIN PhotoLocation NATURAL JOIN PhotoPath ORDER BY time DESC LIMIT 1000";
+		String createCacheRowSet = "SELECT * FROM StatusFeeds NATURAL JOIN DetailWords NATURAL JOIN PhotoLocation NATURAL JOIN PhotoPath WHERE rs_id > (SELECT max(rs_id)-10 FROM StatusFeeds) ORDER BY rs_id ";
 
 		try {
 			// 设置ResultSet是可前后滚动的、可更新的
@@ -43,93 +46,86 @@ public class CachedRowSetDao {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			if (resultSet != null) {
-				resultSet.close();
-			}
-			if (statement != null) {
-				statement.close();
-			}
+			ReleaseSource.releaseSource(resultSet);
+			ReleaseSource.releaseSource(statement);
 		}
 
 
+		/**
+		 * 从数据库中删除已经放入CacheRowSet中的数据，这样的好处是，对于客户端删除操作
+		 * 可以先检测缓存，如果缓存存在，则删除，但是不在数据库中删除，因为数据库中已经没有
+		 * 相关的数据；如果缓存不存在，则只有在数据库中进行删除操作
+		 */
 
 
-
-		if (cachedRowSet.first()) {
-
-			/**
-			 * 从数据库中删除已经放入CacheRowSet中的数据，这样的好处是，对于客户端删除操作
-			 * 可以先检测缓存，如果缓存存在，则删除，但是不在数据库中删除，因为数据库中已经没有
-			 * 相关的数据；如果缓存不存在，则只有在数据库中进行删除操作
-			 */
-
-			// 从数据库中删除从StatusFeeds获取的数据
-			String deleteCached = "delete from StatusFeeds where rs_id = ?";
-
-			String deleteCached2 = "delete from DetailWords where rs_id = ?";
-
-			String deleteCached3 = "delete from PhotoLocation where rs_id = ?";
-
-			String deleteCached4 = "delete from PhotoPath where rs_id = ?";
-
-			// 设置事务
-			con.setAutoCommit(false);
-			do {
-
-				PreparedStatement preparedStatement = null;
-				int rs_id = cachedRowSet.getInt(1);
-				try {
-					preparedStatement = con.prepareStatement(deleteCached);
-					preparedStatement.setInt(1,rs_id);
-					preparedStatement.execute();
-				}catch (SQLException e){
-					con.rollback();
-					e.printStackTrace();
-					throw e;
-				}finally {
-					ReleaseSource.releaseSource(preparedStatement);
-				}
-
-
-				try {
-					preparedStatement = con.prepareStatement(deleteCached2);
-					preparedStatement.setInt(1,rs_id);
-					preparedStatement.execute();
-				}catch (SQLException e) {
-					con.rollback();
-					e.printStackTrace();
-					throw e;
-				}finally {
-					ReleaseSource.releaseSource(preparedStatement);
-				}
-
-				try {
-					preparedStatement = con.prepareStatement(deleteCached3);
-					preparedStatement.setInt(1,rs_id);
-					preparedStatement.execute();
-				}catch (SQLException e) {
-					con.rollback();
-					e.printStackTrace();
-					throw e;
-				}finally {
-					ReleaseSource.releaseSource(preparedStatement);
-				}
-
-				try {
-					preparedStatement = con.prepareStatement(deleteCached4);
-					preparedStatement.setInt(1,rs_id);
-					preparedStatement.execute();
-				}catch (SQLException e) {
-					con.rollback();
-					e.printStackTrace();
-					throw e;
-				}finally {
-					ReleaseSource.releaseSource(preparedStatement);
-				}
-			}while (cachedRowSet.next());
-			// 如果所有操作均完成，则提交事务
-			con.commit();
-		}
+//		if (cachedRowSet.first()) {
+		// 从数据库中删除从StatusFeeds获取的数据
+//			String deleteCached = "DELETE FROM StatusFeeds WHERE rs_id = ?";
+//
+//			String deleteCached2 = "DELETE FROM DetailWords WHERE rs_id = ?";
+//
+//			String deleteCached3 = "DELETE FROM PhotoLocation WHERE rs_id = ?";
+//
+//			String deleteCached4 = "DELETE FROM PhotoPath WHERE rs_id = ?";
+//
+//			// 设置事务手动提交
+//			con.setAutoCommit(false);
+//			do {
+//
+//				PreparedStatement preparedStatement = null;
+//				int rs_id = cachedRowSet.getInt(1);
+//				try {
+//					preparedStatement = con.prepareStatement(deleteCached);
+//					preparedStatement.setInt(1, rs_id);
+//					preparedStatement.execute();
+//				} catch (SQLException e) {
+//					con.rollback();
+//					e.printStackTrace();
+//					throw e;
+//				} finally {
+//					ReleaseSource.releaseSource(preparedStatement);
+//				}
+//
+//
+//				try {
+//					preparedStatement = con.prepareStatement(deleteCached2);
+//					preparedStatement.setInt(1, rs_id);
+//					preparedStatement.execute();
+//				} catch (SQLException e) {
+//					con.rollback();
+//					e.printStackTrace();
+//					throw e;
+//				} finally {
+//					ReleaseSource.releaseSource(preparedStatement);
+//				}
+//
+//				try {
+//					preparedStatement = con.prepareStatement(deleteCached3);
+//					preparedStatement.setInt(1, rs_id);
+//					preparedStatement.execute();
+//				} catch (SQLException e) {
+//					con.rollback();
+//					e.printStackTrace();
+//					throw e;
+//				} finally {
+//					ReleaseSource.releaseSource(preparedStatement);
+//				}
+//
+//				try {
+//					preparedStatement = con.prepareStatement(deleteCached4);
+//					preparedStatement.setInt(1, rs_id);
+//					preparedStatement.execute();
+//				} catch (SQLException e) {
+//					con.rollback();
+//					e.printStackTrace();
+//					throw e;
+//				} finally {
+//					ReleaseSource.releaseSource(preparedStatement);
+//				}
+//			} while (cachedRowSet.next());
+//			// 如果所有操作均完成，则提交事务
+//			con.commit();
+//		}
 
 		return cachedRowSet;
 	}
@@ -162,27 +158,26 @@ public class CachedRowSetDao {
 		cachedRowSet.updateInt(8, 0);
 		cachedRowSet.updateInt(9, 0);
 
+		/**
+		 * 设置位置标记位
+		 */
 		if (photoDesBean.getPhotoLocation() != null) {
-			cachedRowSet.updateString(14, photoDesBean.getPhotoLocation());
 			cachedRowSet.updateString(10, "yes");
 		} else {
 			cachedRowSet.updateString(10, "no");
 		}
 
 		if (photoDesBean.getMyWords() != null || photoDesBean.getOlderWords() != null) {
-
-			cachedRowSet.updateString(12, photoDesBean.getOlderWords());
-			cachedRowSet.updateString(13, photoDesBean.getMyWords());
-
 			cachedRowSet.updateString(11, "yes");
 		} else {
 			cachedRowSet.updateString(11, "no");
 		}
 
-
+		cachedRowSet.updateString(12, photoDesBean.getOlderWords());
+		cachedRowSet.updateString(13, photoDesBean.getMyWords());
+		cachedRowSet.updateString(14, photoDesBean.getPhotoLocation());
 		cachedRowSet.updateString(15, photoDesBean.getViewPhotoPath());
 		cachedRowSet.updateString(16, photoDesBean.getDetailPhotoPath());
-
 
 		// 插入数据
 		cachedRowSet.insertRow();
@@ -191,16 +186,125 @@ public class CachedRowSetDao {
 	}
 
 
-	public static void deleteData() {
+	/**
+	 * 删除资源号相关的所有资源
+	 * @param ID 执行删除操作的ID
+	 * @param rs_id 需要删除的资源的唯一标记号
+	 * @return 从数据库中获取的数据的CacheRowSet对象
+	 */
+	public static boolean deleteData(int ID, int rs_id) {
 
+
+
+
+
+		return false;
 	}
 
-	public static void updateData() {
+	/**
+	 * 根据所提供的rs_id值返回ID
+	 * @param rs_id 资源标记
+	 * @return 如果成功,返回ID;如果失败,返回-1
+	 * @throws SQLException
+	 */
+	public static int getPermissionId (int rs_id) throws SQLException {
 
+		Connection connection;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		String getIt = "select ID from PermissionTable where rs_id = ?";
+		try {
+			connection = ConnectionFactory.getMySqlConnection();
+			preparedStatement = connection.prepareStatement(getIt);
+			preparedStatement.setInt(1,rs_id);
+
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.first()) {
+				 return resultSet.getInt(1);
+			}
+		}finally {
+			ReleaseSource.releaseSource(resultSet,preparedStatement);
+		}
+		return -1;
 	}
 
-	public static void selectData() {
 
+	/**
+	 * 用于从数据库获取一定数量的数据,标准是rs_id.要么获取标记rs_id以前的数据;要么
+	 * 获取标记rs_id以后的数据
+	 *
+	 * @param rs_id  标记rs_id,用于和数据库rs_id做作比较
+	 * @param before 标记获取当前给定rs_id时间前后的数据,如果为真,则获取当前
+	 *               标记rs_id以前的数据;如果为假,则获取当前标记rs_id以后的数据
+	 */
+	public static CachedRowSet selectData(ArrayList<Integer> arrayList, int rs_id, boolean before) throws SQLException {
+
+		PreparedStatement preparedStatement = null;
+
+		Connection connection;
+
+		ResultSet resultSet = null;
+
+		CachedRowSet cachedRowSet = null;
+
+		StringBuilder stringBuilder = new StringBuilder();
+
+		// 添加关注的人,用于数据库查询数据限制
+		for (Integer integer : arrayList) {
+			stringBuilder.append(integer);
+			stringBuilder.append(",");
+		}
+
+		stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
+
+		// 更新
+		if (before) {
+			try {
+				connection = ConnectionFactory.getMySqlConnection();
+
+				String upDate = "SELECT * FROM StatusFeeds NATURAL JOIN DetailWords NATURAL JOIN PhotoLocation NATURAL JOIN PhotoPath WHERE ID IN (" + stringBuilder + ") AND rs_id > ? ORDER BY rs_id desc LIMIT 10";
+
+				preparedStatement = connection.prepareStatement(upDate);
+
+				preparedStatement.setInt(1, rs_id);
+
+				resultSet = preparedStatement.executeQuery();
+
+				cachedRowSet = CachedRowSetFactory.getRowSetFactory().createCachedRowSet();
+				cachedRowSet.populate(resultSet);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				ReleaseSource.releaseSource(cachedRowSet);
+				throw e;
+			} finally {
+				ReleaseSource.releaseSource(resultSet);
+				ReleaseSource.releaseSource(preparedStatement);
+			}
+		} else {
+			try {
+				// 加载更多
+				connection = ConnectionFactory.getMySqlConnection();
+
+				String upDate = "SELECT * FROM StatusFeeds NATURAL JOIN DetailWords NATURAL JOIN PhotoLocation NATURAL JOIN PhotoPath WHERE ID IN (" + stringBuilder + ") AND rs_id < ? order by rs_id desc LIMIT 10";
+
+				preparedStatement = connection.prepareStatement(upDate);
+
+				preparedStatement.setInt(1, rs_id);
+
+				resultSet = preparedStatement.executeQuery();
+				cachedRowSet = CachedRowSetFactory.getRowSetFactory().createCachedRowSet();
+				cachedRowSet.populate(resultSet);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				ReleaseSource.releaseSource(cachedRowSet);
+				throw e;
+			} finally {
+				ReleaseSource.releaseSource(resultSet);
+				ReleaseSource.releaseSource(preparedStatement);
+			}
+		}
+		return cachedRowSet;
 	}
 
 	/**
@@ -208,10 +312,10 @@ public class CachedRowSetDao {
 	 *
 	 * @param cachedRowSet 当前需要同步的CachedRowSet对象
 	 */
-	public static void statusInsertSynchronized(CachedRowSet cachedRowSet) throws SQLException {
+	public static void statusSynchronized(CachedRowSet cachedRowSet) throws SQLException {
 
 
-		int id = cachedRowSet.getInt(1);
+		int id = cachedRowSet.getInt(2);
 
 		Timestamp timestamp = cachedRowSet.getTimestamp(3);
 
@@ -285,7 +389,7 @@ public class CachedRowSetDao {
 
 		// 获取rs_id
 		try {
-			String getRsId = "SELECT rs_id FROM StatusFeeds WHERE ID = ?";
+			String getRsId = "SELECT rs_id,ID,time FROM StatusFeeds WHERE ID = ? ORDER BY time DESC LIMIT 1";
 
 			preparedStatement = connection.prepareStatement(getRsId);
 
@@ -294,9 +398,8 @@ public class CachedRowSetDao {
 			preparedStatement.setInt(1, id);
 
 			resultSet = preparedStatement.executeQuery();
-
-			resultSet.next();
-
+			resultSet.first();
+			// 将数据库生成的rs_id获得
 			rs_id = resultSet.getInt(1);
 
 		} catch (SQLException e) {
@@ -309,52 +412,50 @@ public class CachedRowSetDao {
 
 
 		// 向DetailWords插入数据
-		if (olderWords != null || myWords != null) {
-			try {
 
-				String insertToDetailWords = "INSERT INTO DetailWords(rs_id, older_words, my_words) VALUES (?,?,?)";
+		try {
 
-				preparedStatement = connection.prepareStatement(insertToDetailWords);
+			String insertToDetailWords = "INSERT INTO DetailWords(rs_id, older_words, my_words) VALUES (?,?,?)";
+			preparedStatement = connection.prepareStatement(insertToDetailWords);
 
-				preparedStatement.setInt(1, rs_id);
-				preparedStatement.setString(2, olderWords);
-				preparedStatement.setString(3, myWords);
+			preparedStatement.setInt(1, rs_id);
+			preparedStatement.setString(2, olderWords);
+			preparedStatement.setString(3, myWords);
 
-				preparedStatement.execute();
+			preparedStatement.execute();
 
-			} catch (SQLException e) {
-				e.printStackTrace();
-				// 回滚事务
-				connection.rollback();
-			} finally {
-				ReleaseSource.releaseSource(preparedStatement);
-			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// 回滚事务
+			connection.rollback();
+		} finally {
+			ReleaseSource.releaseSource(preparedStatement);
 		}
 
 
 		// 如果有位置信息，则PhotoPath中插入数据
-		if (location != null) {
 
-			try {
-				String insertToPhotoLocation = "INSERT INTO PhotoLocation(rs_id, location) VALUES (?,?)";
-
-				preparedStatement = connection.prepareStatement(insertToPhotoLocation);
-
-				preparedStatement.setInt(1, rs_id);
-				preparedStatement.setString(2, location);
-
-				preparedStatement.execute();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				// 回滚事务
-				connection.rollback();
-			} finally {
-				ReleaseSource.releaseSource(preparedStatement);
-			}
-		}
 
 		try {
-			String insertPhotoPath = "INSERT INTO PhotoPath(rs_id, phone_view_photo,phone_detail_photo) VALUES (?,?,?)";
+			String insertToPhotoLocation = "INSERT INTO PhotoLocation(rs_id, location) VALUES (?,?)";
+
+			preparedStatement = connection.prepareStatement(insertToPhotoLocation);
+
+			preparedStatement.setInt(1, rs_id);
+			preparedStatement.setString(2, location);
+
+			preparedStatement.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// 回滚事务
+			connection.rollback();
+		} finally {
+			ReleaseSource.releaseSource(preparedStatement);
+		}
+
+
+		try {
+			String insertPhotoPath = "INSERT INTO PhotoPath(rs_id, view_photo,detail_photo) VALUES (?,?,?)";
 
 			preparedStatement = connection.prepareStatement(insertPhotoPath);
 

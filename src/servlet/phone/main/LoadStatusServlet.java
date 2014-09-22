@@ -10,6 +10,8 @@ import utils.json.JSONObject;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +24,7 @@ import java.util.HashSet;
  * time: 2014/9/3
  * function: 更新最多10条的状态信息到客户端
  */
-
+@WebServlet(urlPatterns = "/LoadStatus",asyncSupported = true)
 public class LoadStatusServlet extends HttpServlet {
 
 	/**
@@ -36,16 +38,31 @@ public class LoadStatusServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		HttpSession httpSession = request.getSession(false);
+		HttpSession httpSession = request.getSession(true);
+		
+		HashSet<Integer> hashSet = new HashSet<Integer>();
+		
+//		hashSet.add(0);
+//		hashSet.add(11);
+//		hashSet.add(121);
+//		hashSet.add(26);
+//		hashSet.add(190);
+//		hashSet.add(188);
+
+		hashSet.add(35);
+
+		httpSession.setAttribute("followings",hashSet);
 
 		String content = RequestInfoUtils.getPostContent(request);
 
-		if (content == null) {
+		JSONObject jsonObject;
+
+		// 检测内容是否为json
+		if (content == null || (jsonObject = CreateJson.getJsonObject(content)) == null) {
 			response.getWriter().write(ErrorCodeJson.JSONERROR.toString());
 			return ;
 		}
 
-		JSONObject jsonObject = CreateJson.getJsonObject(content);
 
 		int rs_id;
 		boolean before;
@@ -68,6 +85,8 @@ public class LoadStatusServlet extends HttpServlet {
 		asyncContext.addListener(new DealPartThreadListener());
 		// 将任务提交到IO型线程池中进行处理
 		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new LoadStatus(asyncContext,followings,rs_id,before));
+
+		System.out.println("完成!");
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

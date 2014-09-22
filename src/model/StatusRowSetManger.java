@@ -2,6 +2,7 @@ package model;
 
 import beans.main.PhotoDesBean;
 import dao.main.CachedRowSetDao;
+import utils.CreateJson;
 import utils.db.TimeBuilder;
 import utils.json.JSONArray;
 import utils.json.JSONObject;
@@ -9,6 +10,7 @@ import utils.json.JSONObject;
 import javax.sql.rowset.CachedRowSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -91,7 +93,7 @@ public class StatusRowSetManger {
 	 * 使用同步控制,依据参数从缓存或者数据库中获取一定数量的数据.如果当前
 	 * rs_id小于缓存中最小的rs_id,那么就在数据库中进行查找操作;否则便在
 	 * 缓存中进行查找. 随后将查找到的数据封装为json对象返回
-	 *
+	 * <p/>
 	 * 需要说明的是:此算法存在漏洞-->当数据库中的id大于临时id时会出现许多
 	 * 意外的bug,但是这个将会是数据库存储数量达到10亿时候的事情,那个时候
 	 * 这个bug我想早就已经修复了.
@@ -107,31 +109,44 @@ public class StatusRowSetManger {
 	 */
 	public static JSONArray selectStatus(HashSet<Integer> followings, int rs_id, boolean before) throws SQLException {
 
-		statusRowSet = CachedRowSetDao.buildNewCacheRowSet();
+		// 缓存中的最小的rs_id
+		int firstNumber;
 
+		// 获取rs_id中最小的rs_id号
+		synchronized (object) {
+			// 将游标调整到第一行
+			statusRowSet.first();
+			firstNumber = statusRowSet.getInt(1);
+		}
 
-//		statusRowSet.first();
-//
-//		do {
-//
-//			System.out.println(statusRowSet.getInt(1) + " : " + statusRowSet.getTimestamp(3));
-//
-//		}while (statusRowSet.next());
+		/**
+		 * 如果是请求加载更多且发来的rs_id小于缓存中最小的rs_id,表明其已经存于数据库,所以
+		 * 下面直接进行数据库操作
+		 */
+		if (!before && firstNumber >= rs_id) {
+			CachedRowSet loadMoreSet = CachedRowSetDao.selectData(new ArrayList<Integer>(followings), rs_id, false);
 
+			JSONArray jsonArray = new JSONArray();
 
+			if (loadMoreSet.first()) {
+				do {
+					buildStatus(loadMoreSet, jsonArray);
+				} while (loadMoreSet.next());
+			}
 
+			return jsonArray;
+		}
+
+		JSONArray jsonArray = new JSONArray();
 
 		// 如果不在数据库中,则在缓存中查找
 		synchronized (object) {
-
-			JSONArray jsonArray = new JSONArray();
 			/**
 			 * 如果是更新,那么就返回至多最新10条数据,如果更新数据没有
 			 * 10条,则有几条发几条
 			 */
 
 			if (before) {
-//				System.out.println("更新");
 				// 移动到最后一条,同时也是最新的一条
 				if (statusRowSet.last()) {
 					int cached_rs_id;
@@ -150,13 +165,12 @@ public class StatusRowSetManger {
 								 * 表明内容比当前传来的rs_id新,便可以将其
 								 * 传送给客户端
 								 */
-								buildStatus(jsonArray);
+								buildStatus(statusRowSet, jsonArray);
 								// 检查json数组大小,如果大于10个则不再继续添加
 								if (jsonArray.length() >= statusSendNumber) {
 									break;
 								}
 							} else {
-//								System.out.println("已经是最新内容");
 								// 如果当前rs_id不小于缓存中的rs_id,则表明内容已经
 								// 不需要再更新了
 								break;
@@ -164,54 +178,57 @@ public class StatusRowSetManger {
 						}
 					} while (statusRowSet.previous());
 				}
-				return jsonArray;
-			}
-
-			/**
-			 * 上面的代码负责更新,将传送至多10条最新数据到客户端
-			 * 如果before为false,将执行下面为加载更多数据的代码
-			 */
-
-			int firstNumber;
-
-			synchronized (object) {
-				// 将游标调整到第一行
-				statusRowSet.first();
-				firstNumber = statusRowSet.getInt(1);
-			}
-
-			/**
-			 * 如果发来的rs_id小于缓存中最小的rs_id,表明其已经存于数据库,所以
-			 * 下面直接进行数据库操作
-			 */
-			if (firstNumber >= rs_id) {
-				CachedRowSet loadMoreSet = CachedRowSetDao.deleteData(rs_id);
-//				System.out.println("直接淘汰,查询数据库");
-				return jsonArray;
-			}
-
-//			System.out.println("加载更多");
-			statusRowSet.last();
-			// 移动到rs_id的旧一行
-			do {
-				if (statusRowSet.getInt(1) < rs_id) {
-					break;
-				}
-			}while (statusRowSet.previous());
-
-			// 一次获取10条信息
-			do {
-				if (followings.contains(statusRowSet.getInt(2))) {
-					buildStatus(jsonArray);
-					if (jsonArray.length() >= statusSendNumber) {
+			} else {
+				/**
+				 * 上面的代码负责更新,将传送至多10条最新数据到客户端
+				 * 如果before为false,将执行下面为加载更多数据的代码
+				 */
+				statusRowSet.last();
+				// 移动到rs_id的旧一行
+				do {
+					if (statusRowSet.getInt(1) < rs_id) {
 						break;
 					}
-				}
-			}while (statusRowSet.previous());
+				} while (statusRowSet.previous());
 
-			// 返回数据
-			return jsonArray;
+				// 一次获取10条信息,如果是缓存中的最后一条,那么也会将此条做比较
+				do {
+					if (followings.contains(statusRowSet.getInt(2))) {
+						buildStatus(statusRowSet, jsonArray);
+						if (jsonArray.length() >= statusSendNumber) {
+							break;
+						}
+					}
+				} while (statusRowSet.previous());
+			}
 		}
+
+		/**
+		 * 倘若操作在缓存中没有获得一条数据,则表明更新操作或者加载更多操作需要在数据库进行
+		 *
+		 * 此处进行此检查有两种防备:
+		 * 1.如果在获取数据过程中没有出现缓存向数据库写数据的情况,而且确实在缓存中没有获取到数据的情况
+		 * 2.如果是在获取过程中出现了缓存向数据库写数据,而刚好将需要获取的数据全部写入了数据库,那么此
+		 *   时也会获取不到数据,那么此时也需要从数据库中获取数据
+		 */
+
+		// 获取rs_id中最小的rs_id号
+		synchronized (object) {
+			// 将游标调整到第一行
+			statusRowSet.first();
+			firstNumber = statusRowSet.getInt(1);
+		}
+		// 1.如果是加载更多获得的数据为0,那么进行数据库查找
+		// 2.如果是更新到最后一行后,没有数据且更新所给的rs_id小于缓存中最小的rs_id,就表明数据更新需要到数据库中继续进行
+		if ((!before && jsonArray.length() == 0) || (before && jsonArray.length() == 0 && firstNumber >= rs_id)) {
+			CachedRowSet cachedRowSet = CachedRowSetDao.selectData(new ArrayList<Integer>(followings), rs_id, before);
+			if (cachedRowSet.first()) {
+				do {
+					buildStatus(cachedRowSet, jsonArray);
+				} while (cachedRowSet.next());
+			}
+		}
+		return jsonArray;
 	}
 
 
@@ -221,54 +238,54 @@ public class StatusRowSetManger {
 	 * @param jsonArray 将会被添加新json对象的json数组
 	 * @throws SQLException 当且仅当取出数据出错时
 	 */
-	private static void buildStatus(JSONArray jsonArray) throws SQLException {
+	private static void buildStatus(CachedRowSet cachedRowSet, JSONArray jsonArray) throws SQLException {
 
 		// 获得rs_id
-		int rs_id = statusRowSet.getInt(1);
+		int rs_id = cachedRowSet.getInt(1);
 
-		int ID = statusRowSet.getInt(2);
+		int ID = cachedRowSet.getInt(2);
 
 		// 获取时间
-		Timestamp time = statusRowSet.getTimestamp(3);
+		Timestamp time = cachedRowSet.getTimestamp(3);
 
 		// 获取照片分类
-		String photoClass = statusRowSet.getString(4);
+		String photoClass = cachedRowSet.getString(4);
 
 		// 获取at的人
-		String photoAt = statusRowSet.getString(5);
+		String photoAt = cachedRowSet.getString(5);
 
 		// 获取话题
-		String photoTopic = statusRowSet.getString(6);
+		String photoTopic = cachedRowSet.getString(6);
 
 		// 获取评论数量
-		int commentsNumber = statusRowSet.getInt(7);
+		int commentsNumber = cachedRowSet.getInt(7);
 
 		// 获取喜欢数量
-		int likesNumber = statusRowSet.getInt(8);
+		int likesNumber = cachedRowSet.getInt(8);
 
 		// 获取分享数量
-		int sharesNumber = statusRowSet.getInt(9);
+		int sharesNumber = cachedRowSet.getInt(9);
 
 		// 获取是否有位置信息
-		String isLocated = statusRowSet.getString(10);
+		String isLocated = cachedRowSet.getString(10);
 
 		// 获取是否有详细信息
-		String hasDetail = statusRowSet.getString(11);
+		String hasDetail = cachedRowSet.getString(11);
 
 		// 获取原信息
-		String olderWords = statusRowSet.getString(12);
+		String olderWords = cachedRowSet.getString(12);
 
 		// 获取自己的描述
-		String myWords = statusRowSet.getString(13);
+		String myWords = cachedRowSet.getString(13);
 
 		// 获取照片位置信息
-		String location = statusRowSet.getString(14);
+		String location = cachedRowSet.getString(14);
 
 		// 获取照片view信息
-		String viewPhoto = statusRowSet.getString(15);
+		String viewPhoto = cachedRowSet.getString(15);
 
 		// 获取殴照片detail信息
-		String detailPhoto = statusRowSet.getString(16);
+		String detailPhoto = cachedRowSet.getString(16);
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -296,9 +313,71 @@ public class StatusRowSetManger {
 	}
 
 
-	public static void deleteStatus() {
+	/**
+	 * 删除rs_id所标记的资源;首先会进行id对比检查,如果是ID不符合,那么删除
+	 * 操作将失败,如果正确,那么进行删除操作;
+	 * <p/>
+	 * 首先会查询需要删除的rs_id是否在缓存中,如果在,那么就进行删除,如果不在,
+	 * 则在数据库中进行删除操作
+	 *
+	 * @param ID    发起删除请求的id
+	 * @param rs_id 需要删除的资源
+	 */
+	public static JSONObject deleteStatus(int ID, int rs_id) throws SQLException {
+
+		synchronized (object) {
+			statusRowSet.first();
+			if (rs_id > statusRowSet.getInt(1)) {
+
+				statusRowSet.last();
+				do {
+					// 如果遇到rs_id相等的,那么就检查ID值是否吻合,如果
+					// 吻合,那么就进行删除,删除成功后返回true
+					if (rs_id == statusRowSet.getInt(1)) {
+						if (ID == statusRowSet.getInt(2)) {
+							JSONObject jsonObject = buildPathJson();
+							statusRowSet.deleteRow();
+							return jsonObject;
+						}
+					}
+				} while (statusRowSet.previous());
+			} else if (rs_id == statusRowSet.getInt(1)) {
+				// 如果碰巧最后一行就是需要删除的行,那么就进行
+				// 身份验证
+				if (ID == statusRowSet.getInt(2)) {
+					JSONObject jsonObject = buildPathJson();
+					statusRowSet.deleteRow();
+					return jsonObject;
+				}
+			}
+		}
+
+		/**
+		 * 如果上述均未返回,就意味着,需要删除的数据存在于数据库中
+		 */
+
+
+
+
+
+
+
+		return null;
 
 	}
+
+
+	private static JSONObject buildPathJson() throws SQLException {
+		String viewPath = statusRowSet.getString(15);
+		String detailPath = statusRowSet.getString(16);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("viewPath",viewPath);
+		jsonObject.put("detailPath",detailPath);
+		return jsonObject;
+	}
+
+
+
 
 
 	/**

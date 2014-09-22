@@ -1,6 +1,7 @@
 package model.uploadpart;
 
 import beans.main.PhotoDesBean;
+import model.StatusRowSetManger;
 import utils.EnumUtil.ErrorCodeJson;
 import utils.EnumUtil.PhotoType;
 

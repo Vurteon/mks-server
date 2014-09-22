@@ -4,11 +4,9 @@ import beans.main.PhotoDesBean;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
-import model.uploadpart.StatusRowSetManger;
+import model.StatusRowSetManger;
 
-import javax.sql.rowset.CachedRowSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Random;
 
 /**

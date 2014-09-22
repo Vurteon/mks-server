@@ -34,7 +34,7 @@ public class LoginDaoTest extends TestCase {
         //TODO: Test goes here...
 
 
-	    CachedRowSet cachedRowSet = LoginDao.getFriendsID(27);
+	    CachedRowSet cachedRowSet = LoginDao.getContactersID(27);
 
 	    while (cachedRowSet.next()){
 		    long ID = cachedRowSet.getLong("friend");

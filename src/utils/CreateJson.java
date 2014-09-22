@@ -1,5 +1,6 @@
 package utils;
 
+import utils.json.JSONException;
 import utils.json.JSONObject;
 
 /**
@@ -10,6 +11,14 @@ import utils.json.JSONObject;
 public class CreateJson {
 
 	public static JSONObject getJsonObject(String jsonString) {
-		return new JSONObject(jsonString);
+
+		JSONObject jsonObject = null;
+
+		try {
+			jsonObject = new JSONObject(jsonString);
+		}catch (JSONException j) {
+			// 看以后的需要而改
+		}
+		return jsonObject;
 	}
 }

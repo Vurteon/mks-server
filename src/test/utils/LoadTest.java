@@ -1,39 +1,29 @@
 package test.utils;
 
-import sun.net.www.http.HttpClient;
 import utils.CreateJson;
 import utils.PartFactory;
+import utils.json.JSONArray;
+import utils.json.JSONObject;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by leon on 2014/8/23.
+ * Created by leon on 14-9-10.
  */
-public class PostTest implements Runnable {
+public class LoadTest implements Runnable {
+	static String testUrl = "http://localhost:8080/LoadStatus";
 
-
-	public static ArrayList<String> asds = new ArrayList<String>();
-
-
-	static String testUrl = "http://localhost:8080/UploadPhoto";
-
-	static String BOUNDARY = "---------------------------7de8c1a80910";
 
 	@Override
 	public void run() {
-		URL url = null;
+		URL url;
+
 		try {
-
-
-//			HttpClient
-
-
 			url = new URL(testUrl);
 
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -47,32 +37,16 @@ public class PostTest implements Runnable {
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
 			httpURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0");
 
-			httpURLConnection.setRequestProperty("Content-Type",
-					"multipart/form-data; boundary=" + BOUNDARY);
 
-			byte[] image = new byte[8000000];
 
-			FileInputStream fileInputStream = new FileInputStream(new File("/home/leon/asd.jpg"));
 
-			BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+			byte[] postInfo = CreateJson.getJsonObject("{'rs_id':3;'before':true}").toString().getBytes();
 
-			int ll = bufferedInputStream.read(image);
-
-			byte[] newByte = new byte[ll];
-
-			System.arraycopy(image, 0, newByte, 0, ll);
-
-			byte[] asd = CreateJson.getJsonObject("{'myWords':'test'}").toString().getBytes();
 
 			System.out.println("发出请求时间：" + new Date());
 
-			httpURLConnection.getOutputStream().write(PartFactory.PartBuilder("test", "test", "text/plain", asd));
+			httpURLConnection.getOutputStream().write(postInfo);
 
-			httpURLConnection.getOutputStream().write(PartFactory.PartBuilder("test", "test12.jpg", "image/jpeg", newByte, true));
-
-			httpURLConnection.setReadTimeout(100000);
-
-			httpURLConnection.setConnectTimeout(10000);
 
 			StringBuilder sb = new StringBuilder();
 
@@ -85,10 +59,23 @@ public class PostTest implements Runnable {
 				sb.append(line);
 			}
 
-
-			asds.add(sb.toString());
-
 			System.out.println("完成时间：" + new Date());
+
+			System.out.println(sb);
+
+			JSONArray jsonArray = new JSONArray(sb.toString());
+
+			int i = 0;
+
+			while (i < jsonArray.length()) {
+				JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+				System.out.println("ID:" + jsonObject.get("ID") + "   rs_id:" + jsonObject.get("rs_id") +
+				"   时间:" + jsonObject.get("time"));
+				i++;
+			}
+
+
+
 			httpURLConnection.disconnect();
 
 
@@ -101,8 +88,6 @@ public class PostTest implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
 	}
 }
 

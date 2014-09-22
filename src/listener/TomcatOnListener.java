@@ -1,7 +1,7 @@
 package listener;
 
 import dao.main.CachedRowSetDao;
-import model.uploadpart.StatusRowSetManger;
+import model.StatusRowSetManger;
 import utils.ThreadPoolUtils;
 
 import javax.servlet.ServletContextEvent;
@@ -75,6 +75,22 @@ public class TomcatOnListener implements ServletContextListener{
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
+		/**
+		 * 将缓存中的所有数据同步到数据库
+		 */
+
+//		try {
+//			StatusRowSetManger.statusRowSet.first();
+//			do {
+//				CachedRowSetDao.statusSynchronized(StatusRowSetManger.statusRowSet);
+//			}while (StatusRowSetManger.statusRowSet.next());
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+
+		/**
+		 * 移除所有相关组件
+		 */
 		Enumeration<Driver> driverEnumeration = DriverManager.getDrivers();
 		while (driverEnumeration.hasMoreElements()) {
 			Driver driver = driverEnumeration.nextElement();
