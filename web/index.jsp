@@ -14,6 +14,6 @@
 	<title>瞬间</title>
 </head>
 <body>
-<h1>加油!</h1>
+<h1>Moment</h1>
 </body>
 </html>
