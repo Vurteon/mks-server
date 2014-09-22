@@ -218,7 +218,7 @@ public class StatusRowSetManger {
 			statusRowSet.first();
 			firstNumber = statusRowSet.getInt(1);
 		}
-		// 1.如果是加载更多获得的数据为0,那么进行数据库查找
+		// 1.如果是加载更多获得的数据为0,那么进行数据库查找,并获取相关数据
 		// 2.如果是更新到最后一行后,没有数据且更新所给的rs_id小于缓存中最小的rs_id,就表明数据更新需要到数据库中继续进行
 		if ((!before && jsonArray.length() == 0) || (before && jsonArray.length() == 0 && firstNumber >= rs_id)) {
 			CachedRowSet cachedRowSet = CachedRowSetDao.selectData(new ArrayList<Integer>(followings), rs_id, before);
