@@ -8,7 +8,7 @@ import utils.json.JSONObject;
  *  time: 2014/8/21
  *  function: 根据一段字符串生成一个相应的json对象
  */
-public class CreateJson {
+public class JsonUtils {
 
 	public static JSONObject getJsonObject(String jsonString) {
 

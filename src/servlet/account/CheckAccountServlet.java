@@ -1,7 +1,10 @@
 package servlet.account;
 
-import dao.account.RegisteDao;
+import dao.account.SignUpDao;
+import utils.EnumUtil.ErrorCode;
+import utils.FormatCheckManager;
 import utils.RequestInfoUtils;
+import utils.StatusResponseHandler;
 import utils.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -21,8 +24,8 @@ import java.io.OutputStreamWriter;
  *
  */
 
-@WebServlet(name = "PhoneIsEmailUsedFilter",urlPatterns = "/phone_isEmailUsed")
-public class CheckEmailServlet extends HttpServlet {
+@WebServlet(name = "CheckEmailServlet",urlPatterns = "/checkAccount")
+public class CheckAccountServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String emailContent = RequestInfoUtils.getPostContent(request);
@@ -35,28 +38,29 @@ public class CheckEmailServlet extends HttpServlet {
 
 		JSONObject jsonObject = new JSONObject(emailContent);
 
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(response.getOutputStream(),"utf-8"));
+		if (jsonObject.has("account")) {
 
-		response.setHeader("Content-Type","application/json");
+			String email = jsonObject.getString("account");
 
-		if (jsonObject.has("email")) {
-
-			String email = jsonObject.getString("email");
-
-			//直接使用数据库查询服务
-			String dbEmail = RegisteDao.getUserEmail(email);
-
-			if (dbEmail == null) {
-				// 不存在当前邮箱
-				bw.write(new JSONObject("{'isUsed':'no'}").toString());
+			if (FormatCheckManager.checkAccount()) {
+				//直接使用数据库查询服务
+				String dbEmail = SignUpDao.getUserEmail(email);
+				if (dbEmail == null) {
+					StatusResponseHandler.sendStatus("accountResult","not_exist",response,true);
+				}else {
+					StatusResponseHandler.sendStatus("accountResult","exist",response,true);
+				}
 			}else {
-				bw.write(new JSONObject("{'isUsed':'yes'}").toString());
+				// 格式错误
+				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response, true);
 			}
+		}else {
+			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response, true);
 		}
-		bw.close();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		response.sendError(404);
 	}
 }

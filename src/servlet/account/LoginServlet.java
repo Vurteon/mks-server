@@ -2,8 +2,12 @@ package servlet.account;
 
 import beans.index.UserAccountBean;
 import dao.exception.NoSuchIDException;
-import model.account.AccountManager;
+import model.account.LoginUserHandler;
+import utils.EnumUtil.ErrorCode;
+import utils.FormatCheckManager;
+import utils.JsonUtils;
 import utils.RequestInfoUtils;
+import utils.StatusResponseHandler;
 import utils.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -20,7 +24,7 @@ import java.io.IOException;
  * function: 提供手机端用户登录的检查和session的设置，基于http连接
  */
 
-@WebServlet(name = "PhoneLoginServlet",urlPatterns = "/phone_login")
+@WebServlet(name = "LoginServlet",urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -35,37 +39,42 @@ public class LoginServlet extends HttpServlet {
 		UserAccountBean userAccountBean;
 		JSONObject userAccountJson = new JSONObject(userAccountInfo);
 
-		// 判断其中是否存在合理数据
-		if (userAccountJson.has("email") && userAccountJson.has("password")) {
-			userAccountBean = new UserAccountBean();
-			userAccountBean.setEmail(userAccountJson.getString("email"));
-			userAccountBean.setPassword(userAccountJson.getString("password"));
+		// 判断数据格式
+		if (userAccountJson.has("account") && userAccountJson.has("password")) {
+
+			if (FormatCheckManager.checkAccount() && FormatCheckManager.checkPassword()) {
+				userAccountBean = new UserAccountBean();
+				userAccountBean.setAccount(userAccountJson.getString("account"));
+				userAccountBean.setPassword(userAccountJson.getString("password"));
+			}else {
+				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response,true);
+				return ;
+			}
 		}else {
-			response.sendError(404);
+			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response,true);
 			return ;
 		}
 
-		// 检测数据是否正确
-		JSONObject jsonObject = AccountManager.LoginUser.isAccountPassed(userAccountBean);
-		if (jsonObject.getString("isPassed").equals("no")) {
-			response.getWriter().write(jsonObject.toString());
-			response.getWriter().close();
-		} else {
-
+		// 检测密码是否正确
+		boolean isPassed = LoginUserHandler.isAccountPassed(userAccountBean);
+		if (isPassed) {
 			// 如果正确，那么就进行session的设置
 			try {
 				HttpSession httpSession = request.getSession(true);
 
-				if(AccountManager.LoginUser.setSession(userAccountBean, httpSession)) {
+				if(LoginUserHandler.setSession(userAccountBean, httpSession)) {
 					// 向客户端返回sessionID
-					jsonObject.append("JSESSIONID",httpSession.getId());
-					response.getWriter().write(jsonObject.toString());
+					JSONObject responseInfo = JsonUtils.getJsonObject("{'accountResult':'success';'JSESSIONID':" +httpSession.getId() +  "}");
+					StatusResponseHandler.sendStatus(responseInfo,response,true);
 				}else {
-					response.getWriter().write(new JSONObject("{'server':'error'}").toString());
+					StatusResponseHandler.sendStatus("accountResult","error",response,true);
 				}
 			} catch (NoSuchIDException e) {
 				e.printStackTrace();
 			}
+		} else {
+			// 密码错误，返回消息
+			StatusResponseHandler.sendStatus("accountResult","dataWrong",response,true);
 		}
 	}
 

@@ -3,9 +3,7 @@ package model.account;
 import beans.index.UserAccountBean;
 import dao.exception.NoSuchIDException;
 import dao.account.LoginDao;
-import utils.CreateJson;
 import utils.db.ReleaseSource;
-import utils.json.JSONObject;
 
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.CachedRowSet;
@@ -25,16 +23,8 @@ public class LoginUserHandler {
 	 * @param accountBean 用户数据Bean
 	 * @return 如果正确，返回true；错误返回false
 	 */
-	public static JSONObject isAccountPassed(UserAccountBean accountBean) {
-
-		JSONObject jsonObject;
-
-		if (LoginDao.accountCheck(accountBean)) {
-			jsonObject = CreateJson.getJsonObject("{'isPassed':'yes'}");
-		}else {
-			jsonObject = CreateJson.getJsonObject("{'isPassed':'no'}");
-		}
-		return jsonObject;
+	public static boolean isAccountPassed(UserAccountBean accountBean) {
+		return LoginDao.accountCheck(accountBean);
 	}
 
 
@@ -49,7 +39,7 @@ public class LoginUserHandler {
 
 	public static boolean setSession(UserAccountBean userAccountBean, HttpSession httpSession) throws NoSuchIDException {
 
-		int userID = LoginDao.getID(userAccountBean.getEmail());
+		int userID = LoginDao.getID(userAccountBean.getAccount());
 
 		CachedRowSet settings = LoginDao.getUserSettings(userID);
 		CachedRowSet followings = LoginDao.getFollowingPeopleID(userID);

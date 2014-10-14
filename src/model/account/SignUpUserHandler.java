@@ -1,9 +1,7 @@
 package model.account;
 
 import beans.index.SignUpInfoBean;
-import dao.account.RegisteDao;
-import utils.CreateJson;
-import utils.json.JSONObject;
+import dao.account.SignUpDao;
 
 /**
  * author: 康乐
@@ -12,25 +10,14 @@ import utils.json.JSONObject;
  */
 public class SignUpUserHandler {
 
-	public static JSONObject registeUser(SignUpInfoBean signUpInfoBean) {
-		if(isUserExist(signUpInfoBean.getEmail())){
-			// 构造json对象
-			String jsonString = "{'isExist':'yes'}";
-			return CreateJson.getJsonObject(jsonString);
-		}else {
-			if (RegisteDao.recordUser(signUpInfoBean)){
-				String jsonString = "{'isRecorded':'yes'}";
-				return CreateJson.getJsonObject(jsonString);
-			}else {
-				String jsonString = "{'isRecorded':'no'}";
-				return CreateJson.getJsonObject(jsonString);
-			}
-		}
+	public static boolean registeUser(SignUpInfoBean signUpInfoBean) {
+
+		return SignUpDao.recordUser(signUpInfoBean);
 	}
 
 
 	public static boolean isUserExist(String userName) {
-		String isExisted = RegisteDao.getUserEmail(userName);
+		String isExisted = SignUpDao.getUserEmail(userName);
 		return isExisted != null;
 	}
 }

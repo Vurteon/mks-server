@@ -2,7 +2,10 @@ package servlet.account;
 
 import beans.index.SignUpInfoBean;
 import model.account.SignUpUserHandler;
+import utils.EnumUtil.ErrorCode;
+import utils.FormatCheckManager;
 import utils.RequestInfoUtils;
+import utils.StatusResponseHandler;
 import utils.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -21,62 +24,53 @@ import java.io.OutputStreamWriter;
  * function: 提供手机客户端注册功能，基于http连接
  */
 
-@WebServlet(name = "PhoneRegisterServlet",urlPatterns = "/phone_register")
+@WebServlet(name = "SignUpServlet",urlPatterns = "/sign_up")
 public class SignUpServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String registerInfo = RequestInfoUtils.getPostContent(request);
+		String signUpInfo = RequestInfoUtils.getPostContent(request);
 
-		if (registerInfo == null) {
+		if (signUpInfo == null) {
 			// 对于这种蓄意请求直接404
 			response.sendError(404);
 			return ;
 		}
 
-		JSONObject registerInfoJson = new JSONObject(registerInfo);
+		JSONObject signUpInfoJson = new JSONObject(signUpInfo);
 
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(response.getOutputStream(),"utf-8"));
+		/**
+		 * 向数据库添加注册信息
+ 		 */
 
-		response.setHeader("Content-Type","application/json");
-
-
-		// 向数据库添加注册信息
 		SignUpInfoBean signUpInfoBean = new SignUpInfoBean();
 
+		if (signUpInfoJson.has("name") && signUpInfoJson.has("userAccount") && signUpInfoJson.has("password")) {
 
-		if (registerInfoJson.has("name") && registerInfoJson.has("email") && registerInfoJson.has("password")) {
-			signUpInfoBean.setName(registerInfoJson.getString("name"));
-			signUpInfoBean.setEmail(registerInfoJson.getString("email"));
-			signUpInfoBean.setPassword(registerInfoJson.getString("password"));
+			// 进行格式检查
+			if (FormatCheckManager.checkName() && FormatCheckManager.checkAccount() && FormatCheckManager.checkPassword()) {
+				signUpInfoBean.setName(signUpInfoJson.getString("name"));
+				signUpInfoBean.setUserAccount(signUpInfoJson.getString("userAccount"));
+				signUpInfoBean.setPassword(signUpInfoJson.getString("password"));
+			}else {
+				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR,response,true);
+				return ;
+			}
 		}else {
-			response.sendError(404);
+			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR,response,true);
 			return ;
 		}
 
-		JSONObject jsonObject = SignUpUserHandler.registeUser(signUpInfoBean);
-
-		// 由于在注册前就已经完全检查了数据的正确性，所以这里返回的一定是record的信息
-		// 如果是返回了email已经存在的信息，必然是有人构建了一次非正常请求，
-
-		// 如果返回值是{"isExist":"yes"}表示这是一个非正常请求，需要记录
-		if (jsonObject.has("isExist")) {
+		if (SignUpUserHandler.isUserExist(signUpInfoBean.getUserAccount())) {
+			// 因为客户端在注册前已经检验了账号是否可用，可用才能发送信息。所以，如果有此情况，那么一定是一次非正常请求
 			System.err.println("发生了一次非正常请求,ip地址为:" + request.getRemoteAddr());
-			response.sendError(404);
+			StatusResponseHandler.sendStatus("accountResult", "exist",response);
 			return ;
 		}
 
+		boolean recordInfo = SignUpUserHandler.registeUser(signUpInfoBean);
 
-		HttpSession httpSession = request.getSession(true);
-
-		// 获取session发送到Android客户端
-		String sessionID = httpSession.getId();
-
-		// 这里构建json的字符串比较短，就直接+了
-		if (jsonObject.has("isRecorded") && jsonObject.getString("isRecorded").equals("yes")) {
-			JSONObject recordInfo = new JSONObject("{'isRecorded':'yes','JSESSIONID':'" + sessionID + "'}");
-			System.out.println(recordInfo);
-			bw.write(recordInfo.toString());
-			bw.close();
+		if (recordInfo) {
+			StatusResponseHandler.sendStatus("accountResult", "success",response,true);
 		}
 	}
 
