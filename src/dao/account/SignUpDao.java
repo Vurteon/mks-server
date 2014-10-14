@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * change-time: 2014/7/31
  * function: 查询邮箱是否存在、注册用户并填写相关数据到各个表中
  */
-public class RegisteDao {
+public class SignUpDao {
 
 	/**
 	 * 通过userEmail 查询邮箱是否存在，如果存在，返回邮箱；如果不存在，返回null
@@ -76,7 +76,7 @@ public class RegisteDao {
 
 		try {
 			ps = con.prepareStatement(insertEmailSql);
-			ps.setString(1, signUpInfoBean.getEmail());
+			ps.setString(1, signUpInfoBean.getUserAccount());
 			ps.execute();
 		} catch (SQLException e) {
 			System.err.println("插入ID出现异常");
@@ -100,7 +100,7 @@ public class RegisteDao {
 			String getID = "SELECT ID FROM UserEmail WHERE email = ?";
 
 			ps = con.prepareStatement(getID);
-			ps.setString(1, signUpInfoBean.getEmail());
+			ps.setString(1, signUpInfoBean.getUserAccount());
 			ResultSet resultSet = ps.executeQuery();
 
 			if (resultSet.next()) {
@@ -115,7 +115,7 @@ public class RegisteDao {
 			String insertAccountSql = "INSERT INTO AccountInfo(email,password) VALUES (?,?)";
 			ps = con.prepareStatement(insertAccountSql);
 
-			ps.setString(1, signUpInfoBean.getEmail());
+			ps.setString(1, signUpInfoBean.getUserAccount());
 			ps.setString(2, signUpInfoBean.getPassword());
 			ps.execute();
 			ps.close();
@@ -125,7 +125,7 @@ public class RegisteDao {
 			String insertUserInfoSql = "INSERT INTO UserInfo (email,name,ID) VALUE (?,?,?)";
 
 			ps = con.prepareStatement(insertUserInfoSql);
-			ps.setString(1, signUpInfoBean.getEmail());
+			ps.setString(1, signUpInfoBean.getUserAccount());
 			ps.setString(2, signUpInfoBean.getName());
 			ps.setLong(3, ID);
 			ps.execute();

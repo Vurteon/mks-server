@@ -172,7 +172,7 @@ public class LoginDao {
 	 */
 	public static boolean accountCheck(UserAccountBean userAccountBean) {
 
-		String email = userAccountBean.getEmail();
+		String email = userAccountBean.getAccount();
 		String password = userAccountBean.getPassword();
 
 		String accountCheckSql = "SELECT email,password FROM AccountInfo WHERE email = ?";
