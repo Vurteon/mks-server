@@ -1,8 +1,8 @@
-package model.index;
+package model.account;
 
 import beans.index.UserAccountBean;
 import dao.exception.NoSuchIDException;
-import dao.index.LoginDao;
+import dao.account.LoginDao;
 import utils.CreateJson;
 import utils.db.ReleaseSource;
 import utils.json.JSONObject;
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import javax.sql.rowset.CachedRowSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -19,7 +18,7 @@ import java.util.HashSet;
  * time: 2014/8/1
  * function: 负责用户登录时后台所需要进行的相关设置
  */
-public class LoginUser {
+public class LoginUserHandler {
 
 	/**
 	 * 检测用户名和密码是否正确
@@ -45,7 +44,7 @@ public class LoginUser {
 	 * @param userAccountBean 用户账户对象
 	 * @param httpSession session
 	 * @return session设置是否成功
-	 * @throws NoSuchIDException
+	 * @throws dao.exception.NoSuchIDException
 	 */
 
 	public static boolean setSession(UserAccountBean userAccountBean, HttpSession httpSession) throws NoSuchIDException {

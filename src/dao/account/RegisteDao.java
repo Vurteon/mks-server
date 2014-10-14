@@ -1,6 +1,6 @@
-package dao.index;
+package dao.account;
 
-import beans.index.RegisterInfoBean;
+import beans.index.SignUpInfoBean;
 import utils.db.ConnectionFactory;
 import utils.db.ReleaseSource;
 
@@ -62,10 +62,10 @@ public class RegisteDao {
 	/**
 	 * 记录用户信息到数据库，初始化后台对用户的标记
 	 *
-	 * @param registerInfoBean 用户信息bean
+	 * @param signUpInfoBean 用户信息bean
 	 * @return 向数据库记录用户是否成功，成功true；失败 false
 	 */
-	public static boolean recordUser(RegisterInfoBean registerInfoBean) {
+	public static boolean recordUser(SignUpInfoBean signUpInfoBean) {
 
 
 		Connection con = ConnectionFactory.getMySqlConnection();
@@ -76,7 +76,7 @@ public class RegisteDao {
 
 		try {
 			ps = con.prepareStatement(insertEmailSql);
-			ps.setString(1, registerInfoBean.getEmail());
+			ps.setString(1, signUpInfoBean.getEmail());
 			ps.execute();
 		} catch (SQLException e) {
 			System.err.println("插入ID出现异常");
@@ -100,7 +100,7 @@ public class RegisteDao {
 			String getID = "SELECT ID FROM UserEmail WHERE email = ?";
 
 			ps = con.prepareStatement(getID);
-			ps.setString(1, registerInfoBean.getEmail());
+			ps.setString(1, signUpInfoBean.getEmail());
 			ResultSet resultSet = ps.executeQuery();
 
 			if (resultSet.next()) {
@@ -115,8 +115,8 @@ public class RegisteDao {
 			String insertAccountSql = "INSERT INTO AccountInfo(email,password) VALUES (?,?)";
 			ps = con.prepareStatement(insertAccountSql);
 
-			ps.setString(1, registerInfoBean.getEmail());
-			ps.setString(2, registerInfoBean.getPassword());
+			ps.setString(1, signUpInfoBean.getEmail());
+			ps.setString(2, signUpInfoBean.getPassword());
 			ps.execute();
 			ps.close();
 
@@ -125,8 +125,8 @@ public class RegisteDao {
 			String insertUserInfoSql = "INSERT INTO UserInfo (email,name,ID) VALUE (?,?,?)";
 
 			ps = con.prepareStatement(insertUserInfoSql);
-			ps.setString(1, registerInfoBean.getEmail());
-			ps.setString(2, registerInfoBean.getName());
+			ps.setString(1, signUpInfoBean.getEmail());
+			ps.setString(2, signUpInfoBean.getName());
 			ps.setLong(3, ID);
 			ps.execute();
 			ps.close();

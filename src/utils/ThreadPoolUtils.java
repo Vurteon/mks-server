@@ -1,6 +1,6 @@
 package utils;
 
-import model.uploadpart.RejectedHandler;
+import model.status.uploadpart.RejectedHandler;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;

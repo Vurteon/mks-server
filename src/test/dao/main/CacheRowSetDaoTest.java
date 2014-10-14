@@ -1,10 +1,10 @@
-package dao.main;
+package dao.cache;
 
 import beans.main.PhotoDesBean;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
-import model.StatusRowSetManger;
+import model.status.StatusRowSetManager;
 
 import java.sql.SQLException;
 import java.util.Random;
@@ -41,7 +41,7 @@ public class CacheRowSetDaoTest extends TestCase {
 				photoDesBean.setViewPhotoPath("aaa");
 				photoDesBean.setDetailPhotoPath("aa2qwed");
 
-				StatusRowSetManger.insertStatus(photoDesBean);
+				StatusRowSetManager.insertStatus(photoDesBean);
 			}
 
 

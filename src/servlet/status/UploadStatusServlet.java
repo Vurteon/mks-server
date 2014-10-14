@@ -1,7 +1,7 @@
-package servlet.main;
+package servlet.status;
 
-import listener.DealPartThreadListener;
-import model.uploadpart.DealPart;
+import listener.DealPartThreadsListener;
+import model.status.uploadpart.DealPart;
 import utils.ThreadPoolUtils;
 
 import javax.servlet.AsyncContext;
@@ -20,7 +20,7 @@ import java.util.Collection;
 
 @WebServlet(urlPatterns = "/UploadPhoto", asyncSupported = true)
 @MultipartConfig()
-public class UploadPhotoServlet extends HttpServlet {
+public class UploadStatusServlet extends HttpServlet {
 
 
 	/**
@@ -45,7 +45,7 @@ public class UploadPhotoServlet extends HttpServlet {
 		asyncContext.setTimeout(20000);
 
 		// 给此异步线程加入监听器
-		asyncContext.addListener(new DealPartThreadListener());
+		asyncContext.addListener(new DealPartThreadsListener());
 
 		// 将异步线程放入线程池中执行
 		ThreadPoolUtils.getCpuThreadPoolExecutor().submit(new DealPart(asyncContext, parts, ID));

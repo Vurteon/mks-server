@@ -1,7 +1,7 @@
-package servlet.main;
+package servlet.status;
 
-import listener.DealPartThreadListener;
-import model.main.LoadStatus;
+import listener.DealPartThreadsListener;
+import model.status.LoadStatus;
 import utils.CreateJson;
 import utils.EnumUtil.ErrorCodeJson;
 import utils.RequestInfoUtils;
@@ -81,7 +81,7 @@ public class LoadStatusServlet extends HttpServlet {
 		asyncContext.setTimeout(20000);
 
 		// 给此异步线程加入监听器
-		asyncContext.addListener(new DealPartThreadListener());
+		asyncContext.addListener(new DealPartThreadsListener());
 		// 将任务提交到IO型线程池中进行处理
 		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new LoadStatus(asyncContext,followings,rs_id,before));
 

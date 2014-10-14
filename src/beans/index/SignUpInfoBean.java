@@ -7,7 +7,7 @@ package beans.index;
  * function: 用户注册时参数存储对象
  */
 
-public class RegisterInfoBean {
+public class SignUpInfoBean {
 
 	private String name;
 

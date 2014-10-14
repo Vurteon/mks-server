@@ -1,8 +1,8 @@
-package servlet.index;
+package servlet.account;
 
 import beans.index.UserAccountBean;
 import dao.exception.NoSuchIDException;
-import model.index.LoginUser;
+import model.account.AccountManager;
 import utils.RequestInfoUtils;
 import utils.json.JSONObject;
 
@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 
 @WebServlet(name = "PhoneLoginServlet",urlPatterns = "/phone_login")
-public class PhoneLoginServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		// 获得上传来的json数据
@@ -46,7 +46,7 @@ public class PhoneLoginServlet extends HttpServlet {
 		}
 
 		// 检测数据是否正确
-		JSONObject jsonObject = LoginUser.isAccountPassed(userAccountBean);
+		JSONObject jsonObject = AccountManager.LoginUser.isAccountPassed(userAccountBean);
 		if (jsonObject.getString("isPassed").equals("no")) {
 			response.getWriter().write(jsonObject.toString());
 			response.getWriter().close();
@@ -56,7 +56,7 @@ public class PhoneLoginServlet extends HttpServlet {
 			try {
 				HttpSession httpSession = request.getSession(true);
 
-				if(LoginUser.setSession(userAccountBean,httpSession)) {
+				if(AccountManager.LoginUser.setSession(userAccountBean, httpSession)) {
 					// 向客户端返回sessionID
 					jsonObject.append("JSESSIONID",httpSession.getId());
 					response.getWriter().write(jsonObject.toString());

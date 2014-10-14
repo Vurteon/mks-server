@@ -1,5 +1,6 @@
 package dao.index;
 
+import dao.account.LoginDao;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;

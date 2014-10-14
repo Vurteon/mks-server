@@ -1,4 +1,4 @@
-package model.uploadpart;
+package model.status.uploadpart;
 
 import beans.main.PhotoDesBean;
 import utils.CreateJson;

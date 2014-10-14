@@ -1,7 +1,7 @@
-package model.uploadpart;
+package model.status.uploadpart;
 
 import beans.main.PhotoDesBean;
-import model.StatusRowSetManger;
+import model.status.StatusRowSetManager;
 import utils.EnumUtil.ErrorCodeJson;
 import utils.EnumUtil.PhotoType;
 
@@ -170,7 +170,7 @@ public class SavePart implements Runnable {
 		// 将json中相应的信息和图片的位置信息存储到CacheRowSet
 		// 如果出现相应的错误，则返回信息到客户端
 		try {
-			StatusRowSetManger.insertStatus(photoDesBean);
+			StatusRowSetManager.insertStatus(photoDesBean);
 		} catch (SQLException e) {
 
 			// 这里需要做些许处理

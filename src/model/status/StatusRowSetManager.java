@@ -1,8 +1,7 @@
-package model;
+package model.status;
 
 import beans.main.PhotoDesBean;
-import dao.main.CachedRowSetDao;
-import utils.CreateJson;
+import dao.cache.CachedRowSetDao;
 import utils.db.TimeBuilder;
 import utils.json.JSONArray;
 import utils.json.JSONObject;
@@ -20,7 +19,7 @@ import java.util.HashSet;
  * 并在内存数据库存储数量大于额定数值后向mysql数据库写入一部分数据
  */
 
-public class StatusRowSetManger {
+public class StatusRowSetManager {
 
 	/**
 	 * statusSet的大小，目前为1000，可能会占用2M到6M内存
@@ -420,7 +419,7 @@ public class StatusRowSetManger {
 	 * @param statusRowSet 用于初始化status CachedRowSet的对象
 	 */
 	public static void setStatusRowSet(CachedRowSet statusRowSet) {
-		StatusRowSetManger.statusRowSet = statusRowSet;
+		StatusRowSetManager.statusRowSet = statusRowSet;
 
 		try {
 			statusRowSet.first();

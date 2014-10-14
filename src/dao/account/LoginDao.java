@@ -1,4 +1,4 @@
-package dao.index;
+package dao.account;
 
 import beans.index.UserAccountBean;
 import dao.exception.NoSuchIDException;

@@ -1,7 +1,7 @@
-package servlet.index;
+package servlet.account;
 
-import beans.index.RegisterInfoBean;
-import model.index.RegisteUser;
+import beans.index.SignUpInfoBean;
+import model.account.SignUpUserHandler;
 import utils.RequestInfoUtils;
 import utils.json.JSONObject;
 
@@ -22,7 +22,7 @@ import java.io.OutputStreamWriter;
  */
 
 @WebServlet(name = "PhoneRegisterServlet",urlPatterns = "/phone_register")
-public class PhoneRegisterServlet extends HttpServlet {
+public class SignUpServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String registerInfo = RequestInfoUtils.getPostContent(request);
@@ -41,19 +41,19 @@ public class PhoneRegisterServlet extends HttpServlet {
 
 
 		// 向数据库添加注册信息
-		RegisterInfoBean registerInfoBean = new RegisterInfoBean();
+		SignUpInfoBean signUpInfoBean = new SignUpInfoBean();
 
 
 		if (registerInfoJson.has("name") && registerInfoJson.has("email") && registerInfoJson.has("password")) {
-			registerInfoBean.setName(registerInfoJson.getString("name"));
-			registerInfoBean.setEmail(registerInfoJson.getString("email"));
-			registerInfoBean.setPassword(registerInfoJson.getString("password"));
+			signUpInfoBean.setName(registerInfoJson.getString("name"));
+			signUpInfoBean.setEmail(registerInfoJson.getString("email"));
+			signUpInfoBean.setPassword(registerInfoJson.getString("password"));
 		}else {
 			response.sendError(404);
 			return ;
 		}
 
-		JSONObject jsonObject = RegisteUser.registeUser(registerInfoBean);
+		JSONObject jsonObject = SignUpUserHandler.registeUser(signUpInfoBean);
 
 		// 由于在注册前就已经完全检查了数据的正确性，所以这里返回的一定是record的信息
 		// 如果是返回了email已经存在的信息，必然是有人构建了一次非正常请求，

@@ -1,7 +1,7 @@
-package model.index;
+package model.account;
 
-import beans.index.RegisterInfoBean;
-import dao.index.RegisteDao;
+import beans.index.SignUpInfoBean;
+import dao.account.RegisteDao;
 import utils.CreateJson;
 import utils.json.JSONObject;
 
@@ -10,15 +10,15 @@ import utils.json.JSONObject;
  * time: 2014/7/28
  * function: 注册用户
  */
-public class RegisteUser {
+public class SignUpUserHandler {
 
-	public static JSONObject registeUser(RegisterInfoBean registerInfoBean) {
-		if(isUserExist(registerInfoBean.getEmail())){
+	public static JSONObject registeUser(SignUpInfoBean signUpInfoBean) {
+		if(isUserExist(signUpInfoBean.getEmail())){
 			// 构造json对象
 			String jsonString = "{'isExist':'yes'}";
 			return CreateJson.getJsonObject(jsonString);
 		}else {
-			if (RegisteDao.recordUser(registerInfoBean)){
+			if (RegisteDao.recordUser(signUpInfoBean)){
 				String jsonString = "{'isRecorded':'yes'}";
 				return CreateJson.getJsonObject(jsonString);
 			}else {

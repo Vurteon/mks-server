@@ -1,13 +1,9 @@
-package model.main;
+package model.status;
 
-import model.StatusRowSetManger;
-import utils.EnumUtil.ErrorCode;
 import utils.EnumUtil.ErrorCodeJson;
 import utils.json.JSONArray;
-import utils.json.JSONObject;
 
 import javax.servlet.AsyncContext;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -38,7 +34,7 @@ public class LoadStatus implements Runnable {
 	@Override
 	public void run() {
 		try {
-			JSONArray statusArray = StatusRowSetManger.selectStatus(followings, rs_id, before);
+			JSONArray statusArray = StatusRowSetManager.selectStatus(followings, rs_id, before);
 
 			try {
 

@@ -1,7 +1,7 @@
 package listener;
 
-import dao.main.CachedRowSetDao;
-import model.StatusRowSetManger;
+import dao.cache.CachedRowSetDao;
+import model.status.StatusRowSetManager;
 import utils.ThreadPoolUtils;
 
 import javax.servlet.ServletContextEvent;
@@ -56,7 +56,7 @@ public class TomcatOnListener implements ServletContextListener{
 		System.out.println("创建CacheRowSet，实现内存数据库");
 
 		try {
-			StatusRowSetManger.setStatusRowSet(CachedRowSetDao.buildNewCacheRowSet());
+			StatusRowSetManager.setStatusRowSet(CachedRowSetDao.buildNewCacheRowSet());
 
 		} catch (SQLException e) {
 			System.err.println("创建Cache出错，从新启动tomcat");

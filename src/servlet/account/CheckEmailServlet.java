@@ -1,6 +1,6 @@
-package servlet.index;
+package servlet.account;
 
-import dao.index.RegisteDao;
+import dao.account.RegisteDao;
 import utils.RequestInfoUtils;
 import utils.json.JSONObject;
 
@@ -22,7 +22,7 @@ import java.io.OutputStreamWriter;
  */
 
 @WebServlet(name = "PhoneIsEmailUsedFilter",urlPatterns = "/phone_isEmailUsed")
-public class PhoneIsEmailUsedServlet extends HttpServlet {
+public class CheckEmailServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String emailContent = RequestInfoUtils.getPostContent(request);

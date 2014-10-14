@@ -1,7 +1,7 @@
-package dao.main;
+package dao.cache;
 
 import beans.main.PhotoDesBean;
-import model.StatusRowSetManger;
+import model.status.StatusRowSetManager;
 import utils.db.*;
 
 import javax.sql.rowset.CachedRowSet;
@@ -140,7 +140,7 @@ public class CachedRowSetDao {
 	 */
 	public static boolean insertData(PhotoDesBean photoDesBean) throws SQLException {
 
-		CachedRowSet cachedRowSet = StatusRowSetManger.getStatusRowSet();
+		CachedRowSet cachedRowSet = StatusRowSetManager.getStatusRowSet();
 
 
 		// 将数据插入最后一行的下一行
