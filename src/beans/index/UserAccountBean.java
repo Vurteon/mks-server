@@ -7,20 +7,20 @@ package beans.index;
  */
 public class UserAccountBean {
 
-	private String email;
+	private String account;
 
 	private String password;
 
-	public String getEmail() {
-		return email;
+	public String getAccount() {
+		return account;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 	public void setPassword(String password) {

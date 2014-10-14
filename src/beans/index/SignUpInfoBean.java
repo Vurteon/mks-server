@@ -11,20 +11,20 @@ public class SignUpInfoBean {
 
 	private String name;
 
-	private String email;
+	private String userAccount;
 
 	private String password;
 
-	public String getEmail() {
-		return email;
+	public String getUserAccount() {
+		return userAccount;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
 	}
 
 	public void setPassword(String password) {
