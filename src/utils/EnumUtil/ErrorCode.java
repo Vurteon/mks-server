@@ -9,20 +9,20 @@ package utils.EnumUtil;
 public class ErrorCode {
 
 	// 客户端构造的json格式错误
-	public static final int JSONFORMATERROR = 0;
+	public static final String JSONFORMATERROR = "formatError";
 
 	// 服务器IO错误
-	public static final int IOERROR = 1;
+	public static final String IOERROR = "IOERROR";
 
 	// 服务器文件系统构建文件出错
-	public static final int MKDIRERROR = 2;
+	public static final String MKDIRERROR = "MKDIRERROR";
 
 	// session过期或者不存在
-	public static final int SESSIONERROR = 3;
+	public static final String SESSIONERROR = "SESSIONERROR";
 
 	// 服务器sql出错
-	public static final int SQLERROR = 4;
+	public static final String SQLERROR = "SQLERROR";
 
 	// 客户端json不满足格式要求
-	public static final int JSONERROR = 5;
+	public static final String JSONERROR = "JSONERROR";
 }
