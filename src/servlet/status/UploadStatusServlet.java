@@ -54,8 +54,8 @@ public class UploadStatusServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 直接返回404错误代码
-		response.sendError(404);
+		response.getWriter().write("hello_world!");
+		response.getWriter().close();
 	}
 }
 

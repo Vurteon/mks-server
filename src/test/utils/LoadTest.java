@@ -1,7 +1,6 @@
 package test.utils;
 
-import utils.CreateJson;
-import utils.PartFactory;
+import utils.JsonUtils;
 import utils.json.JSONArray;
 import utils.json.JSONObject;
 
@@ -16,7 +15,7 @@ import java.util.Date;
  * Created by leon on 14-9-10.
  */
 public class LoadTest implements Runnable {
-	static String testUrl = "http://localhost:8080/LoadStatus";
+	static String testUrl = "http://127.0.0.1:8080/login";
 
 
 	@Override
@@ -40,7 +39,7 @@ public class LoadTest implements Runnable {
 
 
 
-			byte[] postInfo = CreateJson.getJsonObject("{'rs_id':3;'before':true}").toString().getBytes();
+			byte[] postInfo = JsonUtils.getJsonObject("{'rs_id':3;'before':true}").toString().getBytes();
 
 
 			System.out.println("发出请求时间：" + new Date());
@@ -61,18 +60,18 @@ public class LoadTest implements Runnable {
 
 			System.out.println("完成时间：" + new Date());
 
-			System.out.println(sb);
+			System.out.println(new JSONObject(sb.toString()));
 
-			JSONArray jsonArray = new JSONArray(sb.toString());
-
-			int i = 0;
-
-			while (i < jsonArray.length()) {
-				JSONObject jsonObject = (JSONObject)jsonArray.get(i);
-				System.out.println("ID:" + jsonObject.get("ID") + "   rs_id:" + jsonObject.get("rs_id") +
-				"   时间:" + jsonObject.get("time"));
-				i++;
-			}
+//			JSONArray jsonArray = new JSONArray(sb.toString());
+//
+//			int i = 0;
+//
+//			while (i < jsonArray.length()) {
+//				JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+//				System.out.println("ID:" + jsonObject.get("ID") + "   rs_id:" + jsonObject.get("rs_id") +
+//				"   时间:" + jsonObject.get("time"));
+//				i++;
+//			}
 
 
 

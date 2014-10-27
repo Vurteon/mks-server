@@ -2,7 +2,7 @@ package model.status.uploadpart;
 
 import beans.main.PhotoDesBean;
 import model.status.StatusRowSetManager;
-import utils.EnumUtil.ErrorCodeJson;
+import utils.EnumUtil.ErrorCode;
 import utils.EnumUtil.PhotoType;
 
 import javax.imageio.ImageIO;
@@ -259,7 +259,7 @@ public class SavePart implements Runnable {
 	 */
 	private void sendMkDirErrorCode(AsyncContext asyncContext) {
 		try {
-			asyncContext.getResponse().getWriter().write(ErrorCodeJson.MKDIRERROR.toString());
+			asyncContext.getResponse().getWriter().write(ErrorCode.MKDIRERROR);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -275,7 +275,7 @@ public class SavePart implements Runnable {
 	 */
 	private void sendIoError(AsyncContext asyncContext) {
 		try {
-			asyncContext.getResponse().getWriter().write(ErrorCodeJson.IOERROR.toString());
+			asyncContext.getResponse().getWriter().write(ErrorCode.IOERROR);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

@@ -52,11 +52,11 @@ public class SignUpServlet extends HttpServlet {
 				signUpInfoBean.setUserAccount(signUpInfoJson.getString("userAccount"));
 				signUpInfoBean.setPassword(signUpInfoJson.getString("password"));
 			}else {
-				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR,response,true);
+				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR,response);
 				return ;
 			}
 		}else {
-			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR,response,true);
+			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR,response);
 			return ;
 		}
 
@@ -70,11 +70,12 @@ public class SignUpServlet extends HttpServlet {
 		boolean recordInfo = SignUpUserHandler.registeUser(signUpInfoBean);
 
 		if (recordInfo) {
-			StatusResponseHandler.sendStatus("accountResult", "success",response,true);
+			StatusResponseHandler.sendStatus("accountResult", "success",response);
 		}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendError(404);
+		response.getWriter().write("hello_world!");
+		response.getWriter().close();
 	}
 }

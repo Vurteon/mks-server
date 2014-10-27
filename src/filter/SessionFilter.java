@@ -1,6 +1,6 @@
 package filter;
 
-import utils.EnumUtil.ErrorCodeJson;
+import utils.EnumUtil.ErrorCode;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -13,8 +13,8 @@ import java.io.IOException;
  * function: 检查是否存在session,如果不存在,则向客户端发送错误代码,并返回
  */
 
-@WebFilter(filterName = "SessionFilter",urlPatterns = {"/UploadPhoto","","/isEmailUsed"},dispatcherTypes = {DispatcherType.REQUEST,
-		DispatcherType.INCLUDE,DispatcherType.FORWARD,DispatcherType.ERROR,DispatcherType.ASYNC})
+//@WebFilter(filterName = "SessionFilter",urlPatterns = {"","",""},dispatcherTypes = {DispatcherType.REQUEST,
+//		DispatcherType.INCLUDE,DispatcherType.FORWARD,DispatcherType.ERROR,DispatcherType.ASYNC})
 public class SessionFilter implements Filter {
 
 	public void destroy() {
@@ -27,7 +27,7 @@ public class SessionFilter implements Filter {
 		// 如果不存在session，返回给客户端错误代码，表示session可能
 		// 已经过期，需要重新登录
 		if (httpServletRequest.getSession(false) == null) {
-			resp.getWriter().write(ErrorCodeJson.SESSIONERROR.toString());
+			resp.getWriter().write(ErrorCode.SESSIONERROR);
 			return;
 		}
 		chain.doFilter(req, resp);

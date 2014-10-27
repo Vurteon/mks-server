@@ -2,8 +2,8 @@ package servlet.status;
 
 import listener.DealPartThreadsListener;
 import model.status.LoadStatus;
-import utils.CreateJson;
-import utils.EnumUtil.ErrorCodeJson;
+import utils.EnumUtil.ErrorCode;
+import utils.JsonUtils;
 import utils.RequestInfoUtils;
 import utils.ThreadPoolUtils;
 import utils.json.JSONObject;
@@ -57,8 +57,8 @@ public class LoadStatusServlet extends HttpServlet {
 		JSONObject jsonObject;
 
 		// 检测内容是否为json
-		if (content == null || (jsonObject = CreateJson.getJsonObject(content)) == null) {
-			response.getWriter().write(ErrorCodeJson.JSONERROR.toString());
+		if (content == null || (jsonObject = JsonUtils.getJsonObject(content)) == null) {
+			response.getWriter().write(ErrorCode.JSONERROR.toString());
 			return ;
 		}
 
@@ -70,7 +70,7 @@ public class LoadStatusServlet extends HttpServlet {
 			before = jsonObject.getBoolean("before");
 		}else{
 			// 向客户端返回json格式不满足要求
-			response.getWriter().write(ErrorCodeJson.JSONERROR.toString());
+			response.getWriter().write(ErrorCode.JSONERROR.toString());
 			return ;
 		}
 		// 当前用户的所有关注的人
@@ -89,7 +89,7 @@ public class LoadStatusServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//
-		response.sendError(404);
+		response.getWriter().write("hello_world!");
+		response.getWriter().close();
 	}
 }

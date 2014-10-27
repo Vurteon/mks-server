@@ -1,6 +1,6 @@
 package model.status;
 
-import utils.EnumUtil.ErrorCodeJson;
+import utils.EnumUtil.ErrorCode;
 import utils.json.JSONArray;
 
 import javax.servlet.AsyncContext;
@@ -46,7 +46,7 @@ public class LoadStatus implements Runnable {
 			} catch (IOException e) {
 				try {
 					// 向客户端告知网络IO出错
-					asyncContext.getResponse().getWriter().write(ErrorCodeJson.IOERROR.toString());
+					asyncContext.getResponse().getWriter().write(ErrorCode.IOERROR);
 				} catch (IOException e1) {
 					System.err.println("网络错误---------没办法了");
 					e1.printStackTrace();
@@ -58,7 +58,7 @@ public class LoadStatus implements Runnable {
 		} catch (SQLException e) {
 			try {
 				// 向客户端告知服务器SQL出错
-				asyncContext.getResponse().getWriter().write(ErrorCodeJson.SQLERROR.toString());
+				asyncContext.getResponse().getWriter().write(ErrorCode.SQLERROR);
 			} catch (IOException e1) {
 				System.err.println("网络错误---------没办法了!");
 				e1.printStackTrace();

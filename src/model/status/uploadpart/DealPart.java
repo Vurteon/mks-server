@@ -1,8 +1,9 @@
 package model.status.uploadpart;
 
 import beans.main.PhotoDesBean;
-import utils.CreateJson;
-import utils.EnumUtil.ErrorCodeJson;
+import utils.EnumUtil.ErrorCode;
+import utils.JsonUtils;
+import utils.StatusResponseHandler;
 import utils.ThreadPoolUtils;
 import utils.json.JSONObject;
 
@@ -72,7 +73,7 @@ public class DealPart implements Runnable{
 				}
 
 				// 描述照片的json对象
-				jsonObject = CreateJson.getJsonObject(sb.toString());
+				jsonObject = JsonUtils.getJsonObject(sb.toString());
 
 				photoDesBean = buildJsonInfo(jsonObject);
 
@@ -81,7 +82,7 @@ public class DealPart implements Runnable{
 
 				// 返回IO读取错误信息
 				try {
-					asyncContext.getResponse().getWriter().write(ErrorCodeJson.IOERROR.toString());
+					asyncContext.getResponse().getWriter().write(ErrorCode.IOERROR);
 				} catch (IOException e1) {
 					System.err.println("----------------------->>>向客户端发送信息错误");
 					e1.printStackTrace();
@@ -137,7 +138,7 @@ public class DealPart implements Runnable{
 
 			} catch (IOException e) {
 				try {
-					asyncContext.getResponse().getWriter().write(ErrorCodeJson.IOERROR.toString());
+					asyncContext.getResponse().getWriter().write(ErrorCode.IOERROR);
 				} catch (IOException e1) {
 					System.err.println("----------------------->>>向客户端发送信息错误");
 					e1.printStackTrace();

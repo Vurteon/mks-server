@@ -46,21 +46,21 @@ public class CheckAccountServlet extends HttpServlet {
 				//直接使用数据库查询服务
 				String dbEmail = SignUpDao.getUserEmail(email);
 				if (dbEmail == null) {
-					StatusResponseHandler.sendStatus("accountResult","not_exist",response,true);
+					StatusResponseHandler.sendStatus("accountResult","not_exist",response);
 				}else {
-					StatusResponseHandler.sendStatus("accountResult","exist",response,true);
+					StatusResponseHandler.sendStatus("accountResult","exist",response);
 				}
 			}else {
 				// 格式错误
-				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response, true);
+				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response);
 			}
 		}else {
-			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response, true);
+			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response);
 		}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		response.sendError(404);
+		response.getWriter().write("hello_world!");
+		response.getWriter().close();
 	}
 }

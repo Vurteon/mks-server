@@ -7,16 +7,21 @@ public class FormatCheckManager {
 
 
 	public static boolean checkAccount() {
-		return false;
+
+
+
+
+
+		return true;
 	}
 
 
 	public static boolean checkPassword() {
-		return false;
+		return true;
 	}
 
 	public static boolean checkName() {
-		return false;
+		return true;
 	}
 
 

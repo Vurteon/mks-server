@@ -1,7 +1,6 @@
 package test.utils;
 
-import sun.net.www.http.HttpClient;
-import utils.CreateJson;
+import utils.JsonUtils;
 import utils.PartFactory;
 
 import java.io.*;
@@ -62,7 +61,7 @@ public class PostTest implements Runnable {
 
 			System.arraycopy(image, 0, newByte, 0, ll);
 
-			byte[] asd = CreateJson.getJsonObject("{'myWords':'test'}").toString().getBytes();
+			byte[] asd = JsonUtils.getJsonObject("{'myWords':'test'}").toString().getBytes();
 
 			System.out.println("发出请求时间：" + new Date());
 

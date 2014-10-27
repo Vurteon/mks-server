@@ -28,6 +28,10 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+		System.out.println(request.getContextPath());
+
+
 		// 获得上传来的json数据
 		String userAccountInfo = RequestInfoUtils.getPostContent(request);
 
@@ -47,11 +51,11 @@ public class LoginServlet extends HttpServlet {
 				userAccountBean.setAccount(userAccountJson.getString("account"));
 				userAccountBean.setPassword(userAccountJson.getString("password"));
 			}else {
-				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response,true);
+				StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response);
 				return ;
 			}
 		}else {
-			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response,true);
+			StatusResponseHandler.sendStatus("accountResult", ErrorCode.JSONFORMATERROR, response);
 			return ;
 		}
 
@@ -65,21 +69,22 @@ public class LoginServlet extends HttpServlet {
 				if(LoginUserHandler.setSession(userAccountBean, httpSession)) {
 					// 向客户端返回sessionID
 					JSONObject responseInfo = JsonUtils.getJsonObject("{'accountResult':'success';'JSESSIONID':" +httpSession.getId() +  "}");
-					StatusResponseHandler.sendStatus(responseInfo,response,true);
+					StatusResponseHandler.sendStatus(responseInfo,response);
 				}else {
-					StatusResponseHandler.sendStatus("accountResult","error",response,true);
+					StatusResponseHandler.sendStatus("accountResult","error",response);
 				}
 			} catch (NoSuchIDException e) {
 				e.printStackTrace();
 			}
 		} else {
 			// 密码错误，返回消息
-			StatusResponseHandler.sendStatus("accountResult","dataWrong",response,true);
+			StatusResponseHandler.sendStatus("accountResult","dataWrong",response);
 		}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 直接返回错误代码
-		response.sendError(404);
+		System.out.println("---------------->" + request.getContextPath());
+		response.getWriter().write("hello_world!");
+		response.getWriter().close();
 	}
 }

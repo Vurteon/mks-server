@@ -1,7 +1,7 @@
 package test.dao.index;
 
 import beans.index.SignUpInfoBean;
-import dao.account.RegisteDao;
+import dao.account.SignUpDao;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
@@ -13,8 +13,8 @@ import junit.framework.TestCase;
  * @since <pre>07/28/2014</pre>
  * @version 1.0
  */
-public class RegisteDaoTest extends TestCase {
-    public RegisteDaoTest(String name) {
+public class SignUpDaoTest extends TestCase {
+    public SignUpDaoTest(String name) {
         super(name);
     }
 
@@ -28,19 +28,19 @@ public class RegisteDaoTest extends TestCase {
 
     public void testGetUser() throws Exception {
         //TODO: Test goes here...
-	    String r = RegisteDao.getUserEmail("test");
+	    String r = SignUpDao.getUserEmail("test");
 	    System.out.println(r);
 
 
 	    SignUpInfoBean signUpInfoBean = new SignUpInfoBean();
 
 		signUpInfoBean.setName("康乐");
-	    signUpInfoBean.setEmail("1196139850@qq.com");
+	    signUpInfoBean.setUserAccount("1196139850@qq.com");
 	    signUpInfoBean.setPassword("kangLE520CJqaz?2");
-	    RegisteDao.recordUser(signUpInfoBean);
+	    SignUpDao.recordUser(signUpInfoBean);
     }
 
     public static Test suite() {
-        return new TestSuite(RegisteDaoTest.class);
+        return new TestSuite(SignUpDaoTest.class);
     }
 }
