@@ -111,7 +111,7 @@ public class SignUpDao {
 			ps.close();
 
 
-			// 插入email和password信息到AccountInfo
+			// 插入信息到AccountInfo
 			String insertAccountSql = "INSERT INTO AccountInfo(email,password) VALUES (?,?)";
 			ps = con.prepareStatement(insertAccountSql);
 
@@ -131,33 +131,12 @@ public class SignUpDao {
 			ps.execute();
 			ps.close();
 
-
-			/**
-			 * 插入ID到相关表
-			 */
-
 			// 插入ID 到UserProfile
 			String insertUserProfileSql = "INSERT INTO UserProfile (ID) VALUE (?)";
 			ps = con.prepareStatement(insertUserProfileSql);
 			setID(ID, ps);
 
-			// 插入ID 到HeadBgPic
-			String insertHeadBgPicSql = "INSERT INTO HeadBgPic (ID) VALUE (?)";
-			ps = con.prepareStatement(insertHeadBgPicSql);
-			setID(ID, ps);
-
-			// 插入ID 到HeadPic
-			String insertHeadPicSql = "INSERT INTO HeadPic (ID) VALUE (?)";
-			ps = con.prepareStatement(insertHeadPicSql);
-			setID(ID, ps);
-
-			// 插入ID 到HomePageName
-			String insertHomePageNameSql = "INSERT INTO HomePageName (ID) VALUE (?)";
-			ps = con.prepareStatement(insertHomePageNameSql);
-			setID(ID, ps);
-
 			con.commit();
-
 
 		} catch (SQLException e) {
 			try {
