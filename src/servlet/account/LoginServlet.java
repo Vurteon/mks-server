@@ -28,10 +28,6 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
-		System.out.println(request.getContextPath());
-
-
 		// 获得上传来的json数据
 		String userAccountInfo = RequestInfoUtils.getPostContent(request);
 
@@ -83,7 +79,6 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("---------------->" + request.getContextPath());
 		response.getWriter().write("hello_world!");
 		response.getWriter().close();
 	}
