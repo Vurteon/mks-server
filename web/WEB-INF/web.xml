@@ -28,7 +28,7 @@
   </description>
 
 
-
+	<!--sign-up-->
 	<servlet>
 		<servlet-name>SignUpServlet</servlet-name>
 		<servlet-class>servlet.account.SignUpServlet</servlet-class>
@@ -38,6 +38,7 @@
 		<url-pattern>/sign_up</url-pattern>
 	</servlet-mapping>
 
+	<!--login-->
 	<servlet>
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>servlet.account.LoginServlet</servlet-class>
@@ -47,6 +48,7 @@
 		<url-pattern>/login</url-pattern>
 	</servlet-mapping>
 
+	<!--account-check-->
 	<servlet>
 		<servlet-name>CheckEmailServlet</servlet-name>
 		<servlet-class>servlet.account.CheckAccountServlet</servlet-class>
@@ -56,6 +58,35 @@
 		<url-pattern>/checkAccount</url-pattern>
 	</servlet-mapping>
 
+	<!--photo uploaded to the server-->
+	<servlet>
+		<servlet-name>UploadPhotoServlet</servlet-name>
+		<servlet-class>servlet.status.UploadStatusServlet</servlet-class>
+		<async-supported>true</async-supported>
+		<multipart-config> </multipart-config>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadPhotoServlet</servlet-name>
+		<url-pattern>/UploadPhoto</url-pattern>
+	</servlet-mapping>
+
+	<!--session filter-->
+	<filter>
+		<filter-name>SessionFilter</filter-name>
+		<filter-class>filter.SessionFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	<filter-mapping>
+		<filter-name>SessionFilter</filter-name>
+		<url-pattern>/UploadPhoto</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+
+	<!--on tomcat listener-->
 	<listener>    
       <listener-class>listener.TomcatOnListener</listener-class>    
 	</listener>    
