@@ -4,9 +4,11 @@ import beans.main.PhotoDesBean;
 import model.status.StatusRowSetManager;
 import utils.EnumUtil.ErrorCode;
 import utils.EnumUtil.PhotoType;
+import utils.StatusResponseHandler;
 
 import javax.imageio.ImageIO;
 import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +26,9 @@ public class SavePart implements Runnable {
 
 	static long asd = 0;
 
-    public static final String saveHome = "/home/leon/shunjian/photo";
+//    public static final String saveHome = "/alidata/server/tomcat7/webapps/mks/shunjian/photo";
+
+	public static final String saveHome = "F:/shunjian/photo";
 
 	private long ID;
 	private ArrayList<BufferedImage> newImages;
@@ -50,98 +54,88 @@ public class SavePart implements Runnable {
 
 		File saveParentFile;
 
+		ArrayList<File> savedPhoto = new ArrayList<File>();
+
 		// 如果是专辑，那么就进行存储并将文件夹的名字赋值给相应的位置
-		if (photoDesBean.getAlbumName() != null ) {
+		if (photoDesBean.getAlbumName() != null) {
 
 			// 获得压缩后专辑照片存储的位置
 			saveParentFile = getSaveFile(PhotoType.RESIZE_PHOTO);
 			if (saveParentFile != null) {
-
 				for (BufferedImage bufferedImage : newImages) {
 					File saveFile = new File(saveParentFile, getFileName());
 					try {
+						// 将压缩后的照片以jpg格式写入相应的位置
 						ImageIO.write(bufferedImage, "jpg", saveFile);
+						// 存储位置记录
+						savedPhoto.add(saveFile);
 					} catch (IOException e) {
+						// 向客户端发送io错误信息
 						sendIoError(asyncContext);
-						File[] files = saveParentFile.listFiles();
-						if (files != null) {
-							for (File file : files) {
-								file.delete();
-							}
-						}
 						e.printStackTrace();
+
+						// 服务器文件回滚操作
+						rollBackPhoto(savedPhoto);
+						// 线程结束
+						return ;
 					}
 				}
-
 				// 将压缩后专辑的文件夹的位置存储
 				newPhotoPath = saveParentFile.getPath();
-			}else {
+			} else {
+				// 向客户端发送目录创建错误的信息
 				sendMkDirErrorCode(asyncContext);
-				return ;
+				return;
 			}
-
 
 			// 存储原图
 			saveParentFile = getSaveFile(PhotoType.ORIGINAL_PHOTO);
 			if (saveParentFile != null) {
-
 				for (BufferedImage bufferedImage : oldImages) {
 					File saveFile = new File(saveParentFile, getFileName());
 					try {
+						// 将原图以jpg格式写入相应的位置
 						ImageIO.write(bufferedImage, "jpg", saveFile);
+						savedPhoto.add(saveFile);
 					} catch (IOException e) {
 						sendIoError(asyncContext);
-						//删除开始存储的新图
-						File f = new File(newPhotoPath);
-						File[] oldFiles = f.listFiles();
-						if (oldFiles != null) {
-							for (File oldPhoto : oldFiles) {
-								oldPhoto.delete();
-							}
-						}
-
-						// 删除原图
-						File[] originalFiles = saveParentFile.listFiles();
-						if (originalFiles != null) {
-							for (File file : originalFiles) {
-								file.delete();
-							}
-						}
 						e.printStackTrace();
+						// 回滚操作
+						rollBackPhoto(savedPhoto);
+						// 线程结束
+						return ;
 					}
 				}
 				// 将压缩后专辑的文件夹的位置存储
 				oldPhotoPath = saveParentFile.getPath();
-			}else {
+			} else {
 				// 向客户端发送错误信息
 				sendMkDirErrorCode(asyncContext);
-
-				// 原图存储出现问题，删除原来存储的新图并向客户端发送错误代码信息
-				File file = new File(newPhotoPath);
-				File[] files = file.listFiles();
-				if (files != null) {
-					for (File f : files) {
-						f.delete();
-					}
-				}
-
+				// 原图存储出现问题，删除原来存储的压缩后的图并向客户端发送错误代码信息
+				rollBackPhoto(savedPhoto);
+				return ;
 			}
-		}else {
+		} else {
 			// 如果不是专辑，那么就是单张照片的存储
+			File savedNewFile;
+			File savedOriginFile;
 
 			// 获得压缩后照片存储的位置
 			saveParentFile = getSaveFile(PhotoType.RESIZE_PHOTO);
 			if (saveParentFile != null) {
-				File saveFile = new File(saveParentFile, getFileName());
-				// 照片的位置信息
-				newPhotoPath = saveFile.getPath();
+				savedNewFile = new File(saveParentFile, getFileName());
 				try {
-					ImageIO.write(newImages.get(0), "jpg", saveFile);
+					ImageIO.write(newImages.get(0), "jpg", savedNewFile);
 				} catch (IOException e) {
+					sendIoError(asyncContext);
+					rollBackPhoto(savedNewFile);
 					e.printStackTrace();
+					return ;
 				}
-			}else {
-				// 向客户端发送错误信息
+				// 照片的位置信息
+				newPhotoPath = savedNewFile.getPath();
+			} else {
+				// 向客户端发送目录创建出错的错误信息
 				sendMkDirErrorCode(asyncContext);
 				return ;
 			}
@@ -149,21 +143,26 @@ public class SavePart implements Runnable {
 			// 存储单张原图
 			saveParentFile = getSaveFile(PhotoType.ORIGINAL_PHOTO);
 			if (saveParentFile != null) {
-				File saveFile = new File(saveParentFile, getFileName());
-				// 照片的位置信息
-				oldPhotoPath = saveFile.getPath();
+				savedOriginFile = new File(saveParentFile, getFileName());
 				try {
-					ImageIO.write(oldImages.get(0), "jpg", saveFile);
+					ImageIO.write(oldImages.get(0), "jpg", savedOriginFile);
 				} catch (IOException e) {
+					sendIoError(asyncContext);
+					rollBackPhoto(savedOriginFile);
 					e.printStackTrace();
+					return ;
 				}
-			}else {
+				// 照片的位置信息
+				oldPhotoPath = savedOriginFile.getPath();
+			} else {
+				// 原图存储 创建目录出错
 				sendMkDirErrorCode(asyncContext);
-				File file = new File(newPhotoPath);
-				file.delete();
+				rollBackPhoto(savedNewFile);
+				return ;
 			}
 		}
 
+		// 将存储照片位置信息放入 照片描述对象
 		photoDesBean.setViewPhotoPath(newPhotoPath);
 		photoDesBean.setDetailPhotoPath(oldPhotoPath);
 
@@ -173,7 +172,7 @@ public class SavePart implements Runnable {
 			StatusRowSetManager.insertStatus(photoDesBean);
 		} catch (SQLException e) {
 
-			// 这里需要做些许处理
+			// 这里需要做些许处理，目前暂时不处理
 			e.printStackTrace();
 		}
 
@@ -258,30 +257,29 @@ public class SavePart implements Runnable {
 	 * @param asyncContext servlet异步对象
 	 */
 	private void sendMkDirErrorCode(AsyncContext asyncContext) {
-		try {
-			asyncContext.getResponse().getWriter().write(ErrorCode.MKDIRERROR);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			// 关闭AsyncContext资源
-			asyncContext.complete();
-		}
+		StatusResponseHandler.sendStatus("status", ErrorCode.MKDIRERROR,
+				(HttpServletResponse) asyncContext.getResponse());
 	}
 
 
 	/**
 	 * 向客户端发送IO错误的消息并关闭AsyncContext资源
+	 *
 	 * @param asyncContext servlet异步对象
 	 */
-	private void sendIoError(AsyncContext asyncContext) {
-		try {
-			asyncContext.getResponse().getWriter().write(ErrorCode.IOERROR);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			// 关闭AsyncContext资源
-			asyncContext.complete();
+	private static void sendIoError(AsyncContext asyncContext) {
+		StatusResponseHandler.sendStatus("status", ErrorCode.IOERROR,
+				(HttpServletResponse) asyncContext.getResponse());
+	}
+
+	private static void rollBackPhoto (ArrayList<File> files) {
+		for (File file : files) {
+			file.delete();
 		}
+	}
+
+	private static void rollBackPhoto (File file) {
+		file.delete();
 	}
 
 
