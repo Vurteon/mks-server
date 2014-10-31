@@ -71,6 +71,7 @@ public class StatusRowSetManager {
 			// 如果数据数量已超出最大容量，那么就向数据库写入数据，此时也需要
 			// 保持同步性，所以需要在synchronized块中进行
 			if (statusCurrentSize >= statusSetMaxSize) {
+				System.out.println("这里是单线程的！");
 				statusOverSizeHandler();
 				statusCurrentSize -= writeOnceNumber;
 			}
@@ -384,6 +385,7 @@ public class StatusRowSetManager {
 	 *
 	 * @throws SQLException
 	 */
+
 	private static void statusOverSizeHandler() throws SQLException {
 
 		// 将删除对CacheRowSet立即执行
