@@ -179,6 +179,10 @@ public class CachedRowSetDao {
 		cachedRowSet.updateString(15, photoDesBean.getViewPhotoPath());
 		cachedRowSet.updateString(16, photoDesBean.getDetailPhotoPath());
 
+		System.out.println("--------------->" + photoDesBean.getMyWords());
+
+
+
 		// 插入数据
 		cachedRowSet.insertRow();
 		cachedRowSet.moveToCurrentRow();
@@ -380,6 +384,7 @@ public class CachedRowSetDao {
 			e.printStackTrace();
 			// 回滚事务
 			connection.rollback();
+			return;
 		} finally {
 			ReleaseSource.releaseSource(preparedStatement);
 		}
@@ -389,7 +394,7 @@ public class CachedRowSetDao {
 
 		// 获取rs_id
 		try {
-			String getRsId = "SELECT rs_id,ID,time FROM StatusFeeds WHERE ID = ? ORDER BY time DESC LIMIT 1";
+			String getRsId = "SELECT rs_id FROM StatusFeeds WHERE ID = ? ORDER BY rs_id DESC LIMIT 1";
 
 			preparedStatement = connection.prepareStatement(getRsId);
 
@@ -401,11 +406,11 @@ public class CachedRowSetDao {
 			resultSet.first();
 			// 将数据库生成的rs_id获得
 			rs_id = resultSet.getInt(1);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			// 回滚事务
 			connection.rollback();
+			return;
 		} finally {
 			ReleaseSource.releaseSource(resultSet, preparedStatement);
 		}
@@ -428,14 +433,13 @@ public class CachedRowSetDao {
 			e.printStackTrace();
 			// 回滚事务
 			connection.rollback();
+			return;
 		} finally {
 			ReleaseSource.releaseSource(preparedStatement);
 		}
 
 
 		// 如果有位置信息，则PhotoPath中插入数据
-
-
 		try {
 			String insertToPhotoLocation = "INSERT INTO PhotoLocation(rs_id, location) VALUES (?,?)";
 
@@ -449,10 +453,10 @@ public class CachedRowSetDao {
 			e.printStackTrace();
 			// 回滚事务
 			connection.rollback();
+			return;
 		} finally {
 			ReleaseSource.releaseSource(preparedStatement);
 		}
-
 
 		try {
 			String insertPhotoPath = "INSERT INTO PhotoPath(rs_id, view_photo,detail_photo) VALUES (?,?,?)";
