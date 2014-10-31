@@ -9,6 +9,7 @@ import utils.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -24,9 +25,10 @@ import java.util.Iterator;
  * author: 康乐
  * time: 2014/8/21
  * function: 用于处理、解析parts，线程被cpuThreadPoolExecutor管理
+ *
  * @see utils.ThreadPoolUtils
  */
-public class DealPart implements Runnable{
+public class DealPart implements Runnable {
 
 	// 压缩照片后的照片宽度
 	public static final float WIDTH = 800.0f;
@@ -37,7 +39,7 @@ public class DealPart implements Runnable{
 	// part的集合
 	private Collection<Part> parts = null;
 
-	public DealPart(AsyncContext asyncContext,Collection<Part> parts, int ID){
+	public DealPart(AsyncContext asyncContext, Collection<Part> parts, int ID) {
 		this.parts = parts;
 		this.asyncContext = asyncContext;
 		this.ID = ID;
@@ -62,7 +64,7 @@ public class DealPart implements Runnable{
 			BufferedReader bufferedReader = null;
 
 			try {
-				bufferedReader = new BufferedReader(new InputStreamReader(jsonPart.getInputStream(),"utf-8"));
+				bufferedReader = new BufferedReader(new InputStreamReader(jsonPart.getInputStream(), "utf-8"));
 
 				String temp;
 
@@ -74,36 +76,39 @@ public class DealPart implements Runnable{
 
 				// 描述照片的json对象
 				jsonObject = JsonUtils.getJsonObject(sb.toString());
-
+				// 构建json对象
 				photoDesBean = buildJsonInfo(jsonObject);
 
 			} catch (IOException e) {
 				System.err.println("IO出错！------------------->>>需要返回给客户端信息");
-
 				// 返回IO读取错误信息
-				try {
-					asyncContext.getResponse().getWriter().write(ErrorCode.IOERROR);
-				} catch (IOException e1) {
-					System.err.println("----------------------->>>向客户端发送信息错误");
-					e1.printStackTrace();
-				}finally {
-					asyncContext.complete();
-				}
-				e.printStackTrace();
-			}finally {
-
+				StatusResponseHandler.sendStatus("status", ErrorCode.IOERROR,
+						(HttpServletResponse) asyncContext.getResponse());
+				return;
+			} finally {
 				// 关闭bufferedReader资源
 				if (bufferedReader != null) {
 					try {
 						bufferedReader.close();
 					} catch (IOException e) {
 						System.err.println("释放资源出错！------------------>>>紧急错误");
-						asyncContext.complete();
 						e.printStackTrace();
 					}
 				}
 			}
 
+		} else {
+			// 如果不存在part，那么就返回MULTIPARTERROR
+			StatusResponseHandler.sendStatus("status", ErrorCode.MULTIPARTERROR,
+					(HttpServletResponse) asyncContext.getResponse());
+			return;
+		}
+
+		// 检查是否存在照片part,如果不存在照片part，那么就返回MULTIPARTERROR
+		if (!iterator.hasNext()) {
+			StatusResponseHandler.sendStatus("status", ErrorCode.MULTIPARTERROR,
+					(HttpServletResponse) asyncContext.getResponse());
+			return ;
 		}
 
 		// 存储原图、压缩后的图片的两个容器
@@ -118,50 +123,43 @@ public class DealPart implements Runnable{
 			InputStream is = null;
 
 			try {
-				 is = photoPart.getInputStream();
+				is = photoPart.getInputStream();
 				// 所上传图像的内容
 				BufferedImage bi = ImageIO.read(is);
 
 				// 将宽度设置为800
-				float minification = bi.getWidth()/WIDTH;
+				float minification = bi.getWidth() / WIDTH;
 
 				float height = bi.getHeight() / minification;
 
 				// 将新的图片绘制
-				BufferedImage image = new BufferedImage((int)WIDTH, (int)height, BufferedImage.SCALE_SMOOTH);
+				BufferedImage image = new BufferedImage((int) WIDTH, (int) height, BufferedImage.SCALE_SMOOTH);
 				Graphics graphics = image.getGraphics();
-				graphics.drawImage(bi, 0, 0, (int)WIDTH, (int)height, null);
+				graphics.drawImage(bi, 0, 0, (int) WIDTH, (int) height, null);
 
 				// 将图片资源添加到list中，以便下一个线程使用
 				newArrayList.add(image);
 				oldArrayList.add(bi);
 
 			} catch (IOException e) {
-				try {
-					asyncContext.getResponse().getWriter().write(ErrorCode.IOERROR);
-				} catch (IOException e1) {
-					System.err.println("----------------------->>>向客户端发送信息错误");
-					e1.printStackTrace();
-				}finally {
-					asyncContext.complete();
-				}
+				StatusResponseHandler.sendStatus("status", ErrorCode.IOERROR,
+						(HttpServletResponse) asyncContext.getResponse());
 				e.printStackTrace();
-			}finally {
+				return ;
+			} finally {
 				if (is != null) {
 					try {
 						is.close();
 					} catch (IOException e) {
 						System.err.println("释放资源出错！------------------>>>紧急错误");
-						asyncContext.complete();
 						e.printStackTrace();
 					}
 				}
 
 			}
 		}
-
 		// 将现在的事务提交给存储线程池解决
-		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new SavePart(newArrayList,oldArrayList,photoDesBean,ID,asyncContext));
+		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new SavePart(newArrayList, oldArrayList, photoDesBean, ID, asyncContext));
 	}
 
 	// 将json中的信息解析到PhotoDesBean中
