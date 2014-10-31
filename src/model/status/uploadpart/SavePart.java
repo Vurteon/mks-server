@@ -26,9 +26,9 @@ public class SavePart implements Runnable {
 
 	static long asd = 0;
 
-//    public static final String saveHome = "/alidata/server/tomcat7/webapps/mks/shunjian/photo";
+    public static final String saveHome = "/alidata/server/tomcat7/webapps/mks/moment/photo";
 
-	public static final String saveHome = "F:/shunjian/photo";
+//	public static final String saveHome = "F:/shunjian/photo";
 
 	private long ID;
 	private ArrayList<BufferedImage> newImages;
@@ -50,7 +50,7 @@ public class SavePart implements Runnable {
 
 		String newPhotoPath;
 
-		String oldPhotoPath = null;
+		String oldPhotoPath;
 
 		File saveParentFile;
 
@@ -244,6 +244,12 @@ public class SavePart implements Runnable {
 
 	/**
 	 * 创建名字为当前毫秒数的图片jpg文件
+	 *
+	 * 需要特别注意的是：当单个用户高并发的请求upload时，由于此处并未
+	 * 考虑此种情况，所以当此种情况发生时，此处将产生一个bug----使用高
+	 * 并发请求的用户所上传的照片有可能会存在被覆盖的情况，原因是高并发
+	 * 造成获取的FileName一样，而同一个用户又是在一个文件夹下，所以照片
+	 * 存在被覆盖的情况。实际测试中，产生这种bug的概率十分大。
 	 *
 	 * @return 格式为jpg的文件名字
 	 */
