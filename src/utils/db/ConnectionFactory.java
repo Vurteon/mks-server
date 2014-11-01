@@ -9,10 +9,6 @@ import java.sql.SQLException;
  */
 public class ConnectionFactory {
 
-	private static String url = "jdbc:mysql://localhost:3306/moment";
-	private static String user = "root";
-	private static String password = "520520";
-
 	private static Connection con;
 	/**
 	 *
@@ -22,6 +18,9 @@ public class ConnectionFactory {
 
 		if (con == null) {
 			try {
+				String url = "jdbc:mysql://120.24.68.64:3306/moment";
+				String user = "moment";
+				String password = "520520";
 				return DriverManager.getConnection(url, user, password);
 			} catch (SQLException e) {
 				System.err.println("获取Mysql数据库连接出错----GetConnection");
@@ -31,5 +30,9 @@ public class ConnectionFactory {
 			return con;
 		}
 		return null;
+	}
+
+	public static void setCon(Connection con) {
+		ConnectionFactory.con = con;
 	}
 }
