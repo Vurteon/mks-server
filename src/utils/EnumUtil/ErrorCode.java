@@ -23,6 +23,12 @@ public class ErrorCode {
 	// 服务器sql出错
 	public static final String SQLERROR = "SQLERROR";
 
-	// 客户端json不满足格式要求
-	public static final String JSONERROR = "JSONERROR";
+	// multi-part格式错误
+	public static final String MULTIPARTERROR = "MULTIPARTERROR";
+
+	// 图片上传成功
+	public static final String UPLOADSUCCESS = "UPLOADSUCCESS";
+
+	// 请求处理超时
+	public static final String UPLOADTIMEOUT = "UPLOADTIMEOUT";
 }
