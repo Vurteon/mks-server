@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="leon">
     <words>
+      <w>alidata</w>
       <w>contacter</w>
       <w>contacters</w>
       <w>cpucorethreadnumber</w>
@@ -26,10 +27,14 @@
       <w>jdbc</w>
       <w>minification</w>
       <w>mozilla</w>
+      <w>multiparterror</w>
       <w>onreadystatechange</w>
       <w>registe</w>
       <w>responser</w>
       <w>shunjian</w>
+      <w>uploadsuccess</w>
+      <w>uploadtimeout</w>
+      <w>webapps</w>
     </words>
   </dictionary>
 </component>

@@ -1,6 +1,6 @@
 package model.status;
 
-import beans.main.PhotoDesBean;
+import beans.status.PhotoDesBean;
 import dao.cache.CachedRowSetDao;
 import utils.db.TimeBuilder;
 import utils.json.JSONArray;

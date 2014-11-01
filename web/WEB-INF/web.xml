@@ -89,7 +89,12 @@
 	<!--on tomcat listener-->
 	<listener>    
       <listener-class>listener.TomcatOnListener</listener-class>    
-	</listener>    
+	</listener>
+
+	<!--upload photo threads AsyncListener-->
+	<listener>
+		<listener-class>listener.DealPartThreadsListener</listener-class>
+	</listener>
 
 
 </web-app>

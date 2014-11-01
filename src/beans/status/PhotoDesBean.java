@@ -1,4 +1,4 @@
-package beans.main;
+package beans.status;
 
 import java.sql.Timestamp;
 
@@ -13,7 +13,7 @@ public class PhotoDesBean {
 	// 用户的ID，不能为空
 	private int ID;
 
-	// 时间
+	// 由服务器生成的时间
 	private Timestamp Time;
 
 	// 临时生成的rs_id值

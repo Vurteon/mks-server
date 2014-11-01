@@ -1,6 +1,6 @@
 package servlet.account;
 
-import beans.index.SignUpInfoBean;
+import beans.account.SignUpInfoBean;
 import model.account.SignUpUserHandler;
 import utils.EnumUtil.ErrorCode;
 import utils.FormatCheckManager;
@@ -13,10 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 
 /**
  * author: 康乐

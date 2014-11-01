@@ -1,6 +1,6 @@
 package dao.cache;
 
-import beans.main.PhotoDesBean;
+import beans.status.PhotoDesBean;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;

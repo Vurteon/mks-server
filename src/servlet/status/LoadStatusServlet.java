@@ -58,7 +58,7 @@ public class LoadStatusServlet extends HttpServlet {
 
 		// 检测内容是否为json
 		if (content == null || (jsonObject = JsonUtils.getJsonObject(content)) == null) {
-			response.getWriter().write(ErrorCode.JSONERROR.toString());
+//			response.getWriter().write(ErrorCode.JSONERROR.toString());
 			return ;
 		}
 
@@ -70,7 +70,7 @@ public class LoadStatusServlet extends HttpServlet {
 			before = jsonObject.getBoolean("before");
 		}else{
 			// 向客户端返回json格式不满足要求
-			response.getWriter().write(ErrorCode.JSONERROR.toString());
+//			response.getWriter().write(ErrorCode.JSONERROR.toString());
 			return ;
 		}
 		// 当前用户的所有关注的人

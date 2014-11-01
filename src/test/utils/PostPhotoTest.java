@@ -14,13 +14,16 @@ import java.util.Date;
 /**
  * Created by leon on 2014/8/23.
  */
-public class PostTest implements Runnable {
+public class PostPhotoTest implements Runnable {
 
 
 	public static ArrayList<String> asds = new ArrayList<String>();
 
 
-	static String testUrl = "http://localhost:8080/UploadPhoto";
+//	static String testUrl = "http://127.0.0.1:8080/UploadPhoto";
+
+
+	static String testUrl = "http://120.24.68.64:8080/mks/UploadPhoto";
 
 	static String BOUNDARY = "---------------------------7de8c1a80910";
 
@@ -45,13 +48,14 @@ public class PostTest implements Runnable {
 			httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
 			httpURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0");
+			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=EA89D434CD32FA7E9B045CCB7DBA14B4");
 
 			httpURLConnection.setRequestProperty("Content-Type",
 					"multipart/form-data; boundary=" + BOUNDARY);
 
 			byte[] image = new byte[8000000];
 
-			FileInputStream fileInputStream = new FileInputStream(new File("/home/leon/asd.jpg"));
+			FileInputStream fileInputStream = new FileInputStream(new File("E:/me.jpg"));
 
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
@@ -61,7 +65,7 @@ public class PostTest implements Runnable {
 
 			System.arraycopy(image, 0, newByte, 0, ll);
 
-			byte[] asd = JsonUtils.getJsonObject("{'myWords':'test'}").toString().getBytes();
+			byte[] asd = JsonUtils.getJsonObject("{'myWords':'这是第er次使用云服务器测试照片上传'}").toString().getBytes();
 
 			System.out.println("发出请求时间：" + new Date());
 
@@ -84,8 +88,8 @@ public class PostTest implements Runnable {
 				sb.append(line);
 			}
 
+			System.out.println(sb);
 
-			asds.add(sb.toString());
 
 			System.out.println("完成时间：" + new Date());
 			httpURLConnection.disconnect();

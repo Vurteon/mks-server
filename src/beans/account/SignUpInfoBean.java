@@ -1,4 +1,4 @@
-package beans.index;
+package beans.account;
 
 
 /**

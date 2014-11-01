@@ -1,6 +1,6 @@
 package model.status.uploadpart;
 
-import beans.main.PhotoDesBean;
+import beans.status.PhotoDesBean;
 import model.status.StatusRowSetManager;
 import utils.EnumUtil.ErrorCode;
 import utils.EnumUtil.PhotoType;
@@ -26,9 +26,9 @@ public class SavePart implements Runnable {
 
 	static long asd = 0;
 
-    public static final String saveHome = "/alidata/server/tomcat7/webapps/mks/moment/photo";
+//    public static final String saveHome = "/alidata/server/tomcat7/webapps/mks/moment/photo";
 
-//	public static final String saveHome = "F:/shunjian/photo";
+	public static final String saveHome = "F:/shunjian/photo";
 
 	private long ID;
 	private ArrayList<BufferedImage> newImages;
@@ -176,7 +176,7 @@ public class SavePart implements Runnable {
 			e.printStackTrace();
 		}
 
-		// 存储线程任务完成
+		// 存储线程任务完成;同时也表明整个上传图片过程完成
 		asyncContext.complete();
 	}
 
@@ -278,12 +278,20 @@ public class SavePart implements Runnable {
 				(HttpServletResponse) asyncContext.getResponse());
 	}
 
+	/**
+	 * 文件回滚操作；删除所传入的list中的所有文件
+	 * @param files 需要被删除的文件的list
+	 */
 	private static void rollBackPhoto (ArrayList<File> files) {
 		for (File file : files) {
 			file.delete();
 		}
 	}
 
+	/**
+	 * 文件回滚操作；删除传入的文件
+	 * @param file 需要删除的文件
+	 */
 	private static void rollBackPhoto (File file) {
 		file.delete();
 	}

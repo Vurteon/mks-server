@@ -1,6 +1,6 @@
 package dao.account;
 
-import beans.index.SignUpInfoBean;
+import beans.account.SignUpInfoBean;
 import utils.db.ConnectionFactory;
 import utils.db.ReleaseSource;
 

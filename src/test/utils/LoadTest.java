@@ -15,7 +15,9 @@ import java.util.Date;
  * Created by leon on 14-9-10.
  */
 public class LoadTest implements Runnable {
-	static String testUrl = "http://127.0.0.1:8080/login";
+	static String testUrl = "http://120.24.68.64:8080/mks/login";
+
+//	static String testUrl = "http://127.0.0.1:8080/login";
 
 
 	@Override
@@ -35,11 +37,13 @@ public class LoadTest implements Runnable {
 			httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
 			httpURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0");
+			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=06D35542F6FA609CFF80930540EAB112");
+			httpURLConnection.setRequestProperty("Content-Type",
+					"multipart/form-data; boundary=" + "aaaaaaaaaaaaa--------------2");
 
 
 
-
-			byte[] postInfo = JsonUtils.getJsonObject("{'rs_id':3;'before':true}").toString().getBytes();
+			byte[] postInfo = JsonUtils.getJsonObject("{'account':'2012051051';'password':'520520'}").toString().getBytes();
 
 
 			System.out.println("发出请求时间：" + new Date());

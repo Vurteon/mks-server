@@ -1,6 +1,6 @@
 package test.dao.index;
 
-import beans.index.SignUpInfoBean;
+import beans.account.SignUpInfoBean;
 import dao.account.SignUpDao;
 import junit.framework.Test;
 import junit.framework.TestSuite;

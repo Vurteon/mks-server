@@ -1,6 +1,6 @@
 package dao.cache;
 
-import beans.main.PhotoDesBean;
+import beans.status.PhotoDesBean;
 import model.status.StatusRowSetManager;
 import utils.db.*;
 

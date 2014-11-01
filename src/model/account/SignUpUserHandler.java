@@ -1,6 +1,6 @@
 package model.account;
 
-import beans.index.SignUpInfoBean;
+import beans.account.SignUpInfoBean;
 import dao.account.SignUpDao;
 
 /**

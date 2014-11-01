@@ -1,6 +1,6 @@
 package model.account;
 
-import beans.index.UserAccountBean;
+import beans.account.UserAccountBean;
 import dao.exception.NoSuchIDException;
 import dao.account.LoginDao;
 import utils.db.ReleaseSource;

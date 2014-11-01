@@ -1,6 +1,6 @@
 package model.status.uploadpart;
 
-import beans.main.PhotoDesBean;
+import beans.status.PhotoDesBean;
 import utils.EnumUtil.ErrorCode;
 import utils.JsonUtils;
 import utils.StatusResponseHandler;

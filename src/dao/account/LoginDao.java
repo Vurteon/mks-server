@@ -1,6 +1,6 @@
 package dao.account;
 
-import beans.index.UserAccountBean;
+import beans.account.UserAccountBean;
 import dao.exception.NoSuchIDException;
 import utils.db.CachedRowSetFactory;
 import utils.db.ConnectionFactory;

@@ -1,4 +1,4 @@
-package beans.main;
+package beans;
 
 
 /**

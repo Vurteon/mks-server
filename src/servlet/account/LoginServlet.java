@@ -1,6 +1,6 @@
 package servlet.account;
 
-import beans.index.UserAccountBean;
+import beans.account.UserAccountBean;
 import dao.exception.NoSuchIDException;
 import model.account.LoginUserHandler;
 import utils.EnumUtil.ErrorCode;
