@@ -15,8 +15,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class RejectedHandler implements RejectedExecutionHandler{
 	@Override
 	public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-
-		System.out.println("这个是当线程池和队列君满后提供的处理操作，暂时不做操作");
+		System.err.println("报告管理员！！！这个是当线程池和队列君满后提供的处理操作，暂时不做操作");
+		System.err.println("报告管理员！！！这个是当线程池和队列君满后提供的处理操作，暂时不做操作");
+		System.err.println("报告管理员！！！这个是当线程池和队列君满后提供的处理操作，暂时不做操作");
+		System.err.println("报告管理员！！！这个是当线程池和队列君满后提供的处理操作，暂时不做操作");
 		throw new RejectedExecutionException("Task " + r.toString() +
 				" rejected from " + executor.toString());
 	}
