@@ -50,83 +50,104 @@ public class CachedRowSetDao {
 			ReleaseSource.releaseSource(statement);
 		}
 
+		// 自动增长的基础值，现在获得，以便下面使用SQL设置基础值
+		int baseValue = 0;
+		if (cachedRowSet.first()) {
+			baseValue = cachedRowSet.getInt(1);
+		}
 
 		/**
 		 * 从数据库中删除已经放入CacheRowSet中的数据，这样的好处是，对于客户端删除操作
 		 * 可以先检测缓存，如果缓存存在，则删除，但是不在数据库中删除，因为数据库中已经没有
 		 * 相关的数据；如果缓存不存在，则只有在数据库中进行删除操作
+		 *
+		 * 如果下面的操作出错，那么将直接影响整个系统的运行
+		 * 如果下面的操作出错，那么将直接影响整个系统的运行
+		 * 如果下面的操作出错，那么将直接影响整个系统的运行
+		 * 如果下面的操作出错，那么将直接影响整个系统的运行
 		 */
 
 
-//		if (cachedRowSet.first()) {
-		// 从数据库中删除从StatusFeeds获取的数据
-//			String deleteCached = "DELETE FROM StatusFeeds WHERE rs_id = ?";
-//
-//			String deleteCached2 = "DELETE FROM DetailWords WHERE rs_id = ?";
-//
-//			String deleteCached3 = "DELETE FROM PhotoLocation WHERE rs_id = ?";
-//
-//			String deleteCached4 = "DELETE FROM PhotoPath WHERE rs_id = ?";
-//
-//			// 设置事务手动提交
-//			con.setAutoCommit(false);
-//			do {
-//
-//				PreparedStatement preparedStatement = null;
-//				int rs_id = cachedRowSet.getInt(1);
-//				try {
-//					preparedStatement = con.prepareStatement(deleteCached);
-//					preparedStatement.setInt(1, rs_id);
-//					preparedStatement.execute();
-//				} catch (SQLException e) {
-//					con.rollback();
-//					e.printStackTrace();
-//					throw e;
-//				} finally {
-//					ReleaseSource.releaseSource(preparedStatement);
-//				}
-//
-//
-//				try {
-//					preparedStatement = con.prepareStatement(deleteCached2);
-//					preparedStatement.setInt(1, rs_id);
-//					preparedStatement.execute();
-//				} catch (SQLException e) {
-//					con.rollback();
-//					e.printStackTrace();
-//					throw e;
-//				} finally {
-//					ReleaseSource.releaseSource(preparedStatement);
-//				}
-//
-//				try {
-//					preparedStatement = con.prepareStatement(deleteCached3);
-//					preparedStatement.setInt(1, rs_id);
-//					preparedStatement.execute();
-//				} catch (SQLException e) {
-//					con.rollback();
-//					e.printStackTrace();
-//					throw e;
-//				} finally {
-//					ReleaseSource.releaseSource(preparedStatement);
-//				}
-//
-//				try {
-//					preparedStatement = con.prepareStatement(deleteCached4);
-//					preparedStatement.setInt(1, rs_id);
-//					preparedStatement.execute();
-//				} catch (SQLException e) {
-//					con.rollback();
-//					e.printStackTrace();
-//					throw e;
-//				} finally {
-//					ReleaseSource.releaseSource(preparedStatement);
-//				}
-//			} while (cachedRowSet.next());
-//			// 如果所有操作均完成，则提交事务
-//			con.commit();
-//		}
+		if (cachedRowSet.first()) {
+			//从数据库中删除从StatusFeeds获取的数据
+			String deleteCached = "DELETE FROM StatusFeeds WHERE rs_id = ?";
 
+			String deleteCached2 = "DELETE FROM DetailWords WHERE rs_id = ?";
+
+			String deleteCached3 = "DELETE FROM PhotoLocation WHERE rs_id = ?";
+
+			String deleteCached4 = "DELETE FROM PhotoPath WHERE rs_id = ?";
+
+			// 设置事务手动提交
+			con.setAutoCommit(false);
+			do {
+				PreparedStatement preparedStatement = null;
+				int rs_id = cachedRowSet.getInt(1);
+				try {
+					preparedStatement = con.prepareStatement(deleteCached);
+					preparedStatement.setInt(1, rs_id);
+					preparedStatement.execute();
+				} catch (SQLException e) {
+					con.rollback();
+					e.printStackTrace();
+					throw e;
+				} finally {
+					ReleaseSource.releaseSource(preparedStatement);
+				}
+
+				try {
+					preparedStatement = con.prepareStatement(deleteCached2);
+					preparedStatement.setInt(1, rs_id);
+					preparedStatement.execute();
+				} catch (SQLException e) {
+					con.rollback();
+					e.printStackTrace();
+					throw e;
+				} finally {
+					ReleaseSource.releaseSource(preparedStatement);
+				}
+
+				try {
+					preparedStatement = con.prepareStatement(deleteCached3);
+					preparedStatement.setInt(1, rs_id);
+					preparedStatement.execute();
+				} catch (SQLException e) {
+					con.rollback();
+					e.printStackTrace();
+					throw e;
+				} finally {
+					ReleaseSource.releaseSource(preparedStatement);
+				}
+
+				try {
+					preparedStatement = con.prepareStatement(deleteCached4);
+					preparedStatement.setInt(1, rs_id);
+					preparedStatement.execute();
+				} catch (SQLException e) {
+					con.rollback();
+					e.printStackTrace();
+					throw e;
+				} finally {
+					ReleaseSource.releaseSource(preparedStatement);
+				}
+			} while (cachedRowSet.next());
+
+			// 修改AUTO_INCREMENT基础值
+			PreparedStatement rebaseValue = null;
+			try {
+				String rebaseValueSql = "ALTER TABLE StatusFeeds AUTO_INCREMENT = ?";
+				rebaseValue = con.prepareStatement(rebaseValueSql);
+				rebaseValue.setInt(1,baseValue);
+				rebaseValue.execute();
+			}catch (Exception e) {
+				con.rollback();
+				e.printStackTrace();
+			}finally {
+				ReleaseSource.releaseSource(rebaseValue);
+			}
+			// 如果所有操作均完成，则提交事务
+			con.commit();
+		}
 		return cachedRowSet;
 	}
 
@@ -179,10 +200,6 @@ public class CachedRowSetDao {
 		cachedRowSet.updateString(15, photoDesBean.getViewPhotoPath());
 		cachedRowSet.updateString(16, photoDesBean.getDetailPhotoPath());
 
-		System.out.println("--------------->" + photoDesBean.getMyWords());
-
-
-
 		// 插入数据
 		cachedRowSet.insertRow();
 		cachedRowSet.moveToCurrentRow();
@@ -192,14 +209,12 @@ public class CachedRowSetDao {
 
 	/**
 	 * 删除资源号相关的所有资源
-	 * @param ID 执行删除操作的ID
+	 *
+	 * @param ID    执行删除操作的ID
 	 * @param rs_id 需要删除的资源的唯一标记号
 	 * @return 从数据库中获取的数据的CacheRowSet对象
 	 */
 	public static boolean deleteData(int ID, int rs_id) {
-
-
-
 
 
 		return false;
@@ -207,28 +222,29 @@ public class CachedRowSetDao {
 
 	/**
 	 * 根据所提供的rs_id值返回ID
+	 *
 	 * @param rs_id 资源标记
-	 * @return 如果成功,返回ID;如果失败,返回-1
+	 * @return 如果成功, 返回ID;如果失败,返回-1
 	 * @throws SQLException
 	 */
-	public static int getPermissionId (int rs_id) throws SQLException {
+	public static int getPermissionId(int rs_id) throws SQLException {
 
 		Connection connection;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
-		String getIt = "select ID from PermissionTable where rs_id = ?";
+		String getIt = "SELECT ID FROM PermissionTable WHERE rs_id = ?";
 		try {
 			connection = ConnectionFactory.getMySqlConnection();
 			preparedStatement = connection.prepareStatement(getIt);
-			preparedStatement.setInt(1,rs_id);
+			preparedStatement.setInt(1, rs_id);
 
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.first()) {
-				 return resultSet.getInt(1);
+				return resultSet.getInt(1);
 			}
-		}finally {
-			ReleaseSource.releaseSource(resultSet,preparedStatement);
+		} finally {
+			ReleaseSource.releaseSource(resultSet, preparedStatement);
 		}
 		return -1;
 	}
@@ -317,8 +333,6 @@ public class CachedRowSetDao {
 	 * @param cachedRowSet 当前需要同步的CachedRowSet对象
 	 */
 	public static void statusSynchronized(CachedRowSet cachedRowSet) throws SQLException {
-
-
 		int id = cachedRowSet.getInt(2);
 
 		Timestamp timestamp = cachedRowSet.getTimestamp(3);
