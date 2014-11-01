@@ -2,15 +2,15 @@ package listener;
 
 
 
+import utils.EnumUtil.ErrorCode;
+import utils.StatusResponseHandler;
+
 import javax.servlet.AsyncEvent;
 import javax.servlet.AsyncListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -22,23 +22,47 @@ import java.io.IOException;
 @WebListener()
 public class DealPartThreadsListener implements AsyncListener{
 
-
+	/**
+	 * 当upload照片所有操作全部成功后，会调用此方法
+	 * @param asyncEvent 异步事件对象
+	 * @throws IOException
+	 */
 	@Override
 	public void onComplete(AsyncEvent asyncEvent) throws IOException {
-		asyncEvent.getSuppliedResponse().getWriter().write("OK");
-//		System.out.println("存储线程完成----->Complete");
+		StatusResponseHandler.sendStatus("status", ErrorCode.UPLOADSUCCESS,
+				(HttpServletResponse) asyncEvent.getSuppliedResponse());
 	}
 
+	/**
+	 * 服务器处理超时；有两种可能，一是确实请求太多忙不过来，二是由于请求太多，请求被
+	 * 服务器拒绝
+	 * @param asyncEvent 异步事件对象
+	 * @throws IOException
+	 */
 	@Override
 	public void onTimeout(AsyncEvent asyncEvent) throws IOException {
-		System.out.println("TimeOut");
+		StatusResponseHandler.sendStatus("status", ErrorCode.UPLOADTIMEOUT,
+				(HttpServletResponse) asyncEvent.getSuppliedResponse());
 	}
 
+	/**
+	 * 服务器出现突发性错误的时候调用
+	 * @param asyncEvent 异步事件对象
+	 * @throws IOException
+	 */
 	@Override
 	public void onError(AsyncEvent asyncEvent) throws IOException {
-		System.out.println("ERROR！！");
+		System.err.println("紧急事态--------------》》》》》线程出现ERROR！！");
+		System.err.println("紧急事态--------------》》》》》线程出现ERROR！！");
+		System.err.println("紧急事态--------------》》》》》线程出现ERROR！！");
+		System.err.println("紧急事态--------------》》》》》线程出现ERROR！！");
 	}
 
+	/**
+	 * 异步线程开始时所触发的函数
+	 * @param asyncEvent 异步事件对象
+	 * @throws IOException
+	 */
 	@Override
 	public void onStartAsync(AsyncEvent asyncEvent) throws IOException {
 		System.out.println("Start");
