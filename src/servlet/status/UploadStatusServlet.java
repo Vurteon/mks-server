@@ -20,7 +20,7 @@ import java.util.Collection;
  * function: 接受手机端发来的上传照片请求，并将照片存储并生成相应的记录
  */
 
-@WebServlet(name = "UploadPhotoServlet", urlPatterns = "/UploadPhoto", asyncSupported = true)
+@WebServlet(name = "UploadPhotoServlet", urlPatterns = "/upload_photo", asyncSupported = true)
 @MultipartConfig()
 public class UploadStatusServlet extends HttpServlet {
 
