@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
 				if(LoginUserHandler.setSession(userAccountBean, httpSession)) {
 					// 向客户端返回sessionID
 					JSONObject responseInfo = JsonUtils.getJsonObject("{'accountResult':'success';'JSESSIONID':" +httpSession.getId() +  "}");
-					StatusResponseHandler.sendStatus(responseInfo,response);
+					StatusResponseHandler.sendStatus(responseInfo,response,true);
 				}else {
 					StatusResponseHandler.sendStatus("accountResult","error",response);
 				}
