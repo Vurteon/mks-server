@@ -1,9 +1,11 @@
 package model.status;
 
 import utils.EnumUtil.ErrorCode;
+import utils.StatusResponseHandler;
 import utils.json.JSONArray;
 
 import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -34,36 +36,16 @@ public class LoadStatus implements Runnable {
 	@Override
 	public void run() {
 		try {
+			// 从缓存或者数据库中获取数据，有可能存在数据
 			JSONArray statusArray = StatusRowSetManager.selectStatus(followings, rs_id, before);
 
-			try {
-
-				/**
-				 * 将数据传到客户端,现在的数据并没有经过客户端的处理
-				 */
-
-				asyncContext.getResponse().getWriter().write(statusArray.toString());
-			} catch (IOException e) {
-				try {
-					// 向客户端告知网络IO出错
-					asyncContext.getResponse().getWriter().write(ErrorCode.IOERROR);
-				} catch (IOException e1) {
-					System.err.println("网络错误---------没办法了");
-					e1.printStackTrace();
-				}
-				e.printStackTrace();
-			}
-			// 一次请求完成,释放相关资源
+			// 向客户端发送数据
+			StatusResponseHandler.sendStatus(statusArray, (HttpServletResponse) asyncContext.getResponse(),false);
 			asyncContext.complete();
 		} catch (SQLException e) {
-			try {
-				// 向客户端告知服务器SQL出错
-				asyncContext.getResponse().getWriter().write(ErrorCode.SQLERROR);
-			} catch (IOException e1) {
-				System.err.println("网络错误---------没办法了!");
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
+			// 向客户端告知IO出错
+			StatusResponseHandler.sendStatus("status", ErrorCode.SQLERROR,
+					(HttpServletResponse) asyncContext.getResponse());
 		}
 	}
 }
