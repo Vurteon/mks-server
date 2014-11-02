@@ -5,6 +5,7 @@ import model.status.LoadStatus;
 import utils.EnumUtil.ErrorCode;
 import utils.JsonUtils;
 import utils.RequestInfoUtils;
+import utils.StatusResponseHandler;
 import utils.ThreadPoolUtils;
 import utils.json.JSONObject;
 
@@ -23,7 +24,7 @@ import java.util.HashSet;
  * time: 2014/9/3
  * function: 更新最多10条的状态信息到客户端
  */
-@WebServlet(urlPatterns = "/LoadStatus",asyncSupported = true)
+@WebServlet(name = "LoadStatusServlet",urlPatterns = "/load_status",asyncSupported = true)
 public class LoadStatusServlet extends HttpServlet {
 
 	/**
@@ -37,42 +38,32 @@ public class LoadStatusServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		HttpSession httpSession = request.getSession(true);
-		
-		HashSet<Integer> hashSet = new HashSet<Integer>();
-		
-//		hashSet.add(0);
-//		hashSet.add(11);
-//		hashSet.add(121);
-//		hashSet.add(26);
-//		hashSet.add(190);
-//		hashSet.add(188);
-
-		hashSet.add(35);
-
-		httpSession.setAttribute("followings",hashSet);
+		HttpSession httpSession = request.getSession(false);
 
 		String content = RequestInfoUtils.getPostContent(request);
 
-		JSONObject jsonObject;
-
-		// 检测内容是否为json
-		if (content == null || (jsonObject = JsonUtils.getJsonObject(content)) == null) {
-//			response.getWriter().write(ErrorCode.JSONERROR.toString());
+		if (content == null) {
+			response.sendError(404);
 			return ;
 		}
 
+		JSONObject jsonObject = new JSONObject(content);
 
+		/**
+		 * rs_id:客户端传来的资源标记信息
+		 * before:标记是更新还是加载更多
+		 */
 		int rs_id;
 		boolean before;
+
 		if (jsonObject.has("rs_id") && jsonObject.has("before")) {
 			rs_id = jsonObject.getInt("rs_id");
 			before = jsonObject.getBoolean("before");
-		}else{
-			// 向客户端返回json格式不满足要求
-//			response.getWriter().write(ErrorCode.JSONERROR.toString());
+		}else {
+			StatusResponseHandler.sendStatus("status",ErrorCode.JSONFORMATERROR,response);
 			return ;
 		}
+
 		// 当前用户的所有关注的人
 		HashSet<Integer> followings = (HashSet<Integer>)httpSession.getAttribute("followings");
 		AsyncContext asyncContext = request.startAsync();
@@ -84,8 +75,6 @@ public class LoadStatusServlet extends HttpServlet {
 		asyncContext.addListener(new DealPartThreadsListener());
 		// 将任务提交到IO型线程池中进行处理
 		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new LoadStatus(asyncContext,followings,rs_id,before));
-
-		System.out.println("完成!");
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
