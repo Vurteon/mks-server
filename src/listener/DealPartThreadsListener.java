@@ -7,8 +7,6 @@ import utils.StatusResponseHandler;
 
 import javax.servlet.AsyncEvent;
 import javax.servlet.AsyncListener;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -29,7 +27,7 @@ public class DealPartThreadsListener implements AsyncListener{
 	 */
 	@Override
 	public void onComplete(AsyncEvent asyncEvent) throws IOException {
-		StatusResponseHandler.sendStatus("status", ErrorCode.UPLOADSUCCESS,
+		StatusResponseHandler.sendStatus("status", ErrorCode.SUCCESS,
 				(HttpServletResponse) asyncEvent.getSuppliedResponse());
 	}
 
@@ -41,7 +39,7 @@ public class DealPartThreadsListener implements AsyncListener{
 	 */
 	@Override
 	public void onTimeout(AsyncEvent asyncEvent) throws IOException {
-		StatusResponseHandler.sendStatus("status", ErrorCode.UPLOADTIMEOUT,
+		StatusResponseHandler.sendStatus("status", ErrorCode.TIMEOUT,
 				(HttpServletResponse) asyncEvent.getSuppliedResponse());
 	}
 
