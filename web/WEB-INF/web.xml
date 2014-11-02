@@ -67,8 +67,20 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UploadPhotoServlet</servlet-name>
-		<url-pattern>/UploadPhoto</url-pattern>
+		<url-pattern>/upload_photo</url-pattern>
 	</servlet-mapping>
+
+	<!--load status from server-->
+	<servlet>
+		<servlet-name>LoadStatusServlet</servlet-name>
+		<servlet-class>servlet.status.LoadStatusServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoadStatusServlet</servlet-name>
+		<url-pattern>/load_status</url-pattern>
+	</servlet-mapping>
+	
 
 	<!--session filter-->
 	<filter>
@@ -78,7 +90,24 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>SessionFilter</filter-name>
-		<url-pattern>/UploadPhoto</url-pattern>
+		<url-pattern>/upload_photo</url-pattern>
+		<url-pattern>/load_status</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+	<!--encode filter-->
+	<filter>
+		<filter-name>EncodeFilter</filter-name>
+		<filter-class>filter.EncodeFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EncodeFilter</filter-name>
+		<url-pattern>/login</url-pattern>
+		<url-pattern>/sign_up</url-pattern>
+		<url-pattern>/checkAccount</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
