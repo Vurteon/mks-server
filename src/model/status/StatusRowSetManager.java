@@ -94,9 +94,9 @@ public class StatusRowSetManager {
 	 * rs_id小于缓存中最小的rs_id,那么就在数据库中进行查找操作;否则便在
 	 * 缓存中进行查找. 随后将查找到的数据封装为json对象返回
 	 * <p/>
-	 * 需要说明的是:此算法存在漏洞-->当数据库中的id大于临时id时会出现许多
-	 * 意外的bug,但是这个将会是数据库存储数量达到10亿时候的事情,那个时候
-	 * 这个bug我想早就已经修复了.
+	 * 需要说明的是:此算法存在漏洞-->当数据库中的最大id大于临时id时会出现
+	 * 许多意外的bug,但是这个将会是数据库存储数量达到10亿时候的事情,那个时
+	 * 候这个bug我想早就已经修复了.
 	 *
 	 * @param followings 当前用户所关注的所有人,使用hash表便于检查是否
 	 *                   相关id号存在于联系人或者
@@ -112,6 +112,9 @@ public class StatusRowSetManager {
 		// 缓存中的最小的rs_id
 		int firstNumber;
 
+		// 此算法第二次检查最小rs_id
+		int firstNumberLater;
+
 		// 获取rs_id中最小的rs_id号
 		synchronized (object) {
 			// 将游标调整到第一行
@@ -123,17 +126,15 @@ public class StatusRowSetManager {
 		 * 如果是请求加载更多且发来的rs_id小于缓存中最小的rs_id,表明其已经存于数据库,所以
 		 * 下面直接进行数据库操作
 		 */
-		if (!before && firstNumber >= rs_id) {
+		if (!before && firstNumber > rs_id) {
+			// 直接在数据库进行查找
 			CachedRowSet loadMoreSet = CachedRowSetDao.selectData(new ArrayList<Integer>(followings), rs_id, false);
-
 			JSONArray jsonArray = new JSONArray();
-
 			if (loadMoreSet.first()) {
 				do {
 					buildStatus(loadMoreSet, jsonArray);
 				} while (loadMoreSet.next());
 			}
-
 			return jsonArray;
 		}
 
@@ -150,7 +151,6 @@ public class StatusRowSetManager {
 				// 移动到最后一条,同时也是最新的一条
 				if (statusRowSet.last()) {
 					int cached_rs_id;
-
 					do {
 						// 获得当前行的标记ID
 						int ID = statusRowSet.getInt(2);
@@ -184,14 +184,14 @@ public class StatusRowSetManager {
 				 * 如果before为false,将执行下面为加载更多数据的代码
 				 */
 				statusRowSet.last();
-				// 移动到rs_id的旧一行
+				// 移动到rs_id的那一行
 				do {
 					if (statusRowSet.getInt(1) < rs_id) {
 						break;
 					}
 				} while (statusRowSet.previous());
 
-				// 一次获取10条信息,如果是缓存中的最后一条,那么也会将此条做比较
+				// 一次获取10条信息,如果是缓存中的最后一条,那么也会将此条作比较
 				do {
 					if (followings.contains(statusRowSet.getInt(2))) {
 						buildStatus(statusRowSet, jsonArray);
@@ -204,30 +204,54 @@ public class StatusRowSetManager {
 		}
 
 		/**
-		 * 倘若操作在缓存中没有获得一条数据,则表明更新操作或者加载更多操作需要在数据库进行
+		 * 倘若操作在缓存中没有获得一条数据,存在以下几种情况
 		 *
-		 * 此处进行此检查有两种防备:
-		 * 1.如果在获取数据过程中没有出现缓存向数据库写数据的情况,而且确实在缓存中没有获取到数据的情况
-		 * 2.如果是在获取过程中出现了缓存向数据库写数据,而刚好将需要获取的数据全部写入了数据库,那么此
-		 *   时也会获取不到数据,那么此时也需要从数据库中获取数据
+		 * 1.对于更新操作而言，确实已经没有任何数据可以更新
+		 * 2.对于更新操作而言，其rs_id值小于firstNumber的值，更新虽然在缓存中没有，但是在数据库中存在
+		 *
+		 * 3.对于加载更多而言，存在确实已经没有任何数据可以加载，无论如何都会返回数据，除非数据库中都没
+		 * 有数据了
+		 * 写入的情况
+		 *
 		 */
 
 		// 获取rs_id中最小的rs_id号
 		synchronized (object) {
 			// 将游标调整到第一行
 			statusRowSet.first();
-			firstNumber = statusRowSet.getInt(1);
+			firstNumberLater = statusRowSet.getInt(1);
 		}
-		// 1.如果是加载更多获得的数据为0,那么进行数据库查找,并获取相关数据
-		// 2.如果是更新到最后一行后,没有数据且更新所给的rs_id小于缓存中最小的rs_id,就表明数据更新需要到数据库中继续进行
-		if ((!before && jsonArray.length() == 0) || (before && jsonArray.length() == 0 && firstNumber >= rs_id)) {
-			CachedRowSet cachedRowSet = CachedRowSetDao.selectData(new ArrayList<Integer>(followings), rs_id, before);
-			if (cachedRowSet.first()) {
-				do {
-					buildStatus(cachedRowSet, jsonArray);
-				} while (cachedRowSet.next());
+
+		if (jsonArray.length() == 0) {
+			// 存放下面所获得的数据
+			CachedRowSet cachedRowSetLater = null;
+
+			if (before) {
+				/**
+				 * 对于更新操作，首先判断两次获取到的rs_id是否相等，如果相等
+				 * 表明缓存在此算法执行中没有进行数据库写入。此时，表明确实已
+				 * 经没有数据可以更新；如果不相等，则一定进行了数据库写入，那
+				 * 需要进行数据库查询，直到到达预定rs_id值。
+				 */
+				if (firstNumber == firstNumberLater) {
+					return jsonArray;
+				}else {
+					cachedRowSetLater = CachedRowSetDao.selectData(new ArrayList<Integer>(followings), rs_id, true);
+				}
+			}else {
+				// 获取数据（因为加载更多，无论如何都会返回数据，如果缓存中不存在，那么就去数据库查询）
+				cachedRowSetLater = CachedRowSetDao.selectData(new ArrayList<Integer>(followings), rs_id, false);
 			}
+
+			// 构建jsonArray
+			if (cachedRowSetLater.first()) {
+				do {
+					buildStatus(cachedRowSetLater, jsonArray);
+				} while (cachedRowSetLater.next());
+			}
+
 		}
+		// 返回json数组，可能长度为0
 		return jsonArray;
 	}
 
@@ -309,7 +333,6 @@ public class StatusRowSetManager {
 
 		// 将json对象放入json数组
 		jsonArray.put(jsonObject);
-		// 如果一切都顺利,那么就将返回true
 	}
 
 
