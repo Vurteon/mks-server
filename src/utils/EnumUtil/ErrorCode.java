@@ -27,8 +27,8 @@ public class ErrorCode {
 	public static final String MULTIPARTERROR = "MULTIPARTERROR";
 
 	// 图片上传成功
-	public static final String UPLOADSUCCESS = "UPLOADSUCCESS";
+	public static final String SUCCESS = "SUCCESS";
 
 	// 请求处理超时
-	public static final String UPLOADTIMEOUT = "UPLOADTIMEOUT";
+	public static final String TIMEOUT = "TIMEOUT";
 }
