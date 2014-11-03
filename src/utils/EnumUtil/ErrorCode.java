@@ -31,4 +31,7 @@ public class ErrorCode {
 
 	// 请求处理超时
 	public static final String TIMEOUT = "TIMEOUT";
+
+	// 没有数据
+	public static final String NODATA = "NODATA";
 }
