@@ -64,6 +64,8 @@ public class StatusRowSetManager {
 	 */
 	public static boolean insertStatus(PhotoDesBean photoDesBean) throws SQLException {
 
+		boolean b;
+
 		// 插入数据时需要保持同步性
 		synchronized (object) {
 			photoDesBean.setTime(TimeBuilder.getLocalTime());
@@ -76,7 +78,7 @@ public class StatusRowSetManager {
 				statusCurrentSize -= writeOnceNumber;
 			}
 
-			boolean b = CachedRowSetDao.insertData(photoDesBean);
+			b = CachedRowSetDao.insertData(photoDesBean);
 
 			// 当前数量大小增1，由于是写完后才进行数量增加，所以每一次
 			// 需要数据同步的时候都是下一个请求引起，而最后一个请求刚好
@@ -84,8 +86,10 @@ public class StatusRowSetManager {
 			if (b) {
 				statusCurrentSize++;
 			}
-			return b;
 		}
+		// 增加用户照片数量，修改数据库中相应的数据
+		CachedRowSetDao.updatePhotoNumber(photoDesBean.getID(),photoDesBean.getPhotoNumber(),true);
+		return b;
 	}
 
 
@@ -224,7 +228,7 @@ public class StatusRowSetManager {
 
 		if (jsonArray.length() == 0) {
 			// 存放下面所获得的数据
-			CachedRowSet cachedRowSetLater = null;
+			CachedRowSet cachedRowSetLater;
 
 			if (before) {
 				/**
