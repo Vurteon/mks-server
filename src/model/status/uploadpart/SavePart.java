@@ -97,6 +97,8 @@ public class SavePart implements Runnable {
 						// 将原图以jpg格式写入相应的位置
 						ImageIO.write(bufferedImage, "jpg", saveFile);
 						savedPhoto.add(saveFile);
+						// 照片的数量增加1
+						photoDesBean.setPhotoNumber(photoDesBean.getPhotoNumber() + 1);
 					} catch (IOException e) {
 						sendIoError(asyncContext);
 						e.printStackTrace();
@@ -146,6 +148,8 @@ public class SavePart implements Runnable {
 				savedOriginFile = new File(saveParentFile, getFileName());
 				try {
 					ImageIO.write(oldImages.get(0), "jpg", savedOriginFile);
+					// 照片的数量增加1
+					photoDesBean.setPhotoNumber(photoDesBean.getPhotoNumber() + 1);
 				} catch (IOException e) {
 					sendIoError(asyncContext);
 					rollBackPhoto(savedOriginFile);
@@ -171,7 +175,9 @@ public class SavePart implements Runnable {
 		try {
 			StatusRowSetManager.insertStatus(photoDesBean);
 		} catch (SQLException e) {
-
+			// 这里需要做些许处理，目前暂时不处理
+			// 这里需要做些许处理，目前暂时不处理
+			// 这里需要做些许处理，目前暂时不处理
 			// 这里需要做些许处理，目前暂时不处理
 			e.printStackTrace();
 		}
