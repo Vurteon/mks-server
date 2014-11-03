@@ -80,6 +80,17 @@
 		<servlet-name>LoadStatusServlet</servlet-name>
 		<url-pattern>/load_status</url-pattern>
 	</servlet-mapping>
+
+	<!--get user info-->
+	<servlet>
+		<servlet-name>GetUserInfoServlet</servlet-name>
+		<servlet-class>servlet.user.GetUserInfoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetUserInfoServlet</servlet-name>
+		<url-pattern>/get_user_info</url-pattern>
+	</servlet-mapping>
+
 	
 
 	<!--session filter-->
@@ -92,6 +103,7 @@
 		<filter-name>SessionFilter</filter-name>
 		<url-pattern>/upload_photo</url-pattern>
 		<url-pattern>/load_status</url-pattern>
+		<url-pattern>/get_user_info</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
