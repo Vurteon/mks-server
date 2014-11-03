@@ -47,6 +47,9 @@ public class PhotoDesBean {
 	// 图片的话题
 	private String photoTopic;
 
+	// 此次照片存入的数量
+	private int photoNumber;
+
 	public int getID() {
 		return ID;
 	}
@@ -141,5 +144,13 @@ public class PhotoDesBean {
 
 	public void setRs_id(int rs_id) {
 		this.rs_id = rs_id;
+	}
+
+	public int getPhotoNumber() {
+		return photoNumber;
+	}
+
+	public void setPhotoNumber(int photoNumber) {
+		this.photoNumber = photoNumber;
 	}
 }
