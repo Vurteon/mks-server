@@ -15,7 +15,7 @@ import java.io.IOException;
  * function: 检查是否存在session,如果不存在,则向客户端发送错误代码,并返回
  */
 
-@WebFilter(filterName = "SessionFilter",urlPatterns = {"/UploadPhoto","/LoadStatus"},dispatcherTypes = {DispatcherType.REQUEST,
+@WebFilter(filterName = "SessionFilter",urlPatterns = {"/UploadPhoto","/LoadStatus","/get_user_info"},dispatcherTypes = {DispatcherType.REQUEST,
 		DispatcherType.INCLUDE,DispatcherType.FORWARD,DispatcherType.ERROR,DispatcherType.ASYNC})
 public class SessionFilter implements Filter {
 
