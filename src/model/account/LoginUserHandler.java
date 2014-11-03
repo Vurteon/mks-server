@@ -43,9 +43,9 @@ public class LoginUserHandler {
 
 		CachedRowSet settings = LoginDao.getUserSettings(userID);
 		CachedRowSet followings = LoginDao.getFollowingPeopleID(userID);
-		CachedRowSet friends = LoginDao.getContactersID(userID);
+//		?CachedRowSet friends = LoginDao.getContactersID(userID);
 
-		if (settings == null || followings == null || friends == null) {
+		if (settings == null || followings == null) {
 			System.err.println("数据库查询出错");
 			return false;
 		} else {
@@ -76,13 +76,13 @@ public class LoginUserHandler {
 
 				httpSession.setAttribute("followings", followingAl);
 
-				// 设置friends
-				HashSet<Integer> friendAl = new HashSet<Integer>();
-				while (friends.next()) {
-					friendAl.add(friends.getInt("contacter"));
-				}
-
-				httpSession.setAttribute("contacters", friendAl);
+//				// 设置friends
+//				HashSet<Integer> friendAl = new HashSet<Integer>();
+//				while (friends.next()) {
+//					friendAl.add(friends.getInt("contacter"));
+//				}
+//
+//				httpSession.setAttribute("contacters", friendAl);
 
 				return true;
 			} catch (SQLException e) {
@@ -91,7 +91,7 @@ public class LoginUserHandler {
 				// 释放cacheRowSet资源
 				ReleaseSource.releaseSource(settings);
 				ReleaseSource.releaseSource(followings);
-				ReleaseSource.releaseSource(friends);
+//				ReleaseSource.releaseSource(friends);
 			}
 			return false;
 
