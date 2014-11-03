@@ -58,7 +58,7 @@ public class LoginDao {
 	}
 
 	/**
-	 * 通过用户ID ，查询包括pic，HomePageName，UserInfo，UserProfile中的部分或者全部信息，并结合成一个结果集
+	 * 通过用户ID ，查询包括pic，UserInfo，UserProfile中的全部信息，并结合成一个结果集
 	 *
 	 * @param ID 用户后台标记ID
 	 * @return 包含用户设置的结果集；或者是null当获取时出现异常时
@@ -73,7 +73,7 @@ public class LoginDao {
 		ResultSet resultSet = null;
 
 		// 获取用户初始化数据
-		String sql = "SELECT email,name,brief_intro,home_location,bg_photo,main_head_photo,home_head_photo,home_name from UserProfile NATURAL JOIN UserInfo WHERE ID = ?";
+		String sql = "SELECT email,name,brief_intro,home_location,bg_photo,main_head_photo,home_head_photo from UserProfile NATURAL JOIN UserInfo WHERE ID = ?";
 
 		CachedRowSet cachedRowSet = null;
 
@@ -131,38 +131,38 @@ public class LoginDao {
 		return cachedRowSet;
 	}
 
-	/**
-	 * 返回用户好友的ID或者是null，当SQL查询出现异常
-	 *
-	 * @param ID 用户后台唯一标记
-	 * @return 可能包含信息的cacheRowSet或者null，当SQL查询出现异常时
-	 */
-
-	public static CachedRowSet getContactersID(int ID) {
-
-		Connection con = ConnectionFactory.getMySqlConnection();
-
-		PreparedStatement ps = null;
-		ResultSet resultSet = null;
-
-		String getFollowingSql = "SELECT contacter FROM ContactPersons WHERE ID = ?";
-
-		CachedRowSet cachedRowSet = null;
-
-		try {
-			ps = con.prepareStatement(getFollowingSql);
-			ps.setInt(1, ID);
-			resultSet = ps.executeQuery();
-
-			cachedRowSet = buildCacheRawSet(resultSet);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			ReleaseSource.releaseSource(resultSet, ps);
-		}
-
-		return cachedRowSet;
-	}
+//	/**
+//	 * 返回用户好友的ID或者是null，当SQL查询出现异常
+//	 *
+//	 * @param ID 用户后台唯一标记
+//	 * @return 可能包含信息的cacheRowSet或者null，当SQL查询出现异常时
+//	 */
+//
+//	public static CachedRowSet getContactersID(int ID) {
+//
+//		Connection con = ConnectionFactory.getMySqlConnection();
+//
+//		PreparedStatement ps = null;
+//		ResultSet resultSet = null;
+//
+//		String getFollowingSql = "SELECT contacter FROM ContactPersons WHERE ID = ?";
+//
+//		CachedRowSet cachedRowSet = null;
+//
+//		try {
+//			ps = con.prepareStatement(getFollowingSql);
+//			ps.setInt(1, ID);
+//			resultSet = ps.executeQuery();
+//
+//			cachedRowSet = buildCacheRawSet(resultSet);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			ReleaseSource.releaseSource(resultSet, ps);
+//		}
+//
+//		return cachedRowSet;
+//	}
 
 	/**
 	 * 检查用户登录时账号、密码是否正确
