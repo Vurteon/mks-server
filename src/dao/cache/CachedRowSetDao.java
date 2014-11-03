@@ -496,4 +496,37 @@ public class CachedRowSetDao {
 	}
 
 
+	/**
+	 * 更新用户照片的数量，如果isMore是真，便是增加数量；如果是假，就是减少用户照片的数量
+	 * @param ID 需要更新照片数量的用户的ID
+	 * @param photoNumber 增加或者减少的照片的数量
+	 * @param isMore 减少还是增加的标记
+	 * @throws SQLException
+	 */
+	public static void updatePhotoNumber (int ID, int photoNumber,boolean isMore) throws SQLException {
+		Connection connection;
+		PreparedStatement preparedStatement = null;
+
+		String updateNumber;
+		if (isMore) {
+			updateNumber = "update PhotoSum set photo_sum_number = photo_sum_number + ? where ID = ?";
+		}else {
+			updateNumber = "update PhotoSum set photo_sum_number = photo_sum_number - ? where ID = ?";
+		}
+		// 获得数据库连接
+		connection = ConnectionFactory.getMySqlConnection();
+		try {
+			preparedStatement = connection.prepareStatement(updateNumber);
+			preparedStatement.setInt(1,photoNumber);
+			preparedStatement.setInt(2,ID);
+			preparedStatement.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			ReleaseSource.releaseSource(preparedStatement);
+		}
+
+	}
+
 }
