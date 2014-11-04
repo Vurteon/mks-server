@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="c3p0-0.9.5-pre9">
+    <CLASSES>
+      <root url="jar://F:/class lib/c3p0-0.9.5-pre9/lib/c3p0-0.9.5-pre9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://F:/class lib/c3p0-0.9.5-pre9/src" />
+    </SOURCES>
+    <jarDirectory url="file://F:/class lib/c3p0-0.9.5-pre9/src" recursive="false" type="SOURCES" />
+  </library>
+</component>

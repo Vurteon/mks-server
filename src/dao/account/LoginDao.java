@@ -25,7 +25,7 @@ public class LoginDao {
 	 * @param email 用户账号
 	 * @return 用户在后台所对应的的ID
 	 */
-	public static int getID(String email) throws NoSuchIDException {
+	public static int getID(String email) throws NoSuchIDException, SQLException {
 
 		Connection con = ConnectionFactory.getMySqlConnection();
 
@@ -38,9 +38,7 @@ public class LoginDao {
 
 		try {
 			ps = con.prepareStatement(getIDSql);
-
 			ps.setString(1, email);
-
 			resultSet = ps.executeQuery();
 
 			if (resultSet.next()) {
@@ -50,10 +48,10 @@ public class LoginDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
-			ReleaseSource.releaseSource(resultSet, ps);
+			ReleaseSource.releaseSource(resultSet, ps, con);
 		}
-
 		return ID;
 	}
 
@@ -64,9 +62,7 @@ public class LoginDao {
 	 * @return 包含用户设置的结果集；或者是null当获取时出现异常时
 	 */
 
-	public static CachedRowSet getUserSettings(int ID) {
-
-
+	public static CachedRowSet getUserSettings(int ID) throws SQLException {
 		Connection con = ConnectionFactory.getMySqlConnection();
 
 		PreparedStatement ps = null;
@@ -78,9 +74,7 @@ public class LoginDao {
 		CachedRowSet cachedRowSet = null;
 
 		try {
-
 			ps = con.prepareStatement(sql);
-
 			ps.setInt(1, ID);
 			resultSet = ps.executeQuery();
 
@@ -89,8 +83,9 @@ public class LoginDao {
 			cachedRowSet = buildCacheRawSet(resultSet);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
-			ReleaseSource.releaseSource(resultSet, ps);
+			ReleaseSource.releaseSource(resultSet, ps, con);
 		}
 
 		// 这里返回要么是cacheRawSet，要么是null
@@ -104,7 +99,7 @@ public class LoginDao {
 	 * @return 可能包含信息的cacheRowSet或者null，当SQL查询出现异常时
 	 */
 
-	public static CachedRowSet getFollowingPeopleID(int ID) {
+	public static CachedRowSet getFollowingPeopleID(int ID) throws SQLException {
 
 		Connection con = ConnectionFactory.getMySqlConnection();
 
@@ -112,57 +107,22 @@ public class LoginDao {
 		ResultSet resultSet = null;
 
 		String getFollowingSql = "SELECT following FROM Followings WHERE ID = ?";
-
 		CachedRowSet cachedRowSet = null;
 
 		try {
 			ps = con.prepareStatement(getFollowingSql);
 			ps.setInt(1, ID);
 			resultSet = ps.executeQuery();
-
 			cachedRowSet = buildCacheRawSet(resultSet);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
-			ReleaseSource.releaseSource(resultSet, ps);
+			ReleaseSource.releaseSource(resultSet, ps, con);
 		}
 
 		return cachedRowSet;
 	}
-
-//	/**
-//	 * 返回用户好友的ID或者是null，当SQL查询出现异常
-//	 *
-//	 * @param ID 用户后台唯一标记
-//	 * @return 可能包含信息的cacheRowSet或者null，当SQL查询出现异常时
-//	 */
-//
-//	public static CachedRowSet getContactersID(int ID) {
-//
-//		Connection con = ConnectionFactory.getMySqlConnection();
-//
-//		PreparedStatement ps = null;
-//		ResultSet resultSet = null;
-//
-//		String getFollowingSql = "SELECT contacter FROM ContactPersons WHERE ID = ?";
-//
-//		CachedRowSet cachedRowSet = null;
-//
-//		try {
-//			ps = con.prepareStatement(getFollowingSql);
-//			ps.setInt(1, ID);
-//			resultSet = ps.executeQuery();
-//
-//			cachedRowSet = buildCacheRawSet(resultSet);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			ReleaseSource.releaseSource(resultSet, ps);
-//		}
-//
-//		return cachedRowSet;
-//	}
 
 	/**
 	 * 检查用户登录时账号、密码是否正确
@@ -170,7 +130,7 @@ public class LoginDao {
 	 * @param userAccountBean 用户信息Bean
 	 * @return 正确，true;错误，false
 	 */
-	public static boolean accountCheck(UserAccountBean userAccountBean) {
+	public static boolean accountCheck(UserAccountBean userAccountBean) throws SQLException {
 
 		String email = userAccountBean.getAccount();
 		String password = userAccountBean.getPassword();
@@ -178,20 +138,14 @@ public class LoginDao {
 		String accountCheckSql = "SELECT email,password FROM AccountInfo WHERE email = ?";
 
 		Connection con = ConnectionFactory.getMySqlConnection();
-
 		PreparedStatement ps = null;
-
 		ResultSet resultSet = null;
 
 		try {
 			ps = con.prepareStatement(accountCheckSql);
-
 			ps.setString(1, email);
-
 			resultSet = ps.executeQuery();
-
 			if (resultSet.next()) {
-
 				String dbEmail = resultSet.getString("email");
 				String dbPassword = resultSet.getString("password");
 				return dbEmail.equals(email) && dbPassword.equals(password);
@@ -200,13 +154,18 @@ public class LoginDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
-			ReleaseSource.releaseSource(resultSet, ps);
+			ReleaseSource.releaseSource(resultSet, ps, con);
 		}
-		return false;
 	}
 
-
+	/**
+	 * 创建CachedRowSet
+	 * @param resultSet CachedRowSet数据源
+	 * @return 创建好的CachedRowSet
+	 * @throws SQLException
+	 */
 	private static CachedRowSet buildCacheRawSet(ResultSet resultSet) throws SQLException {
 		CachedRowSet cachedRowSet;
 		cachedRowSet = CachedRowSetFactory.getRowSetFactory().createCachedRowSet();

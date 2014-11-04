@@ -5,19 +5,16 @@ import utils.json.JSONArray;
 import utils.json.JSONObject;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.net.*;
 import java.util.Date;
 
 /**
  * Created by leon on 14-9-10.
  */
 public class LoadTest implements Runnable {
-	static String testUrl = "http://120.24.68.64:8080/mks/login";
+//	static String testUrl = "http://120.24.68.64:8080/mks/get_user_info";
 
-//	static String testUrl = "http://127.0.0.1:8080/login";
+	static String testUrl = "http://127.0.0.1:8080/login";
 
 
 	@Override
@@ -37,9 +34,7 @@ public class LoadTest implements Runnable {
 			httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
 			httpURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0");
-			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=06D35542F6FA609CFF80930540EAB112");
-			httpURLConnection.setRequestProperty("Content-Type",
-					"multipart/form-data; boundary=" + "aaaaaaaaaaaaa--------------2");
+			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=527DFF236FA9A723A80657382A8DD7EF");
 
 
 
@@ -64,7 +59,10 @@ public class LoadTest implements Runnable {
 
 			System.out.println("完成时间：" + new Date());
 
-			System.out.println(new JSONObject(sb.toString()));
+
+			System.out.println(sb);
+//			System.out.println(URLDecoder.decode(sb.toString(),"utf8"));
+//			System.out.println(new JSONObject(sb.toString()));
 
 //			JSONArray jsonArray = new JSONArray(sb.toString());
 //

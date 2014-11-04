@@ -12,9 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.sql.SQLException;
 
 /**
  *
@@ -42,13 +41,20 @@ public class CheckAccountServlet extends HttpServlet {
 
 			String email = jsonObject.getString("account");
 
-			if (FormatCheckManager.checkAccount()) {
+			if (FormatCheckManager.checkAccount("asd")) {
 				//直接使用数据库查询服务
-				String dbEmail = SignUpDao.getUserEmail(email);
-				if (dbEmail == null) {
-					StatusResponseHandler.sendStatus("accountResult","not_exist",response);
-				}else {
-					StatusResponseHandler.sendStatus("accountResult","exist",response);
+				String dbEmail = null;
+				try {
+					dbEmail = SignUpDao.getUserAccount(email);
+					if (dbEmail == null) {
+						StatusResponseHandler.sendStatus("accountResult","not_exist",response);
+					}else {
+						StatusResponseHandler.sendStatus("accountResult","exist",response);
+					}
+				} catch (SQLException e) {
+					// 发送sql错误的信息
+					StatusResponseHandler.sendStatus("accountResult",ErrorCode.SQLERROR,response);
+					e.printStackTrace();
 				}
 			}else {
 				// 格式错误

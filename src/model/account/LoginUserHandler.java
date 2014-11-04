@@ -23,7 +23,7 @@ public class LoginUserHandler {
 	 * @param accountBean 用户数据Bean
 	 * @return 如果正确，返回true；错误返回false
 	 */
-	public static boolean isAccountPassed(UserAccountBean accountBean) {
+	public static boolean isAccountPassed(UserAccountBean accountBean) throws SQLException {
 		return LoginDao.accountCheck(accountBean);
 	}
 
@@ -37,22 +37,19 @@ public class LoginUserHandler {
 	 * @throws dao.exception.NoSuchIDException
 	 */
 
-	public static boolean setSession(UserAccountBean userAccountBean, HttpSession httpSession) throws NoSuchIDException {
+	public static boolean setSession(UserAccountBean userAccountBean, HttpSession httpSession) throws NoSuchIDException, SQLException {
 
 		int userID = LoginDao.getID(userAccountBean.getAccount());
 
 		CachedRowSet settings = LoginDao.getUserSettings(userID);
 		CachedRowSet followings = LoginDao.getFollowingPeopleID(userID);
-//		?CachedRowSet friends = LoginDao.getContactersID(userID);
 
 		if (settings == null || followings == null) {
 			System.err.println("数据库查询出错");
 			return false;
 		} else {
-
 			// 由于个人登录时需要的相关设置一般不会更新地十分频繁，所以不使用RowSet作为存储介质
 			try {
-
 				// 设置settings
 				if (settings.next()) {
 
@@ -66,6 +63,7 @@ public class LoginUserHandler {
 					}
 				}
 
+				// 设置用户ID到session中
 				httpSession.setAttribute("ID",userID);
 
 				// 设置followings
@@ -75,28 +73,15 @@ public class LoginUserHandler {
 				}
 
 				httpSession.setAttribute("followings", followingAl);
-
-//				// 设置friends
-//				HashSet<Integer> friendAl = new HashSet<Integer>();
-//				while (friends.next()) {
-//					friendAl.add(friends.getInt("contacter"));
-//				}
-//
-//				httpSession.setAttribute("contacters", friendAl);
-
 				return true;
 			} catch (SQLException e) {
 				e.printStackTrace();
+				throw e;
 			} finally {
 				// 释放cacheRowSet资源
 				ReleaseSource.releaseSource(settings);
 				ReleaseSource.releaseSource(followings);
-//				ReleaseSource.releaseSource(friends);
 			}
-			return false;
-
 		}
 	}
-
-
 }

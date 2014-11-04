@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c3p0-config>
+	<default-config>
+		<driverClass>com.mysql.jdbc.Driver</driverClass>
+		<jdbcUrl>jdbc:mysql://120.24.68.64:3306/moment</jdbcUrl>
+		<user>moment</user>
+		<password>520520</password>
+	</default-config>
+</c3p0-config>

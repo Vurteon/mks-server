@@ -20,10 +20,10 @@ public class PostPhotoTest implements Runnable {
 	public static ArrayList<String> asds = new ArrayList<String>();
 
 
-//	static String testUrl = "http://127.0.0.1:8080/UploadPhoto";
+	static String testUrl = "http://127.0.0.1:8080/upload_photo";
 
 
-	static String testUrl = "http://120.24.68.64:8080/mks/UploadPhoto";
+//	static String testUrl = "http://120.24.68.64:8080/mks/upload_photo";
 
 	static String BOUNDARY = "---------------------------7de8c1a80910";
 
@@ -48,7 +48,7 @@ public class PostPhotoTest implements Runnable {
 			httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
 			httpURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0");
-			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=EA89D434CD32FA7E9B045CCB7DBA14B4");
+			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=12E722668D0B190AF4C0BFFCB3C4EB69");
 
 			httpURLConnection.setRequestProperty("Content-Type",
 					"multipart/form-data; boundary=" + BOUNDARY);
@@ -65,7 +65,7 @@ public class PostPhotoTest implements Runnable {
 
 			System.arraycopy(image, 0, newByte, 0, ll);
 
-			byte[] asd = JsonUtils.getJsonObject("{'myWords':'这是第er次使用云服务器测试照片上传'}").toString().getBytes();
+			byte[] asd = JsonUtils.getJsonObject("{'myWords':'来试一试照片的数量增加了吗？'}").toString().getBytes();
 
 			System.out.println("发出请求时间：" + new Date());
 

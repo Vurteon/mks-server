@@ -11,7 +11,8 @@ import java.sql.SQLException;
  * author: 康乐
  * time: 记不起了
  * change-time: 2014/7/31
- * function: 释放数据库资源，包括Connection,PreparedStatement和ResultSet
+ * function: 释放数据库资源，包括Connection、PreparedStatement、ResultSet、CachedRowSet、
+ *           Statement
  */
 public class ReleaseSource {
 
@@ -29,9 +30,12 @@ public class ReleaseSource {
 			} catch (SQLException e) {
 				System.err.println("释放Connection资源出错");
 				e.printStackTrace();
+				return false;
 			}
+		}else {
+			return true;
 		}
-		return false;
+
 	}
 
 
@@ -49,60 +53,53 @@ public class ReleaseSource {
 			} catch (SQLException e) {
 				System.err.println("释放PreparedStatement资源出错");
 				e.printStackTrace();
+				return false;
 			}
+		}else {
+			return true;
 		}
-		return false;
+	}
+
+
+	/**
+	 * 释放statement对象
+	 * @param statement 需要释放的资源对象
+	 * @return 如果释放成功返回true，如果statement为null,返回false
+	 */
+	public static boolean releaseSource(Statement statement) {
+
+		if (statement != null) {
+			try {
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.err.println("释放Statement资源出错");
+				e.printStackTrace();
+				return false;
+			}
+		}else {
+			return true;
+		}
 	}
 
 	/**
-	 * 释放ResultSet、PreparedStatement对象
-	 * @param resultSet 需要释放资源的结果集对象
-	 * @param preparedStatement PreparedStatement对象
-	 * @return 均释放成功返回true，如果其中一个为null,返回false
+	 * 释放ResultSet对象
+	 * @param resultSet 需要释放的资源对象
+	 * @return 如果释放成功返回true，如果resultSet为null,返回false
 	 */
-	public static boolean releaseSource(ResultSet resultSet,PreparedStatement preparedStatement) {
-
+	public static boolean releaseSource(ResultSet resultSet) {
 		if (resultSet != null) {
 			try {
 				resultSet.close();
+				return true;
 			} catch (SQLException e) {
-				System.err.println("释放ResultSet出错");
 				e.printStackTrace();
-			}finally {
-				if(preparedStatement != null){
-					releaseSource(preparedStatement);
-				}
+				return false;
 			}
-		}
-
-		if (preparedStatement != null) {
-			releaseSource(preparedStatement);
+		}else {
 			return true;
 		}
-		return false;
 	}
-
-
-	/**
-	 * 释放CachedRowSet、ResultSet、PreparedStatement对象
-	 * @param cachedRowSet CachedRowSet 对象
-	 * @param resultSet ResultSet结果集对象
-	 * @param preparedStatement  PreparedStatement对象
-	 * @return 均释放成功返回true，如果其中一个为nt为null,返回false
-	 */
-	public static boolean releaseSource(CachedRowSet cachedRowSet,ResultSet resultSet,PreparedStatement preparedStatement) {
-		if(cachedRowSet != null) {
-			try {
-				cachedRowSet.close();
-				return releaseSource(resultSet,preparedStatement);
-			} catch (SQLException e) {
-				System.err.println("释放RawSet资源出错");
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
 
 	/**
 	 * 释放CacheRowSet对象
@@ -117,42 +114,60 @@ public class ReleaseSource {
 			} catch (SQLException e) {
 				System.err.println("释放RawSet资源出错");
 				e.printStackTrace();
+				return false;
 			}
+		}else {
+			return true;
 		}
-		return false;
+	}
+
+
+	/**
+	 * 释放ResultSet、PreparedStatement对象
+	 * @param resultSet 需要释放资源的结果集对象
+	 * @param preparedStatement PreparedStatement对象
+	 * @return 均释放成功返回true；否则为false
+	 */
+	public static boolean releaseSource(ResultSet resultSet,PreparedStatement preparedStatement) {
+		return releaseSource(resultSet) &&
+				releaseSource(preparedStatement);
 	}
 
 	/**
-	 * 释放statement对象
-	 * @param statement 需要释放的资源对象
-	 * @return 如果释放成功返回true，如果statement为null,返回false
+	 * 释放ResultSet、PreparedStatement、Connection三种资源
+	 * @param resultSet 结果集
+	 * @param preparedStatement 临时表
+	 * @param connection 数据库连接
+	 * @return 如果全部释放成功，返回true；否则返回false
 	 */
-	public static boolean releaseSource(Statement statement) {
+	public static boolean releaseSource(ResultSet resultSet,PreparedStatement preparedStatement,Connection connection) {
 
-		if (statement != null) {
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				System.err.println("释放Statement资源出错");
-				e.printStackTrace();
-			}
-		}
-		return false;
+		return releaseSource(resultSet) &&
+				releaseSource(preparedStatement) &&
+				releaseSource(connection);
+	}
+
+
+	/**
+	 * 释放CachedRowSet、ResultSet、PreparedStatement对象
+	 * @param cachedRowSet CachedRowSet 对象
+	 * @param resultSet ResultSet结果集对象
+	 * @param preparedStatement  PreparedStatement对象
+	 * @return 均释放成功返回true；否则为false
+	 */
+	public static boolean releaseSource(CachedRowSet cachedRowSet,ResultSet resultSet,PreparedStatement preparedStatement) {
+		return releaseSource(cachedRowSet) && releaseSource(resultSet)
+				&& releaseSource(preparedStatement);
 	}
 
 	/**
-	 * 释放ResultSet对象
-	 * @param resultSet 需要释放的资源对象
-	 * @return 如果释放成功返回true，如果resultSet为null,返回false
+	 * 释放PreparedStatement、con对象
+	 * @param preparedStatement 临时表
+	 * @param connection con
+	 * @return 均释放成功返回true；否则为false
 	 */
-	public static boolean releaseSource(ResultSet resultSet) {
-		if (resultSet != null) {
-			try {
-				resultSet.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
+	public static boolean releaseSource(PreparedStatement preparedStatement, Connection connection) {
+		return releaseSource(preparedStatement) &&
+				releaseSource(connection);
 	}
 }

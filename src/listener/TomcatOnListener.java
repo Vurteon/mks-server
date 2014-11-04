@@ -2,11 +2,14 @@ package listener;
 
 import dao.cache.CachedRowSetDao;
 import model.status.StatusRowSetManager;
+import org.dom4j.DocumentException;
 import utils.ThreadPoolUtils;
+import utils.db.ConnectionFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.beans.PropertyVetoException;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -42,8 +45,6 @@ public class TomcatOnListener implements ServletContextListener{
 			e.printStackTrace();
 		}
 
-		System.out.println("创建线程池");
-
 		ThreadPoolExecutor cpuThreadPoolExecutor = new ThreadPoolExecutor(ThreadPoolUtils.CPUCORETHREADSNUMBER, ThreadPoolUtils.CPUMAXTHREADSNUMBER,
 				ThreadPoolUtils.CPUTHREADSKEEPALIVETIME, ThreadPoolUtils.CPUTHREADSTIMEUNIT, ThreadPoolUtils.CPUTHREADSQUEUE, ThreadPoolUtils.HANDLER);
 
@@ -54,8 +55,20 @@ public class TomcatOnListener implements ServletContextListener{
 
 		ThreadPoolUtils.setIoThreadPoolExecutor(ioThreadPoolExecutor);
 
+		System.out.println("创建线程池成功");
 
-		System.out.println("创建CacheRowSet，实现内存数据库");
+		try {
+			ConnectionFactory.initConPool();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+			System.out.println("初始化数据库连接池失败---------");
+			System.exit(-1);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+			System.out.println("初始化数据库连接池失败---------");
+			System.exit(-1);
+		}
+
 
 		try {
 			StatusRowSetManager.setStatusRowSet(CachedRowSetDao.buildNewCacheRowSet());
@@ -65,8 +78,10 @@ public class TomcatOnListener implements ServletContextListener{
 			System.err.println(new Date() + "创建Cache出错，退出tomcat");
 			System.err.println(new Date() + "创建Cache出错，退出tomcat");
 			e.printStackTrace();
+			// 直接退出JVM
 			System.exit(-1);
 		}
+		System.out.println("创建CacheRowSet，构造缓存成功");
 	}
 
 
@@ -98,7 +113,6 @@ public class TomcatOnListener implements ServletContextListener{
 			System.err.println(new Date() + "----------------->>>>重大错误，重大错误，缓存批量写入DB出错，数据丢失！！！");
 			System.err.println(new Date() + "----------------->>>>重大错误，重大错误，缓存批量写入DB出错，数据丢失！！！");
 		}
-
 		/**
 		 * 移除所有相关组件
 		 */

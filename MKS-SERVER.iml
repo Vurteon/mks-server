@@ -29,6 +29,9 @@
     <orderEntry type="library" name="mysql-connector-java-5.1.24-bin" level="project" />
     <orderEntry type="library" name="jsp-api" level="project" />
     <orderEntry type="library" name="log4j-api-2.1" level="project" />
+    <orderEntry type="library" name="c3p0-0.9.5-pre9" level="project" />
+    <orderEntry type="library" name="dom4j-1.6.1" level="project" />
+    <orderEntry type="library" name="mchange-commons-java-0.2.8" level="project" />
   </component>
 </module>
 

@@ -28,7 +28,7 @@ public class SignUpDaoTest extends TestCase {
 
     public void testGetUser() throws Exception {
         //TODO: Test goes here...
-	    String r = SignUpDao.getUserEmail("test");
+	    String r = SignUpDao.getUserAccount("test");
 	    System.out.println(r);
 
 

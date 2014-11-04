@@ -180,6 +180,8 @@ public class SavePart implements Runnable {
 			// 这里需要做些许处理，目前暂时不处理
 			// 这里需要做些许处理，目前暂时不处理
 			e.printStackTrace();
+			// 直接返回，等待触发TimeOut函数
+			return ;
 		}
 
 		// 存储线程任务完成;同时也表明整个上传图片过程完成

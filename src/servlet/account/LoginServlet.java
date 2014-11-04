@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * author: 康乐
@@ -42,7 +43,7 @@ public class LoginServlet extends HttpServlet {
 		// 判断数据格式
 		if (userAccountJson.has("account") && userAccountJson.has("password")) {
 
-			if (FormatCheckManager.checkAccount() && FormatCheckManager.checkPassword()) {
+			if (FormatCheckManager.checkAccount("asd") && FormatCheckManager.checkPassword("asd")) {
 				userAccountBean = new UserAccountBean();
 				userAccountBean.setAccount(userAccountJson.getString("account"));
 				userAccountBean.setPassword(userAccountJson.getString("password"));
@@ -56,25 +57,32 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		// 检测密码是否正确
-		boolean isPassed = LoginUserHandler.isAccountPassed(userAccountBean);
-		if (isPassed) {
-			// 如果正确，那么就进行session的设置
-			try {
-				HttpSession httpSession = request.getSession(true);
+		boolean isPassed;
+		try {
+			isPassed = LoginUserHandler.isAccountPassed(userAccountBean);
+			if (isPassed) {
+				// 如果正确，那么就进行session的设置
+				try {
+					HttpSession httpSession = request.getSession(true);
 
-				if(LoginUserHandler.setSession(userAccountBean, httpSession)) {
-					// 向客户端返回sessionID
-					JSONObject responseInfo = JsonUtils.getJsonObject("{'accountResult':'success';'JSESSIONID':" +httpSession.getId() +  "}");
-					StatusResponseHandler.sendStatus(responseInfo,response,true);
-				}else {
-					StatusResponseHandler.sendStatus("accountResult","error",response);
+					if(LoginUserHandler.setSession(userAccountBean, httpSession)) {
+						// 向客户端返回sessionID
+						JSONObject responseInfo = JsonUtils.getJsonObject("{'accountResult':'success';'JSESSIONID':" +httpSession.getId() +  "}");
+						StatusResponseHandler.sendStatus(responseInfo,response,true);
+					}else {
+						StatusResponseHandler.sendStatus("accountResult","error",response);
+					}
+				} catch (NoSuchIDException e) {
+					e.printStackTrace();
 				}
-			} catch (NoSuchIDException e) {
-				e.printStackTrace();
+			} else {
+				// 密码错误，返回消息
+				StatusResponseHandler.sendStatus("accountResult","dataWrong",response);
 			}
-		} else {
-			// 密码错误，返回消息
-			StatusResponseHandler.sendStatus("accountResult","dataWrong",response);
+		} catch (SQLException e) {
+			// 发送sql错误的信息
+			StatusResponseHandler.sendStatus("accountResult",ErrorCode.SQLERROR,response);
+			e.printStackTrace();
 		}
 	}
 

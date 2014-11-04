@@ -20,7 +20,7 @@ public class PostBuild {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 
-//		for (int i = 0; i < 20;i++)
+		for (int i = 0; i < 20;i++)
 		new Thread(new PostPhotoTest()).start();
 	}
 }

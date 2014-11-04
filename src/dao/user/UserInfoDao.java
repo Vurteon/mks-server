@@ -12,8 +12,11 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 /**
- * Created by leon on 2014/11/3.
+ * author:康乐
+ * time:2014/11/4
+ * function:管理用户个人信息相关
  */
+
 public class UserInfoDao {
 
 	/**
@@ -54,13 +57,8 @@ public class UserInfoDao {
 			e.printStackTrace();
 			throw e;
 		}finally {
-			ReleaseSource.releaseSource(resultSet);
-			ReleaseSource.releaseSource(ps);
+			ReleaseSource.releaseSource(resultSet,ps,con);
 		}
 		return cachedRowSet;
 	}
-
-
-
-
 }
