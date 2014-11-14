@@ -261,6 +261,68 @@ public class StatusRowSetManager {
 
 
 	/**
+	 * 从缓存中获得指定ID的缩略图资源，且资源的rs_id要小于传入的rs_id的值
+	 * @param ID 所需要被获取的人的ID
+	 * @param rs_id 资源标记
+	 * @return 所获得的资源的json数组
+	 * @throws SQLException
+	 */
+	public static JSONArray getMoreSmallPhoto (int ID, int rs_id) throws SQLException {
+
+		JSONArray jsonArray = new JSONArray();
+
+		int firstNumber;
+
+		synchronized (object) {
+			statusRowSet.first();
+			firstNumber = statusRowSet.getInt("rs_id");
+			if (firstNumber > rs_id) {
+				return jsonArray;
+			}else {
+				// 从最新的一条查起走，这里我表示我很担心这个效率会不会
+				// 在流量稍大的时候引起整个服务出现严重问题啊！！
+				statusRowSet.last();
+				do {
+					if (statusRowSet.getInt("ID") == ID) {
+						// 如果ID相等，再检查缓存中的rs_id是否大于传入标记rs_id，如果大于，放弃；如果小于
+						// 便检查下json数组的长度是否是小于13的，如果大于13，放弃；否则将数据存入json数组
+						if (statusRowSet.getInt("rs_id") > rs_id
+								&& jsonArray.length() < 13 ) {
+							buildMoreSmallPhoto(statusRowSet, jsonArray);
+						}
+					}
+				}while (statusRowSet.previous());
+			}
+
+		}
+		return jsonArray;
+	}
+
+
+	/**
+	 * 从CachedRowSet中获取数据并填充在json对象中
+	 * @param cachedRowSet 数据源
+	 * @param jsonArray 需要被json对象填充的json数组
+	 * @throws SQLException
+	 */
+	private static void buildMoreSmallPhoto (CachedRowSet cachedRowSet, JSONArray jsonArray) throws SQLException {
+		int rs_id = cachedRowSet.getInt("rs_id");
+		int ID = cachedRowSet.getInt("ID");
+		String photoPath = cachedRowSet.getString("more_small_photo");
+		String album = cachedRowSet.getString("album");
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("rs_id", rs_id);
+		jsonObject.put("ID",ID);
+		jsonObject.put("more_small_photo", photoPath);
+		jsonObject.put("album", album);
+		jsonArray.put(jsonObject);
+	}
+
+
+
+
+	/**
 	 * 根据当前游标获取数据,并生成相应的json对象且将其放入传入的json数组中
 	 *
 	 * @param jsonArray 将会被添加新json对象的json数组
@@ -300,20 +362,22 @@ public class StatusRowSetManager {
 		// 获取是否有详细信息
 		String hasDetail = cachedRowSet.getString(11);
 
+		String album = cachedRowSet.getString(12);
+
 		// 获取原信息
-		String olderWords = cachedRowSet.getString(12);
+		String olderWords = cachedRowSet.getString(13);
 
 		// 获取自己的描述
-		String myWords = cachedRowSet.getString(13);
+		String myWords = cachedRowSet.getString(14);
 
 		// 获取照片位置信息
-		String location = cachedRowSet.getString(14);
+		String location = cachedRowSet.getString(15);
 
 		// 获取照片view信息
-		String viewPhoto = cachedRowSet.getString(15);
+		String viewPhoto = cachedRowSet.getString(16);
 
 		// 获取殴照片detail信息
-		String detailPhoto = cachedRowSet.getString(16);
+		String detailPhoto = cachedRowSet.getString(17);
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -321,6 +385,7 @@ public class StatusRowSetManager {
 		jsonObject.put("rs_id", rs_id);
 		jsonObject.put("ID", ID);
 		jsonObject.put("time", time);
+		jsonObject.put("album",album);
 		jsonObject.put("photoClass", photoClass);
 		jsonObject.put("photoAt", photoAt);
 		jsonObject.put("photoTopic", photoTopic);
