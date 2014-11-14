@@ -189,6 +189,7 @@ public class CachedRowSetDao {
 			cachedRowSet.updateString(14, photoDesBean.getPhotoLocation());
 			cachedRowSet.updateString(15, photoDesBean.getViewPhotoPath());
 			cachedRowSet.updateString(16, photoDesBean.getDetailPhotoPath());
+			cachedRowSet.updateString(17, photoDesBean.getMoreSmallPhotoPath());
 
 			// 插入数据
 			cachedRowSet.insertRow();
@@ -356,6 +357,8 @@ public class CachedRowSetDao {
 
 		String detailPhotoPath = cachedRowSet.getString(16);
 
+		String moreSmallPhotoPath = cachedRowSet.getString(17);
+
 		int rs_id = 0;
 
 		PreparedStatement preparedStatement = null;
@@ -454,12 +457,13 @@ public class CachedRowSetDao {
 		}
 
 		try {
-			String insertPhotoPath = "INSERT INTO PhotoPath(rs_id, view_photo,detail_photo) VALUES (?,?,?)";
+			String insertPhotoPath = "INSERT INTO PhotoPath(rs_id, view_photo,detail_photo,more_small_photo) VALUES (?,?,?,?)";
 			preparedStatement = connection.prepareStatement(insertPhotoPath);
 
 			preparedStatement.setInt(1, rs_id);
 			preparedStatement.setString(2, viewPhotoPath);
 			preparedStatement.setString(3, detailPhotoPath);
+			preparedStatement.setString(4, moreSmallPhotoPath);
 
 			preparedStatement.execute();
 
