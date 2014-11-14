@@ -33,6 +33,9 @@ public class DealPart implements Runnable {
 	// 压缩照片后的照片宽度
 	public static final float WIDTH = 800.0f;
 
+	// 缩略图宽度
+	public static final float MORESMALLWIDTH = 250.0f;
+
 	// 当前用户的ID
 	private int ID;
 	private AsyncContext asyncContext = null;
@@ -111,9 +114,12 @@ public class DealPart implements Runnable {
 			return ;
 		}
 
-		// 存储原图、压缩后的图片的两个容器
+		// 存储压缩后图片的容器
 		ArrayList<BufferedImage> newArrayList = new ArrayList<BufferedImage>();
+		// 存储原图
 		ArrayList<BufferedImage> oldArrayList = new ArrayList<BufferedImage>();
+		// 存储缩略图
+		ArrayList<BufferedImage> moreSmallList = new ArrayList<BufferedImage>();
 
 		// 处理（缩小照片尺寸）照片
 		while (iterator.hasNext()) {
@@ -137,7 +143,17 @@ public class DealPart implements Runnable {
 				Graphics graphics = image.getGraphics();
 				graphics.drawImage(bi, 0, 0, (int) WIDTH, (int) height, null);
 
+
+				// 计算缩略图比例
+				minification = image.getWidth() / MORESMALLWIDTH;
+				float moreSmallHeight = image.getHeight() / minification;
+
+				BufferedImage moreSmallImage = new BufferedImage((int)MORESMALLWIDTH,(int)moreSmallHeight,BufferedImage.SCALE_SMOOTH);
+				graphics = moreSmallImage.getGraphics();
+				graphics.drawImage(image, 0, 0, (int) MORESMALLWIDTH, (int) moreSmallHeight, null);
+
 				// 将图片资源添加到list中，以便下一个线程使用
+				moreSmallList.add(moreSmallImage);
 				newArrayList.add(image);
 				oldArrayList.add(bi);
 
@@ -159,7 +175,7 @@ public class DealPart implements Runnable {
 			}
 		}
 		// 将现在的事务提交给存储线程池解决
-		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new SavePart(newArrayList, oldArrayList, photoDesBean, ID, asyncContext));
+		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new SavePart(moreSmallList, newArrayList, oldArrayList, photoDesBean, ID, asyncContext));
 	}
 
 	// 将json中的信息解析到PhotoDesBean中
