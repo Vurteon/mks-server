@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- *
+ * author：康乐
+ * time：2014/11/13
+ * function：返回给由客户端指定的ID用户信息
  */
 
 @WebServlet(name = "GetUserInfoServlet",urlPatterns = "/get_user_info")
@@ -41,6 +43,7 @@ public class GetUserInfoServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		response.getWriter().write("hello_world!");
+		response.getWriter().close();
 	}
 }
