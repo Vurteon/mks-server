@@ -83,6 +83,15 @@
 
 	<!--get user info-->
 	<servlet>
+		<servlet-name>GetFollowingsInfoServlet</servlet-name>
+		<servlet-class>servlet.user.GetFollowingsInfoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetFollowingsInfoServlet</servlet-name>
+		<url-pattern>/get_followings_info</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>GetUserInfoServlet</servlet-name>
 		<servlet-class>servlet.user.GetUserInfoServlet</servlet-class>
 	</servlet>
@@ -91,6 +100,23 @@
 		<url-pattern>/get_user_info</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>GetThreeNumberServlet</servlet-name>
+		<servlet-class>servlet.user.GetThreeNumberServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetThreeNumberServlet</servlet-name>
+		<url-pattern>/get_three_number</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 	<!--session filter-->
@@ -103,6 +129,8 @@
 		<filter-name>SessionFilter</filter-name>
 		<url-pattern>/upload_photo</url-pattern>
 		<url-pattern>/load_status</url-pattern>
+		<url-pattern>/get_followings_info</url-pattern>
+		<url-pattern>/get_three_number</url-pattern>
 		<url-pattern>/get_user_info</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
