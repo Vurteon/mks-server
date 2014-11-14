@@ -32,6 +32,9 @@ public class PhotoDesBean {
 	// 其中json的内容便会只有一项
 	private String photoLocation;
 
+	//  缩略图的位置
+	private String moreSmallPhotoPath;
+
 	// 个人中心查看图片时图片所在的路径
 	private String viewPhotoPath;
 
@@ -152,5 +155,13 @@ public class PhotoDesBean {
 
 	public void setPhotoNumber(int photoNumber) {
 		this.photoNumber = photoNumber;
+	}
+
+	public String getMoreSmallPhotoPath() {
+		return moreSmallPhotoPath;
+	}
+
+	public void setMoreSmallPhotoPath(String moreSmallPhotoPath) {
+		this.moreSmallPhotoPath = moreSmallPhotoPath;
 	}
 }
