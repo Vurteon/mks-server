@@ -328,36 +328,38 @@ public class CachedRowSetDao {
 	public static void statusSynchronized(CachedRowSet cachedRowSet) throws SQLException {
 
 		Connection connection = ConnectionFactory.getMySqlConnection();
-		int id = cachedRowSet.getInt(2);
+		int id = cachedRowSet.getInt("ID");
 
-		Timestamp timestamp = cachedRowSet.getTimestamp(3);
+		Timestamp timestamp = cachedRowSet.getTimestamp("time");
 
-		String photoClass = cachedRowSet.getString(4);
+		String photoClass = cachedRowSet.getString("photo_class");
 
-		String photoAt = cachedRowSet.getString(5);
+		String photoAt = cachedRowSet.getString("photo_at");
 
-		String photoTopic = cachedRowSet.getString(6);
+		String photoTopic = cachedRowSet.getString("photo_topic");
 
-		int commentsNumber = cachedRowSet.getInt(7);
+		int commentsNumber = cachedRowSet.getInt("comments_number");
 
-		int likesNumber = cachedRowSet.getInt(8);
+		int likesNumber = cachedRowSet.getInt("likes_number");
 
-		int sharesNumber = cachedRowSet.getInt(9);
+		int sharesNumber = cachedRowSet.getInt("shares_number");
 
-		String isLocated = cachedRowSet.getString(10);
-		String hasDetail = cachedRowSet.getString(11);
+		String isLocated = cachedRowSet.getString("IsLocated");
+		String hasDetail = cachedRowSet.getString("hasDetail");
 
-		String olderWords = cachedRowSet.getString(12);
+		String albumName = cachedRowSet.getString("album");
 
-		String myWords = cachedRowSet.getString(13);
+		String olderWords = cachedRowSet.getString("older_words");
 
-		String location = cachedRowSet.getString(14);
+		String myWords = cachedRowSet.getString("my_words");
 
-		String viewPhotoPath = cachedRowSet.getString(15);
+		String location = cachedRowSet.getString("location");
 
-		String detailPhotoPath = cachedRowSet.getString(16);
+		String viewPhotoPath = cachedRowSet.getString("view_photo");
 
-		String moreSmallPhotoPath = cachedRowSet.getString(17);
+		String detailPhotoPath = cachedRowSet.getString("detail_photo");
+
+		String moreSmallPhotoPath = cachedRowSet.getString("more_small_photo");
 
 		int rs_id = 0;
 
@@ -365,7 +367,7 @@ public class CachedRowSetDao {
 
 		// 向StatusFeeds表中插入数据
 		try {
-			String insertToStatusFeeds = "INSERT INTO StatusFeeds(ID, time, photo_class, photo_at, photo_topic, comments_number, likes_number, shares_number, IsLocated, hasDetail) VALUES (?,?,?,?,?,?,?,?,?,?)";
+			String insertToStatusFeeds = "INSERT INTO StatusFeeds(ID, time, photo_class, photo_at, photo_topic, comments_number, likes_number, shares_number, IsLocated, hasDetail, album) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 			// 设置事务
 			connection.setAutoCommit(false);
 
@@ -380,6 +382,7 @@ public class CachedRowSetDao {
 			preparedStatement.setInt(8, sharesNumber);
 			preparedStatement.setString(9, isLocated);
 			preparedStatement.setString(10, hasDetail);
+			preparedStatement.setString(11, albumName);
 
 			//执行
 			preparedStatement.execute();
