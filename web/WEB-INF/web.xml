@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -91,6 +91,7 @@
 		<url-pattern>/get_followings_info</url-pattern>
 	</servlet-mapping>
 
+	<!--获取指定的人的信息-->
 	<servlet>
 		<servlet-name>GetUserInfoServlet</servlet-name>
 		<servlet-class>servlet.user.GetUserInfoServlet</servlet-class>
@@ -100,6 +101,7 @@
 		<url-pattern>/get_user_info</url-pattern>
 	</servlet-mapping>
 
+	<!--获取指定的人的三个数量指标-->
 	<servlet>
 		<servlet-name>GetThreeNumberServlet</servlet-name>
 		<servlet-class>servlet.user.GetThreeNumberServlet</servlet-class>
@@ -108,8 +110,17 @@
 		<servlet-name>GetThreeNumberServlet</servlet-name>
 		<url-pattern>/get_three_number</url-pattern>
 	</servlet-mapping>
-	
-	
+
+	<!--获得缩略图信息-->
+	<servlet>
+		<servlet-name>GetMoreSmallPhotoServlet</servlet-name>
+		<servlet-class>servlet.photo.GetMoreSmallPhotoServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetMoreSmallPhotoServlet</servlet-name>
+		<url-pattern>/get_more_small_photo</url-pattern>
+	</servlet-mapping>
 	
 	
 	
@@ -132,6 +143,7 @@
 		<url-pattern>/get_followings_info</url-pattern>
 		<url-pattern>/get_three_number</url-pattern>
 		<url-pattern>/get_user_info</url-pattern>
+		<url-pattern>/get_more_small_photo</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
