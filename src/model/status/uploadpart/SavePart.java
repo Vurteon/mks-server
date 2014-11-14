@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,18 +27,25 @@ public class SavePart implements Runnable {
 
 	static long asd = 0;
 
+	// 照片存储的位置
 //    public static final String saveHome = "/alidata/server/tomcat7/webapps/mks/moment/photo";
 
-	public static final String saveHome = "F:/shunjian/photo";
+	public static final String saveHome = "D:/shunjian/photo";
 
-	private long ID;
+	private int ID;
+	// 缩略图存储容器
+	private ArrayList<BufferedImage> moreSmallImages;
+	// 压缩后图片的容器
 	private ArrayList<BufferedImage> newImages;
+	// 原图存储容器
 	private ArrayList<BufferedImage> oldImages;
 	private PhotoDesBean photoDesBean;
 
 	AsyncContext asyncContext;
 
-	public SavePart(ArrayList<BufferedImage> newImages, ArrayList<BufferedImage> oldImages, PhotoDesBean photoDesBean, long ID, AsyncContext asyncContext) {
+	public SavePart(ArrayList<BufferedImage> moreSmallImages, ArrayList<BufferedImage> newImages, ArrayList<BufferedImage> oldImages,
+	                PhotoDesBean photoDesBean, int ID, AsyncContext asyncContext) {
+		this.moreSmallImages = moreSmallImages;
 		this.newImages = newImages;
 		this.oldImages = oldImages;
 		this.photoDesBean = photoDesBean;
@@ -48,8 +56,13 @@ public class SavePart implements Runnable {
 	@Override
 	public void run() {
 
+		// 存储缩略图的位置
+		String moreSmallPhotoPath;
+
+		// 存储压缩后照片的位置
 		String newPhotoPath;
 
+		// 存储原图照片的位置
 		String oldPhotoPath;
 
 		File saveParentFile;
@@ -58,6 +71,29 @@ public class SavePart implements Runnable {
 
 		// 如果是专辑，那么就进行存储并将文件夹的名字赋值给相应的位置
 		if (photoDesBean.getAlbumName() != null) {
+
+			// 存储缩略图
+			saveParentFile = getSaveFile(PhotoType.MORE_SMALL_PHOTO);
+			if (saveParentFile != null) {
+				for (BufferedImage bufferedImage : moreSmallImages) {
+					File saveFile = new File(saveParentFile, getFileName());
+					try {
+						ImageIO.write(bufferedImage, "jpg", saveFile);
+						savedPhoto.add(saveFile);
+					} catch (IOException e) {
+						sendIoError(asyncContext);
+						e.printStackTrace();
+						rollBackPhoto(savedPhoto);
+						return ;
+					}
+				}
+				// 缩略图照片的位置
+				moreSmallPhotoPath = saveParentFile.getPath();
+			}else {
+				// 向客户端发送目录创建错误的信息
+				sendMkDirErrorCode(asyncContext);
+				return;
+			}
 
 			// 获得压缩后专辑照片存储的位置
 			saveParentFile = getSaveFile(PhotoType.RESIZE_PHOTO);
@@ -119,8 +155,28 @@ public class SavePart implements Runnable {
 			}
 		} else {
 			// 如果不是专辑，那么就是单张照片的存储
+			File savedMoreSmallFile;
 			File savedNewFile;
 			File savedOriginFile;
+
+			// 存储缩略图
+			saveParentFile = getSaveFile(PhotoType.MORE_SMALL_PHOTO);
+			if (saveParentFile != null) {
+				savedMoreSmallFile = new File (saveParentFile, getFileName());
+				try {
+					ImageIO.write(moreSmallImages.get(0),"jpg",savedMoreSmallFile);
+				} catch (IOException e) {
+					sendIoError(asyncContext);
+					rollBackPhoto(savedMoreSmallFile);
+					e.printStackTrace();
+					return ;
+				}
+				moreSmallPhotoPath = savedMoreSmallFile.getPath();
+			}else {
+				// 向客户端发送目录创建出错的错误信息
+				sendMkDirErrorCode(asyncContext);
+				return ;
+			}
 
 			// 获得压缩后照片存储的位置
 			saveParentFile = getSaveFile(PhotoType.RESIZE_PHOTO);
@@ -167,6 +223,7 @@ public class SavePart implements Runnable {
 		}
 
 		// 将存储照片位置信息放入 照片描述对象
+		photoDesBean.setMoreSmallPhotoPath(moreSmallPhotoPath);
 		photoDesBean.setViewPhotoPath(newPhotoPath);
 		photoDesBean.setDetailPhotoPath(oldPhotoPath);
 
@@ -193,17 +250,17 @@ public class SavePart implements Runnable {
 	 * 创建保存位置的文件夹，如果是多个文件夹创建失败，将会依次删除创建好后的文件夹
 	 * 如果是单个文件夹创建失败，则返回null
 	 *
-	 * @param photoType 照片的类型
-	 * @return 如果成功创建，那么返回创建好的File对象；如果创建失败，返回null
-	 * @see utils.EnumUtil.PhotoType
-	 */
-	private File getSaveFile(PhotoType photoType) {
+		* @param photoType 照片的类型
+		* @return 如果成功创建，那么返回创建好的File对象；如果创建失败，返回null
+				* @see utils.EnumUtil.PhotoType
+				*/
+		private File getSaveFile(PhotoType photoType) {
 
-		File savePlace = null;
+			File savePlace = null;
 
-		int saveDirectory = (int) (ID / 1000) + 1;
+			int saveDirectory = (int) (ID / 1000) + 1;
 
-		String idFileParentName = saveHome;
+			String idFileParentName = saveHome;
 
 		File idFileParent = new File(idFileParentName, saveDirectory + "000/" + ID);
 
@@ -227,6 +284,14 @@ public class SavePart implements Runnable {
 			}
 		} else if (photoType == PhotoType.RESIZE_PHOTO) {
 			savePlace = new File(idFileParent, "resizePhoto");
+			if (!savePlace.exists()) {
+				boolean mkdir = savePlace.mkdir();
+				if (!mkdir) {
+					return null;
+				}
+			}
+		}else if (photoType == PhotoType.MORE_SMALL_PHOTO) {
+			savePlace = new File(idFileParent, "moreSmallPhoto");
 			if (!savePlace.exists()) {
 				boolean mkdir = savePlace.mkdir();
 				if (!mkdir) {
