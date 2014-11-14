@@ -51,6 +51,7 @@ public class GetFollowingsInfoServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
+		response.getWriter().write("hello_world!");
+		response.getWriter().close();
 	}
 }
