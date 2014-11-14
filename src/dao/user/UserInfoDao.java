@@ -44,7 +44,7 @@ public class UserInfoDao {
 
 		stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
 
-		String getUsersInfo = "select email,name,brief_intro,main_head_photo,home_head_photo from UserInfo natural join UserProfile where ID in ( " + stringBuilder + " )";
+		String getUsersInfo = "select ID, email,name,brief_intro,bg_photo,main_head_photo,home_head_photo from UserInfo natural join UserProfile where ID in ( " + stringBuilder + " )";
 
 		try {
 			ps = con.prepareStatement(getUsersInfo);
@@ -60,5 +60,140 @@ public class UserInfoDao {
 			ReleaseSource.releaseSource(resultSet,ps,con);
 		}
 		return cachedRowSet;
+	}
+
+
+	/**
+	 * 传入用户的ID号，从数据库·获得用户的name、头像（两种格式）、个性化签名
+	 * @param ID 需要获得信息的IDs
+	 * @return 拥有用户个人信息的CachedRowSet
+	 */
+	public static CachedRowSet getUserInfo (int ID) throws SQLException {
+
+		Connection con = ConnectionFactory.getMySqlConnection();
+
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+		CachedRowSet cachedRowSet = null;
+
+		String getUsersInfo = "select ID, email,name,brief_intro,bg_photo,main_head_photo,home_head_photo from UserInfo natural join UserProfile where ID = ?";
+		try {
+			ps = con.prepareStatement(getUsersInfo);
+			ps.setInt(1,ID);
+			resultSet = ps.executeQuery();
+
+			cachedRowSet = CachedRowSetFactory.getRowSetFactory().createCachedRowSet();
+			cachedRowSet.populate(resultSet);
+		} catch (SQLException e) {
+			ReleaseSource.releaseSource(cachedRowSet);
+			e.printStackTrace();
+			throw e;
+		}finally {
+			ReleaseSource.releaseSource(resultSet,ps,con);
+		}
+		return cachedRowSet;
+	}
+
+
+	/**
+	 * 返回指定的ID的照片的数量
+	 * @param ID 指定的ID
+	 * @return 返回指定的照片的数量
+	 * @throws SQLException
+	 */
+	public static int getUserPhotoNum (int ID) throws SQLException {
+
+		Connection con = ConnectionFactory.getMySqlConnection();
+
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+
+		int photoNum = 0;
+
+		String getUserPhotoNum = "select photo_sum_number from PhotoSum where ID = ?";
+		try {
+			ps = con.prepareCall(getUserPhotoNum);
+			ps.setInt(1,ID);
+			resultSet = ps.executeQuery();
+			if (resultSet.first()) {
+				photoNum = resultSet.getInt("photo_sum_number");
+			}
+		}catch (SQLException e) {
+			ReleaseSource.releaseSource(resultSet,ps);
+			e.printStackTrace();
+			throw e;
+		}finally {
+			ReleaseSource.releaseSource(resultSet,ps,con);
+		}
+		return photoNum;
+	}
+
+
+	/**
+	 * 返回指定的ID的粉丝的数量
+	 * @param ID 指定的ID
+	 * @return 返回指定的ID的粉丝的数量
+	 * @throws SQLException
+	 */
+	public static int getUserFansNum (int ID) throws SQLException {
+
+		Connection con = ConnectionFactory.getMySqlConnection();
+
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+
+		int fanNum = 0;
+
+		String getUserFansNum = "select COUNT(*) from Followe where ID = ?";
+		try {
+			ps = con.prepareCall(getUserFansNum);
+			ps.setInt(1,ID);
+			resultSet = ps.executeQuery();
+			if (resultSet.first()) {
+				fanNum = resultSet.getInt("COUNT(*)");
+			}
+		}catch (SQLException e) {
+			ReleaseSource.releaseSource(resultSet,ps);
+			e.printStackTrace();
+			throw e;
+		}finally {
+			ReleaseSource.releaseSource(resultSet,ps,con);
+		}
+		return fanNum;
+	}
+
+
+
+	/**
+	 * 返回指定的ID的关注的人的数量
+	 * @param ID 指定的ID
+	 * @return 返回指定的ID的关注的人数量
+	 * @throws SQLException
+	 */
+	public static int getUserFollowingNum (int ID) throws SQLException {
+
+		Connection con = ConnectionFactory.getMySqlConnection();
+
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+
+		int followingNum = 0;
+
+		String getUserFollowingNum = "select COUNT(*) from Followings where ID = ?";
+		try {
+			ps = con.prepareCall(getUserFollowingNum);
+			ps.setInt(1,ID);
+			resultSet = ps.executeQuery();
+			if (resultSet.first()) {
+				followingNum = resultSet.getInt("COUNT(*)");
+			}
+		}catch (SQLException e) {
+			ReleaseSource.releaseSource(resultSet,ps);
+			e.printStackTrace();
+			throw e;
+		}finally {
+			ReleaseSource.releaseSource(resultSet,ps,con);
+		}
+		return followingNum;
 	}
 }
