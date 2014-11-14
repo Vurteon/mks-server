@@ -12,5 +12,9 @@ public enum PhotoType {
 	ORIGINAL_PHOTO,
 
 	// 个人中心浏览时被压缩后的小图
-	RESIZE_PHOTO
+	RESIZE_PHOTO,
+
+	// 缩略图
+	MORE_SMALL_PHOTO
+
 }
