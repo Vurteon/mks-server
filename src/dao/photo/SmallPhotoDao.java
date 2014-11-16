@@ -34,7 +34,7 @@ public class SmallPhotoDao {
 		ResultSet resultSet = null;
 		CachedRowSet cachedRowSet = null;
 
-		String getSmallPhotoPath = "SELECT rs_id,more_small_photo FROM StatusFeeds NATURAL JOIN PhotoPath WHERE ID = ? order by rs_id desc LIMIT ?";
+		String getSmallPhotoPath = "SELECT rs_id,more_small_photo,album FROM StatusFeeds NATURAL JOIN PhotoPath WHERE ID = ? order by rs_id desc LIMIT ?";
 		try {
 			ps = connection.prepareStatement(getSmallPhotoPath);
 			ps.setInt(1, ID);
@@ -69,7 +69,7 @@ public class SmallPhotoDao {
 		ResultSet resultSet = null;
 		CachedRowSet cachedRowSet = null;
 
-		String getSmallPhotoPath = "SELECT rs_id,more_small_photo FROM StatusFeeds NATURAL JOIN PhotoPath WHERE ID = ? and rs_id < ? order by rs_id desc LIMIT ? ";
+		String getSmallPhotoPath = "SELECT rs_id,more_small_photo,album FROM StatusFeeds NATURAL JOIN PhotoPath WHERE ID = ? and rs_id < ? order by rs_id desc LIMIT ? ";
 		try {
 			ps = connection.prepareStatement(getSmallPhotoPath);
 			ps.setInt(1, ID);
