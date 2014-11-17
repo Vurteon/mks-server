@@ -144,7 +144,7 @@ public class UserInfoDao {
 
 		int fanNum = 0;
 
-		String getUserFansNum = "select COUNT(*) from Followe where ID = ?";
+		String getUserFansNum = "select COUNT(*) from Follow where ID = ?";
 		try {
 			ps = con.prepareCall(getUserFansNum);
 			ps.setInt(1,ID);

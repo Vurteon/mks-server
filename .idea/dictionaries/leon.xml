@@ -26,6 +26,8 @@
       <w>iothreadstimeunit</w>
       <w>jdbc</w>
       <w>minification</w>
+      <w>mkdir</w>
+      <w>mkdirs</w>
       <w>mozilla</w>
       <w>multiparterror</w>
       <w>nodata</w>

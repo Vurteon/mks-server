@@ -14,7 +14,9 @@ import java.util.Date;
 public class LoadTest implements Runnable {
 //	static String testUrl = "http://120.24.68.64:8080/mks/get_user_info";
 
-	static String testUrl = "http://127.0.0.1:8080/login";
+//	static String testUrl = "http://127.0.0.1:8080/get_more_small_photo";
+//	static String testUrl = "http://127.0.0.1:8080/login";
+	static String testUrl = "http://127.0.0.1:8080/follow_by_id";
 
 
 	@Override
@@ -34,11 +36,14 @@ public class LoadTest implements Runnable {
 			httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
 			httpURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0");
-			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=527DFF236FA9A723A80657382A8DD7EF");
+			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=91A730BA4ED90E214CE7D4051C616608");
 
 
 
-			byte[] postInfo = JsonUtils.getJsonObject("{'account':'2012051051';'password':'520520'}").toString().getBytes();
+//			byte[] postInfo = JsonUtils.getJsonObject("{'ID':39;'rs_id':1000000}").toString().getBytes();
+
+//			byte[] postInfo = JsonUtils.getJsonObject("{'account':'2012051051';'password':'520520'}").toString().getBytes();
+			byte[] postInfo = JsonUtils.getJsonObject("{'his_id':23}").toString().getBytes();
 
 
 			System.out.println("发出请求时间：" + new Date());
@@ -61,19 +66,6 @@ public class LoadTest implements Runnable {
 
 
 			System.out.println(sb);
-//			System.out.println(URLDecoder.decode(sb.toString(),"utf8"));
-//			System.out.println(new JSONObject(sb.toString()));
-
-//			JSONArray jsonArray = new JSONArray(sb.toString());
-//
-//			int i = 0;
-//
-//			while (i < jsonArray.length()) {
-//				JSONObject jsonObject = (JSONObject)jsonArray.get(i);
-//				System.out.println("ID:" + jsonObject.get("ID") + "   rs_id:" + jsonObject.get("rs_id") +
-//				"   时间:" + jsonObject.get("time"));
-//				i++;
-//			}
 
 
 

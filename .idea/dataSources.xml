@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3369883192">
+  <component name="DataSourceManagerImpl" format="xml" hash="2614840281">
     <data-source source="LOCAL" name="MySQL - moment@120.24.68.64" uuid="d8ce0a15-f881-4f14-9391-88f232e0fd9d">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
@@ -15,7 +15,7 @@
       </driver-properties>
       <libraries>
         <library>
-          <url>file://F:/class lib/mysql-connector-java-5.1.24/mysql-connector-java-5.1.24-bin.jar</url>
+          <url>file://E:/class lib/mysql-connector-java-5.1.24/mysql-connector-java-5.1.24-bin.jar</url>
         </library>
       </libraries>
     </data-source>

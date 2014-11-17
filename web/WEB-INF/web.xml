@@ -121,8 +121,15 @@
 		<servlet-name>GetMoreSmallPhotoServlet</servlet-name>
 		<url-pattern>/get_more_small_photo</url-pattern>
 	</servlet-mapping>
-	
-	
+
+	<servlet>
+		<servlet-name>FollowByIDServlet</servlet-name>
+		<servlet-class>servlet.user.FollowByIDServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FollowByIDServlet</servlet-name>
+		<url-pattern>/follow_by_id</url-pattern>
+	</servlet-mapping>
 	
 	
 	

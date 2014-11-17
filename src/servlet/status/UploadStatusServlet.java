@@ -65,7 +65,7 @@ public class UploadStatusServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().write("hello_world!");
+		response.getWriter().write("upload_photo!");
 		response.getWriter().close();
 	}
 }

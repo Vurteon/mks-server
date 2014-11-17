@@ -87,7 +87,7 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().write("hello_world!");
+		response.getWriter().write("login!");
 		response.getWriter().close();
 	}
 }

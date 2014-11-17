@@ -33,7 +33,7 @@
       <column name="rs_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="topic" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
     </table>
-    <table name="Followe" schema="" catalog="moment" type="TABLE">
+    <table name="Follow" schema="" catalog="moment" type="TABLE">
       <column name="ID" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="follower" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
     </table>
@@ -60,6 +60,7 @@
       <column name="rs_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="view_photo" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="detail_photo" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="more_small_photo" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="rs_id"/>
     </table>
     <table name="PhotoSum" schema="" catalog="moment" type="TABLE">
@@ -84,6 +85,7 @@
       <column name="shares_number" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4" def="MA=="/>
       <column name="IsLocated" sqlType="VARCHAR" precision="3" scale="0" nullable="true" jdbcType="12"/>
       <column name="hasDetail" sqlType="VARCHAR" precision="3" scale="0" nullable="true" jdbcType="12"/>
+      <column name="album" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="rs_id"/>
     </table>
     <table name="UserEmail" schema="" catalog="moment" type="TABLE">

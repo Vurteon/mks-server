@@ -66,7 +66,7 @@ public class CheckAccountServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().write("hello_world!");
+		response.getWriter().write("checkAccount!");
 		response.getWriter().close();
 	}
 }

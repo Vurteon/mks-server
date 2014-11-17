@@ -78,7 +78,7 @@ public class LoadStatusServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().write("hello_world!");
+		response.getWriter().write("load_status!");
 		response.getWriter().close();
 	}
 }

@@ -48,14 +48,14 @@ public class PostPhotoTest implements Runnable {
 			httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
 			httpURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0");
-			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=12E722668D0B190AF4C0BFFCB3C4EB69");
+			httpURLConnection.setRequestProperty("Cookie","JSESSIONID=CB805ACD4C84D8268379FB5961352B10");
 
 			httpURLConnection.setRequestProperty("Content-Type",
 					"multipart/form-data; boundary=" + BOUNDARY);
 
 			byte[] image = new byte[8000000];
 
-			FileInputStream fileInputStream = new FileInputStream(new File("E:/me.jpg"));
+			FileInputStream fileInputStream = new FileInputStream(new File("D:/bird.jpg"));
 
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
@@ -65,7 +65,7 @@ public class PostPhotoTest implements Runnable {
 
 			System.arraycopy(image, 0, newByte, 0, ll);
 
-			byte[] asd = JsonUtils.getJsonObject("{'myWords':'来试一试照片的数量增加了吗？'}").toString().getBytes();
+			byte[] asd = JsonUtils.getJsonObject("{'myWords':'试一试缩略图OK吗？'}").toString().getBytes();
 
 			System.out.println("发出请求时间：" + new Date());
 

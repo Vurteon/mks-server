@@ -83,7 +83,7 @@ public class SignUpServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().write("hello_world!");
+		response.getWriter().write("sign_up!");
 		response.getWriter().close();
 	}
 }

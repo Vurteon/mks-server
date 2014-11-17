@@ -42,7 +42,7 @@ public class GetThreeNumberServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().write("hello_world!");
+		response.getWriter().write("get_three_number!");
 		response.getWriter().close();
 	}
 }

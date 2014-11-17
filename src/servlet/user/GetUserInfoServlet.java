@@ -43,7 +43,7 @@ public class GetUserInfoServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().write("hello_world!");
+		response.getWriter().write("get_user_info!");
 		response.getWriter().close();
 	}
 }
