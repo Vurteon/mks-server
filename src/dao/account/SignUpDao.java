@@ -73,9 +73,10 @@ public class SignUpDao {
 			ps.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			ReleaseSource.releaseSource(ps,con);
 			throw e;
 		} finally {
-			ReleaseSource.releaseSource(ps, con);
+			ReleaseSource.releaseSource(ps);
 		}
 
 		/**
