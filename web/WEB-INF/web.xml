@@ -122,6 +122,7 @@
 		<url-pattern>/get_more_small_photo</url-pattern>
 	</servlet-mapping>
 
+	<!--关注某人-->
 	<servlet>
 		<servlet-name>FollowByIDServlet</servlet-name>
 		<servlet-class>servlet.user.FollowByIDServlet</servlet-class>
@@ -130,11 +131,28 @@
 		<servlet-name>FollowByIDServlet</servlet-name>
 		<url-pattern>/follow_by_id</url-pattern>
 	</servlet-mapping>
-	
-	
-	
-	
-	
+
+	<!--加载某人的状态，在查看某人主页的时候使用-->
+	<servlet>
+		<servlet-name>LoadStatusByIDServlet</servlet-name>
+		<servlet-class>servlet.user.LoadStatusByIDServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoadStatusByIDServlet</servlet-name>
+		<url-pattern>/load_status_by_id</url-pattern>
+	</servlet-mapping>
+
+	<!--点赞或者取消点赞-->
+	<servlet>
+		<servlet-name>LikeStatusServlet</servlet-name>
+		<servlet-class>servlet.status.LikeStatusServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LikeStatusServlet</servlet-name>
+		<url-pattern>/like_status</url-pattern>
+	</servlet-mapping>
 	
 
 	<!--session filter-->
@@ -151,6 +169,9 @@
 		<url-pattern>/get_three_number</url-pattern>
 		<url-pattern>/get_user_info</url-pattern>
 		<url-pattern>/get_more_small_photo</url-pattern>
+		<url-pattern>/follow_by_id</url-pattern>
+		<url-pattern>/load_status_by_id</url-pattern>
+		<url-pattern>/like_status</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
