@@ -34,4 +34,7 @@ public class ErrorCode {
 
 	// 没有数据
 	public static final String NODATA = "NODATA";
+
+	// 失败
+	public static final String FAIL = "FAIL";
 }
