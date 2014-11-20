@@ -313,7 +313,7 @@ public class StatusRowSetManager {
 					if (statusRowSet.getInt("rs_id") == rs_id) {
 						// 更新喜欢数量
 						statusRowSet.updateInt("likes_number",statusRowSet.getInt("likes_number") + 1);
-						statusRowSet.undoUpdate();
+						statusRowSet.updateRow();
 						return true;
 					}
 				}while (statusRowSet.previous());
@@ -336,7 +336,7 @@ public class StatusRowSetManager {
 					if (statusRowSet.getInt("rs_id") == rs_id) {
 						// 更新喜欢数量
 						statusRowSet.updateInt("likes_number",statusRowSet.getInt("likes_number") - 1);
-						statusRowSet.undoUpdate();
+						statusRowSet.updateRow();
 						return true;
 					}
 				}while (statusRowSet.previous());
