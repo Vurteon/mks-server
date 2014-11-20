@@ -138,8 +138,9 @@ public class SignUpDao {
 				con.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				throw e;
+				throw e1;
 			}
+			throw e;
 		} finally {
 			// 不论是哪里抛出的异常，其有且仅有一个ps没有被释放，所以ps一定会被释放
 			ReleaseSource.releaseSource(ps, con);
