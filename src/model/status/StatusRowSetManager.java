@@ -300,6 +300,55 @@ public class StatusRowSetManager {
 
 
 	/**
+	 * 给某个状态点赞！
+	 * @param rs_id 被点赞的状态的rs_id
+	 * @return 是否点赞成功
+	 * @throws SQLException
+	 */
+	public static boolean likeIt (int rs_id) throws SQLException {
+
+		synchronized (object) {
+			if (statusRowSet.last()) {
+				do {
+					if (statusRowSet.getInt("rs_id") == rs_id) {
+						// 更新喜欢数量
+						statusRowSet.updateInt("likes_number",statusRowSet.getInt("likes_number") + 1);
+						statusRowSet.undoUpdate();
+						return true;
+					}
+				}while (statusRowSet.previous());
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 取消给某个状态已经点的赞
+	 * @param rs_id 被点赞的状态的rs_id
+	 * @return 是否点赞成功
+	 * @throws SQLException
+	 */
+	public static boolean unLikeIt (int rs_id) throws SQLException {
+
+		synchronized (object) {
+			if (statusRowSet.last()) {
+				do {
+					if (statusRowSet.getInt("rs_id") == rs_id) {
+						// 更新喜欢数量
+						statusRowSet.updateInt("likes_number",statusRowSet.getInt("likes_number") - 1);
+						statusRowSet.undoUpdate();
+						return true;
+					}
+				}while (statusRowSet.previous());
+			}
+		}
+		return false;
+	}
+
+
+
+
+	/**
 	 * 从CachedRowSet中获取数据并填充在json对象中
 	 * @param cachedRowSet 数据源
 	 * @param jsonArray 需要被json对象填充的json数组
