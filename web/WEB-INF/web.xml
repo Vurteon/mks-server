@@ -153,7 +153,43 @@
 		<servlet-name>LikeStatusServlet</servlet-name>
 		<url-pattern>/like_status</url-pattern>
 	</servlet-mapping>
-	
+
+	<!--评论状态-->
+	<servlet>
+		<servlet-name>CommentStatusServlet</servlet-name>
+		<servlet-class>servlet.status.CommentStatusServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CommentStatusServlet</servlet-name>
+		<url-pattern>/comment_status</url-pattern>
+	</servlet-mapping>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	<!--session filter-->
 	<filter>
