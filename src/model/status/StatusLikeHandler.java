@@ -1,5 +1,6 @@
 package model.status;
 
+import dao.status.StatusDao;
 import dao.status.StatusLikeDao;
 import utils.EnumUtil.ErrorCode;
 import utils.StatusResponseHandler;
@@ -74,7 +75,7 @@ public class StatusLikeHandler implements Runnable {
 				} else {
 					// 如果在缓存中的操作返回false，则表明缓存中不存在此状态。那么在
 					// 数据库操作时，首先检查是否存在该状态
-					if (!StatusLikeDao.isExisted(rs_id)) {
+					if (!StatusDao.isExisted(rs_id)) {
 						StatusResponseHandler.sendStatus("status", ErrorCode.FAIL,
 								(HttpServletResponse) asyncContext.getResponse());
 						return;
@@ -98,7 +99,7 @@ public class StatusLikeHandler implements Runnable {
 					} else {
 						// 如果在缓存中的操作返回false，则表明缓存中不存在此状态。那么在
 						// 数据库操作时，首先检查是否存在该状态
-						if (!StatusLikeDao.isExisted(rs_id)) {
+						if (!StatusDao.isExisted(rs_id)) {
 							StatusResponseHandler.sendStatus("status", ErrorCode.FAIL,
 									(HttpServletResponse) asyncContext.getResponse());
 							return;
