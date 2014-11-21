@@ -187,35 +187,4 @@ public class StatusLikeDao {
 		}
 	}
 
-	/**
-	 * 检查此状态是否存在
-	 *
-	 * @param rs_id 状态id
-	 * @return 如果存在，返回true；否则返回false
-	 * @throws SQLException
-	 */
-	public static boolean isExisted(int rs_id) throws SQLException {
-
-		Connection connection = ConnectionFactory.getMySqlConnection();
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		String recordLiker = "SELECT rs_id FROM StatusFeeds WHERE rs_id = ?";
-
-		try {
-			preparedStatement = connection.prepareStatement(recordLiker);
-			preparedStatement.setInt(1, rs_id);
-			resultSet = preparedStatement.executeQuery();
-			if (resultSet.first()) {
-				return true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			ReleaseSource.releaseSource(resultSet, preparedStatement, connection);
-		}
-		return false;
-	}
-
 }
