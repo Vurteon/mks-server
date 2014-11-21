@@ -53,6 +53,7 @@ public class LikeStatusServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		response.getWriter().write("like_status!");
+		response.getWriter().close();
 	}
 }
