@@ -302,7 +302,7 @@ public class StatusRowSetManager {
 	/**
 	 * 给某个状态点赞！
 	 * @param rs_id 被点赞的状态的rs_id
-	 * @return 是否点赞成功
+	 * @return 是否点赞成功；如果返回false，表示该缓存中不存在该状态
 	 * @throws SQLException
 	 */
 	public static boolean likeIt (int rs_id) throws SQLException {
@@ -325,7 +325,7 @@ public class StatusRowSetManager {
 	/**
 	 * 取消给某个状态已经点的赞
 	 * @param rs_id 被点赞的状态的rs_id
-	 * @return 是否点赞成功
+	 * @return 是否点赞成功；如果返回false，表示该缓存中不存在该状态
 	 * @throws SQLException
 	 */
 	public static boolean unLikeIt (int rs_id) throws SQLException {
@@ -344,6 +344,52 @@ public class StatusRowSetManager {
 		}
 		return false;
 	}
+
+
+	/**
+	 * 更新缓存中状态的评论数量
+	 * @param rs_id 需要被更新的状态
+	 * @return 是否更新成功；如果返回false表明该缓存中不存在该状态
+	 * @throws SQLException
+	 */
+	public static boolean addCommentNumber (int rs_id) throws SQLException {
+		synchronized (object) {
+			if (statusRowSet.last()) {
+				do {
+					if (statusRowSet.getInt("rs_id") == rs_id) {
+						// 更新喜欢数量
+						statusRowSet.updateInt("comments_number",statusRowSet.getInt("comments_number") + 1);
+						statusRowSet.updateRow();
+						return true;
+					}
+				}while (statusRowSet.previous());
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 更新缓存中状态的评论数量
+	 * @param rs_id 需要被更新的状态
+	 * @return 是否更新成功；如果返回false表明该缓存中不存在该状态
+	 * @throws SQLException
+	 */
+	public static boolean subCommentNumber (int rs_id) throws SQLException {
+		synchronized (object) {
+			if (statusRowSet.last()) {
+				do {
+					if (statusRowSet.getInt("rs_id") == rs_id) {
+						// 更新喜欢数量
+						statusRowSet.updateInt("comments_number",statusRowSet.getInt("comments_number") - 1);
+						statusRowSet.updateRow();
+						return true;
+					}
+				}while (statusRowSet.previous());
+			}
+		}
+		return false;
+	}
+
 
 
 
