@@ -208,6 +208,7 @@
 		<url-pattern>/follow_by_id</url-pattern>
 		<url-pattern>/load_status_by_id</url-pattern>
 		<url-pattern>/like_status</url-pattern>
+		<url-pattern>/comment_status</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
