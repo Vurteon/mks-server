@@ -54,7 +54,7 @@ public class LikeStatusServlet extends HttpServlet {
 		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new StatusLikeHandler(liker, likeder, rs_id, isLike, asyncContext));
 	}
 
-	protected void doGetz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().write("like_status!");
 		response.getWriter().close();
 	}
