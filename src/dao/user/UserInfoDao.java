@@ -196,4 +196,32 @@ public class UserInfoDao {
 		}
 		return followingNum;
 	}
+
+	/**
+	 * 获得用户昵称
+	 * @param ID 需要获取昵称的ID
+	 * @return 昵称
+	 * @throws SQLException
+	 */
+	public static String getUserName(int ID) throws SQLException {
+		Connection con = ConnectionFactory.getMySqlConnection();
+
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+		String getUsersInfo = "select name from UserInfo where ID = ?";
+		try {
+			ps = con.prepareStatement(getUsersInfo);
+			ps.setInt(1,ID);
+			resultSet = ps.executeQuery();
+			if (resultSet.first()) {
+				return resultSet.getString("name");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			ReleaseSource.releaseSource(resultSet,ps,con);
+		}
+		return null;
+	}
 }
