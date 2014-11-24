@@ -32,12 +32,14 @@ public class LikeStatusServlet extends HttpServlet {
 		JSONObject likerInfoJson = new JSONObject(likerInfo);
 
 		int liker;
+		int likeder;
 		int rs_id;
 		boolean isLike;
-		if (likerInfoJson.has("rs_id") && likerInfoJson.has("isLike")) {
+		if (likerInfoJson.has("rs_id") && likerInfoJson.has("isLike") && likerInfoJson.has("likeder")) {
 			rs_id = likerInfoJson.getInt("rs_id");
 			liker = (Integer)request.getSession(false).getAttribute("ID");
 			isLike = likerInfoJson.getBoolean("isLike");
+			likeder = likerInfoJson.getInt("likeder");
 		}else {
 			StatusResponseHandler.sendStatus("status", ErrorCode.JSONFORMATERROR,response);
 			return ;
@@ -49,10 +51,10 @@ public class LikeStatusServlet extends HttpServlet {
 
 		asyncContext.addListener(new DealPartThreadsListener());
 
-		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new StatusLikeHandler(liker, rs_id, isLike, asyncContext));
+		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new StatusLikeHandler(liker, likeder, rs_id, isLike, asyncContext));
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGetz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().write("like_status!");
 		response.getWriter().close();
 	}
