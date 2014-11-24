@@ -23,6 +23,8 @@ public class EncodeFilter implements Filter {
 
 		httpServletRequest.setCharacterEncoding("UTF-8");
 
+		resp.setCharacterEncoding("UTF-8");
+
 		chain.doFilter(req, resp);
 	}
 
