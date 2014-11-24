@@ -1,6 +1,7 @@
 package servlet.status;
 
 import listener.DealPartThreadsListener;
+import model.notify.NotifyCacheManager;
 import model.status.StatusCommentHandler;
 import model.status.StatusLikeHandler;
 import utils.EnumUtil.ErrorCode;
@@ -49,6 +50,7 @@ public class CommentStatusServlet extends HttpServlet {
 		asyncContext.setTimeout(30000);
 
 		asyncContext.addListener(new DealPartThreadsListener());
+
 
 		ThreadPoolUtils.getIoThreadPoolExecutor().submit(new StatusCommentHandler(rs_id, commenter, commented, content, asyncContext));
 	}
