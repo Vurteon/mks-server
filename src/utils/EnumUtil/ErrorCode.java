@@ -37,4 +37,7 @@ public class ErrorCode {
 
 	// 失败
 	public static final String FAIL = "FAIL";
+
+	// 服务器没有线程资源了
+	public static final String NOMORETHREAD = "NOMORETHREAD";
 }
