@@ -165,8 +165,16 @@
 		<url-pattern>/comment_status</url-pattern>
 	</servlet-mapping>
 
-
-
+	<!--用于获得推送消息-->
+	<servlet>
+		<servlet-name>LoadNotifyServlet</servlet-name>
+		<servlet-class>servlet.notify.LoadNotifyServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoadNotifyServlet</servlet-name>
+		<url-pattern>/load_notify</url-pattern>
+	</servlet-mapping>
 
 
 
@@ -209,6 +217,7 @@
 		<url-pattern>/load_status_by_id</url-pattern>
 		<url-pattern>/like_status</url-pattern>
 		<url-pattern>/comment_status</url-pattern>
+		<url-pattern>/load_notify</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
@@ -219,12 +228,14 @@
 	<filter>
 		<filter-name>EncodeFilter</filter-name>
 		<filter-class>filter.EncodeFilter</filter-class>
+		<async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
 		<filter-name>EncodeFilter</filter-name>
 		<url-pattern>/login</url-pattern>
 		<url-pattern>/sign_up</url-pattern>
 		<url-pattern>/checkAccount</url-pattern>
+		<url-pattern>/load_notify</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
