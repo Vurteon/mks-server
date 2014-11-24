@@ -2,8 +2,12 @@ package model.status;
 
 import dao.status.StatusDao;
 import dao.status.StatusLikeDao;
+import dao.user.UserInfoDao;
+import model.notify.NotifyCacheManager;
 import utils.EnumUtil.ErrorCode;
+import utils.EnumUtil.NotifyType;
 import utils.StatusResponseHandler;
+import utils.json.JSONObject;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +24,8 @@ public class StatusLikeHandler implements Runnable {
 	// 点赞或取消赞的人的id
 	private int liker;
 
+	private int likeder;
+
 	// 被操作的资源的标记
 	private int rs_id;
 
@@ -34,8 +40,9 @@ public class StatusLikeHandler implements Runnable {
 	 * @param liker 喜欢的人的ID
 	 * @param rs_id 被喜欢资源的rs_id
 	 */
-	public StatusLikeHandler(int liker, int rs_id, boolean isLike, AsyncContext asyncContext) {
+	public StatusLikeHandler(int liker, int likeder, int rs_id, boolean isLike, AsyncContext asyncContext) {
 		this.liker = liker;
+		this.likeder = likeder;
 		this.rs_id = rs_id;
 		this.isLike = isLike;
 		this.asyncContext = asyncContext;
@@ -70,6 +77,7 @@ public class StatusLikeHandler implements Runnable {
 				if (isDone) {
 					// 如果记录成功
 					if (StatusLikeDao.recordLiker(rs_id, liker))
+						addMessage();
 						asyncContext.complete();
 
 				} else {
@@ -81,8 +89,10 @@ public class StatusLikeHandler implements Runnable {
 						return;
 					}
 					// 在数据库中直接进行操作
-					if (StatusLikeDao.likeIt(rs_id, liker))
+					if (StatusLikeDao.likeIt(rs_id, liker)) {
+						addMessage();
 						asyncContext.complete();
+					}
 
 				}
 			} else {
@@ -131,5 +141,16 @@ public class StatusLikeHandler implements Runnable {
 			StatusResponseHandler.sendStatus("status", ErrorCode.SQLERROR,
 					(HttpServletResponse) asyncContext.getResponse());
 		}
+	}
+
+	private void addMessage() throws SQLException {
+		/**
+		 * 将消息放入推送map
+		 */
+		String name = UserInfoDao.getUserName(liker);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("content",name + "赞了你的照片");
+		jsonObject.put("class", NotifyType.LIKE);
+		NotifyCacheManager.putMessage(likeder, jsonObject.toString());
 	}
 }

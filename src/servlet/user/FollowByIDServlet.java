@@ -1,7 +1,10 @@
 package servlet.user;
 
+import dao.user.UserInfoDao;
+import model.notify.NotifyCacheManager;
 import model.user.UserReaManager;
 import utils.EnumUtil.ErrorCode;
+import utils.EnumUtil.NotifyType;
 import utils.RequestInfoUtils;
 import utils.StatusResponseHandler;
 import utils.json.JSONObject;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Random;
 
 /**
  * author：康乐
@@ -41,10 +45,11 @@ public class FollowByIDServlet extends HttpServlet {
 			return ;
 		}
 
-		// 进行注册，如果成功；返回给客户端成功的信息；如果失败，必然是sql异常，返回给客户端
+		// 进行记录，如果成功；返回给客户端成功的信息；如果失败，必然是sql异常，返回给客户端
 		try {
 			if (UserReaManager.followByID((Integer) httpSession.getAttribute("ID"), hisID)) {
 				StatusResponseHandler.sendStatus("status", ErrorCode.SUCCESS, response);
+				addMessage((Integer) httpSession.getAttribute("ID"),hisID);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -55,5 +60,16 @@ public class FollowByIDServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().write("follow_by_id!");
 		response.getWriter().close();
+	}
+
+	private void addMessage(int ID, int hisID) throws SQLException {
+		/**
+		 * 将消息放入推送map
+		 */
+		String name = UserInfoDao.getUserName(ID);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("content",name + "关注了你");
+		jsonObject.put("class", NotifyType.FOLLOW);
+		NotifyCacheManager.putMessage(hisID, jsonObject.toString());
 	}
 }

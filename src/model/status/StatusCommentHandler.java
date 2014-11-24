@@ -2,8 +2,12 @@ package model.status;
 
 import dao.status.StatusCommentDao;
 import dao.status.StatusDao;
+import dao.user.UserInfoDao;
+import model.notify.NotifyCacheManager;
 import utils.EnumUtil.ErrorCode;
+import utils.EnumUtil.NotifyType;
 import utils.StatusResponseHandler;
+import utils.json.JSONObject;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletResponse;
@@ -53,8 +57,10 @@ public class StatusCommentHandler implements Runnable {
 
 		try {
 			if (isAdd = StatusRowSetManager.addCommentNumber(rs_id)) {
-				// 如果在缓存中点赞成功
+				// 如果在缓存中评论成功
 				if (StatusCommentDao.recordComment(rs_id, commenter, commented, content)) {
+					// 推送消息
+					addMessage();
 					asyncContext.complete();
 				}
 			}else {
@@ -62,6 +68,8 @@ public class StatusCommentHandler implements Runnable {
 				if (StatusDao.isExisted(rs_id)) {
 					// 如果此状态存在
 					if (StatusCommentDao.comment(rs_id, commenter, commented, content)) {
+						// 推送消息
+						addMessage();
 						asyncContext.complete();
 					}
 				}else {
@@ -83,5 +91,16 @@ public class StatusCommentHandler implements Runnable {
 			StatusResponseHandler.sendStatus("status", ErrorCode.SQLERROR,
 					(HttpServletResponse) asyncContext.getResponse());
 		}
+	}
+
+	private void addMessage() throws SQLException {
+		/**
+		 * 将消息放入推送map
+		 */
+		String name = UserInfoDao.getUserName(commenter);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("content",name + "评论：" + content);
+		jsonObject.put("class", NotifyType.COMMENT);
+		NotifyCacheManager.putMessage(commented, jsonObject.toString());
 	}
 }
