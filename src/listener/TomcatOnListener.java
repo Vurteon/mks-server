@@ -1,6 +1,9 @@
 package listener;
 
 import dao.cache.CachedRowSetDao;
+import model.notify.NotifyCacheManager;
+import model.notify.OutOfMaxLengthHandler;
+import model.notify.WaitingNotifyManager;
 import model.status.StatusRowSetManager;
 import org.dom4j.DocumentException;
 import utils.ThreadPoolUtils;
@@ -57,6 +60,8 @@ public class TomcatOnListener implements ServletContextListener{
 
 		System.out.println("创建线程池成功");
 
+
+
 		try {
 			ConnectionFactory.initConPool();
 		} catch (DocumentException e) {
@@ -82,6 +87,10 @@ public class TomcatOnListener implements ServletContextListener{
 			System.exit(-1);
 		}
 		System.out.println("创建CacheRowSet，构造缓存成功");
+
+		// 启动推送消息缓存监视线程成功
+		new Thread(new OutOfMaxLengthHandler()).start();
+		System.out.println("启动消息推送缓存监视线程成功");
 	}
 
 
@@ -113,6 +122,17 @@ public class TomcatOnListener implements ServletContextListener{
 			System.err.println(new Date() + "----------------->>>>重大错误，重大错误，缓存批量写入DB出错，数据丢失！！！");
 			System.err.println(new Date() + "----------------->>>>重大错误，重大错误，缓存批量写入DB出错，数据丢失！！！");
 		}
+
+		/**
+		 * 将推送消息写入数据库
+		 */
+
+		while (NotifyCacheManager.getCachedmessagenumber() > 0) {
+			NotifyCacheManager.outOfMaxLengthHandler();
+		}
+		System.out.println("推送消息写入数据库成功");
+
+
 		/**
 		 * 移除所有相关组件
 		 */
