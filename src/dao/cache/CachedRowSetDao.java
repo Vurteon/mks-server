@@ -29,7 +29,7 @@ public class CachedRowSetDao {
 
 		CachedRowSet cachedRowSet;
 		// 从StatementFeed、DetailWords、PhotoLocation三个表中依据rs_id查询前1000条数据
-		String createCacheRowSet = "SELECT * FROM StatusFeeds NATURAL JOIN DetailWords NATURAL JOIN PhotoLocation NATURAL JOIN PhotoPath WHERE rs_id > (SELECT max(rs_id)-10 FROM StatusFeeds) ORDER BY rs_id ";
+		String createCacheRowSet = "SELECT * FROM StatusFeeds NATURAL JOIN DetailWords NATURAL JOIN PhotoLocation NATURAL JOIN PhotoPath WHERE rs_id > (SELECT max(rs_id)-1 FROM StatusFeeds) ORDER BY rs_id ";
 
 		try {
 			// 设置ResultSet是可前后滚动的、可更新的
@@ -184,12 +184,13 @@ public class CachedRowSetDao {
 			} else {
 				cachedRowSet.updateString(11, "no");
 			}
-			cachedRowSet.updateString(12, photoDesBean.getOlderWords());
-			cachedRowSet.updateString(13, photoDesBean.getMyWords());
-			cachedRowSet.updateString(14, photoDesBean.getPhotoLocation());
-			cachedRowSet.updateString(15, photoDesBean.getViewPhotoPath());
-			cachedRowSet.updateString(16, photoDesBean.getDetailPhotoPath());
-			cachedRowSet.updateString(17, photoDesBean.getMoreSmallPhotoPath());
+			cachedRowSet.updateString(12, photoDesBean.getAlbumName());
+			cachedRowSet.updateString(13, photoDesBean.getOlderWords());
+			cachedRowSet.updateString(14, photoDesBean.getMyWords());
+			cachedRowSet.updateString(15, photoDesBean.getPhotoLocation());
+			cachedRowSet.updateString(16, photoDesBean.getViewPhotoPath());
+			cachedRowSet.updateString(17, photoDesBean.getDetailPhotoPath());
+			cachedRowSet.updateString(18, photoDesBean.getMoreSmallPhotoPath());
 
 			// 插入数据
 			cachedRowSet.insertRow();
