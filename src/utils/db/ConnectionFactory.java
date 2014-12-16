@@ -22,12 +22,12 @@ public class ConnectionFactory {
 	/**
 	 * windows环境下数据库连接池的配置文件位置
 	 */
-	public static final String configFile = "E:/mks-server/web/WEB-INF/c3p0_con_pool.xml";
+//	public static final String configFile = "E:/mks-server/web/WEB-INF/c3p0_con_pool.xml";
 
 	/**
 	 * 阿里云linux环境下数据库连接位置
 	 */
-//	public static final String configFile = "/alidata/server/tomcat-7.0.54/webapps/mks/WEB-INF/c3p0_con_pool.xml";
+	public static final String configFile = "/alidata/server/tomcat-7.0.54/webapps/mks/WEB-INF/c3p0_con_pool.xml";
 
 	/**
 	 * 数据库连接池对象，用于初始化连接池和获得与数据库的连接
@@ -78,6 +78,8 @@ public class ConnectionFactory {
 		dataSource.setUser(property.get("user"));
 		// 设置用户密码
 		dataSource.setPassword(property.get("password"));
+		// 设置自动连接为真
+		dataSource.setAutoCommitOnClose(true);
 
 	}
 }
